@@ -52,7 +52,7 @@ public class JfinalActivitiConfig extends JFinalConfig {
      */
     public void configConstant(Constants me) {
         // 加载少量必要配置，随后可用PropKit.get(...)获取值
-        PropKit.use("jfinal_config.txt");
+        PropKit.use("JFinalActiviti.properties");
         me.setDevMode(PropKit.getBoolean("devMode", false));
     }
     
