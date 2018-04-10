@@ -1,0 +1,96 @@
+#@layout()
+#define main()
+
+<section class="Hui-article-box">
+	<nav class="breadcrumb hidden-xs"><i class="Hui-iconfont">&#xe67f;</i> 首页 
+		<span class="c-gray en">&gt;</span> 请假管理
+		<span class="c-gray en">&gt;</span> 待办任务
+		<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+	<div class="Hui-article">
+		<article class="cl pd-20">
+      		<div class="mt-20">
+				<table class="table table-border table-bordered table-hover table-bg table-sort" id="eeda_table">
+					<thead>
+						<tr class="text-c">
+							<th width="25"><input type="checkbox" name="checkAll" value=""></th>
+							<th width="80">任务名称</th>
+							<th width="80">任务持有人<br>Owner</th>
+			              	<th width="80">任务描述</th>
+							  <th width="80">任务接收人<br>Assignee</th>
+							  <th width="80">任务创建时间</th>
+							<th width="90">操作</th>
+						</tr>
+          			</thead>
+          			<tbody>
+          			</tbody>
+				</table>
+			</div>
+		</article>
+	</div>
+</section>
+#end
+<script type="text/javascript" src="/theme/H-ui.admin.page3.1.1/lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+<script>
+	$(document).ready(function() {
+		$('#menu-leave dt').addClass('selected');
+		$('#menu-leave dd').show();
+		$('#menu-leave li:eq(0)').addClass('current');
+		/**
+		* 业务逻辑处理
+		*/
+		var dataTable = $('#eeda_table').DataTable({
+			'processing':true,
+		// 'scrollX': true,
+			//'scrollY':  true, //"300px",
+			searching:false,
+			"serverSide": true,
+			'createdRow': function ( row, data, index ) {
+				$(row).children('td').attr('style', 'text-align: center;');
+				if(data.ID){
+					$(row).attr('id', data.ID);
+				}
+			},
+			'ajax': '/leave/taskList',
+			'columns': [
+				{"data":"id", "sortable":false,
+					render:function(data,type,full,meta){
+						return '<input type="checkbox"  name="id" value='+data+'>';
+					}
+				},
+				{"data":"Name","sortable":false,
+					render: function(data,type,full,meta){
+						var KEY = full.TaskDefinitionKey;
+						var url = "#";
+						if(KEY == "deptLeaderAudit"){
+							url="/leave/deptLeaderVerify?task_id="+full.id;
+						}else if(KEY == "hrAudit"){
+							url="/leave/hrVerify?task_id="+full.id;
+						}else if(KEY == "reportBack"){
+							url="/leave/reportBack?task_id="+full.id;
+						}
+						return '<a href="'+url+'">'+data+'</a>';
+					}
+				},
+				{"data":"Owner", "width":"80px"},
+				{"data":"Description", "width":"80px"},
+				{"data":"Assignee", "width":"80px"},
+				{"data":"CreateTime", "width":"80px"},
+				{"width": "80px",
+					render: function(data,type,full,meta){
+						var KEY = full.TaskDefinitionKey;
+						var url = "#";
+						if(KEY == "deptLeaderAudit"){
+							url="/leave/deptLeaderVerify?task_id="+full.id;
+						}else if(KEY == "hrAudit"){
+							url="/leave/hrVerify?task_id="+full.id;
+						}else if(KEY == "reportBack"){
+							url="/leave/reportBack?task_id="+full.id;
+						}
+						return '<a class="btn btn-success radius" href="'+url+'">编辑</a> '
+							+'<button id="'+full.id+'"  class="btn btn-danger radius delete">删除</button>';
+					}
+				}
+			]
+		});
+	});
+</script>

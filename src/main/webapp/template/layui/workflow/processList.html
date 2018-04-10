@@ -1,0 +1,44 @@
+#@layout()
+#define main()
+<link rel="stylesheet" href="/theme/H-ui.admin.page3.1.1/lib/lightbox2/2.8.1/css/lightbox.css">
+<section style="padding: 15px;">
+	<span class="layui-breadcrumb">
+		<a href="">首页</a>
+		<a href="">工作流管理</a>
+		<a><cite>流程列表</cite></a>
+	</span>	
+	<br>
+	<br>
+	<table class="layui-hide" id="jfa_table"></table>
+</section>
+#end
+<script type="text/javascript" src="/theme/H-ui.admin.page3.1.1/lib/lightbox2/2.8.1/js/lightbox.min.js"></script>
+<script>
+	layui.use(['jquery','table'], function(){
+		var table = layui.table, $=layui.$;
+		
+		$('#sidebar_workflow').addClass('layui-nav-itemed');
+
+		table.render({
+			elem: '#jfa_table'
+			,url:'/workflow/processListQuery'
+			,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+			,cols: [[
+				{field:'ID_', title: '流程定义ID', sort: true}
+				,{field:'DEPLOYMENT_ID_', width:100, title: '部署ID'}
+				,{field:'NAME_',  title: '流程定义名称'}
+				,{field:'KEY_', width:180, title: '流程定义key'}
+				,{field:'VERSION_',width:80, title: '版本号', minWidth: 100} //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
+				,{field:'RESOURCE_NAME_',  title: 'XML资源名称'}
+				,{field:'DGRM_RESOURCE_NAME_', title: '流程图片', templet: function(full){
+							if(full.DGRM_RESOURCE_NAME_){
+								return '<a class="layui-btn layui-btn-xs" href="/'+full.DGRM_RESOURCE_NAME_
+								+'" data-lightbox="flow-'+ full.DGRM_RESOURCE_NAME_+'" data-title="流程图片">流程图片</a>';
+							}
+							return ''
+						}}
+			]]
+		});
+	});
+	
+</script>

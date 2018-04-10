@@ -1,0 +1,123 @@
+#@layout()
+#define main()
+<section style="padding: 15px;">
+	<span class="layui-breadcrumb">
+		<a href="">首页</a>
+		<a href="">请假管理</a>
+		<a><cite>待办任务</cite></a>
+	</span>	
+	<br>
+	<br>
+	<form id="orderForm" class="layui-form layui-row"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+		<input type="hidden" id="task_id" name="task_id" value="#(order.get('task_id'))">
+		<input type="hidden" id="order_id" name="order_id" value="#(order.get('id'))">
+		<div class="layui-form-item layui-col-md6">
+		  <label class="layui-form-label">申请人</label>
+		  <div class="layui-input-block">
+				<input type="text" name="user_name" disabled class="layui-input" value="#(order.get('user_name'))">
+		  </div>
+		</div>
+		<div class="layui-form-item layui-col-md6">
+			<label class="layui-form-label">开始时间</label>
+			<div class="layui-input-block">
+				<input type="text" id="start_time" name="start_time" class="layui-input" disabled value="#(order.get('start_time').toString().substring(0,10))">
+			</div>
+		</div>
+		<div class="layui-form-item layui-col-md6">
+			<label class="layui-form-label">结束时间</label>
+			<div class="layui-input-block">
+				<input type="text" id="end_time" name="end_time" class="layui-input" disabled value="#(order.get('end_time').toString().substring(0,10))">
+			</div>
+		</div>
+		<div class="layui-form-item layui-form-text layui-col-md6">
+			<label class="layui-form-label">请假原因</label>
+			<div class="layui-input-block">
+				<textarea id="reason" name="reason" placeholder="请输入内容" class="layui-textarea" disabled>#(order.get('reason'))</textarea>
+			</div>
+		</div>
+		<div class="layui-form-item layui-col-md3">
+		  <label class="layui-form-label">审批意见</label>
+		  <div class="layui-input-block">
+			<select  name="deptLeaderApproved" id="deptLeaderApproved">
+					<option value="true">同意</option>
+					<option value="false">拒绝</option>
+			</select>
+		  </div>
+		</div>
+		<div class="layui-form-item">
+		  <div class="layui-input-block">
+			<button  id="saveBtn" class="layui-btn" lay-submit lay-filter="*">完成任务</button>
+			<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+		  </div>
+		</div>
+		<!-- 更多表单结构排版请移步文档左侧【页面元素-表单】一项阅览 -->
+	  </form>
+</section>
+#end
+
+<script type="text/javascript">
+	$(function(){
+		layui.use('form', function(){
+		var form = layui.form;
+		
+			//监听提交
+			form.on('submit(formDemo)', function(data){
+				layer.msg(JSON.stringify(data.field));
+				return false;
+			});
+		});
+		layui.use('laydate', function(){
+			var laydate = layui.laydate;
+			
+			//执行一个laydate实例
+			laydate.render({
+				elem: '#start_time' //指定元素
+			});
+			//执行一个laydate实例
+			laydate.render({
+				elem: '#end_time' //指定元素
+			});
+		});
+		/**
+		 * 业务逻辑处理
+		 */
+		$("#saveBtn").click(function(){
+			if(checkEmpty()){
+				layer.msg('有必填项未填', {icon: 2});
+				return;
+			}
+			var order = {};
+			
+			$("#orderForm input,select").each(function(){
+				var name = $(this).attr("name");
+				if("landform"==name){
+					var checked = $(this).prop("checked");
+					if(checked){
+						landform_list.push($(this).val());
+					}
+				}else{
+					order[name] = $(this).val();
+				}
+			});
+			console.log(order);
+			$.post("/leave/deptLeaderVerifySave",{params:JSON.stringify(order)},function(data){
+				if(order){
+					layer.msg('保存成功', {icon: 1});
+					window.location.href="/biz/leave/task";
+				}
+			});
+		});
+		
+		//校验必填项
+		var checkEmpty = function(){
+			var result = false;
+			$("#orderForm .c-red").each(function(){
+				var value = $(this).parent().parent().find("input").val();
+				if(value==""){
+					result = true;
+				}
+			});
+			return result;
+		}
+	});
+</script>

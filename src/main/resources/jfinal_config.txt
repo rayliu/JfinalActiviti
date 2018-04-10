@@ -1,0 +1,8 @@
+jdbcUrl = jdbc:mysql://localhost:3307/jfinal_activiti?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull
+user = root
+password = root
+devMode = true
+
+#UI框架模板分别放在不同的template目录下, 有layui, h-ui, 后期再考虑更多的模板
+ui_folder=/template/layui
+#ui_folder=/template/h-ui

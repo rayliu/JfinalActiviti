@@ -1,0 +1,90 @@
+#@layout()
+#define main()
+<link rel="stylesheet" href="/theme/H-ui.admin.page3.1.1/lib/lightbox2/2.8.1/css/lightbox.css">
+<section class="Hui-article-box">
+	<nav class="breadcrumb hidden-xs"><i class="Hui-iconfont">&#xe67f;</i> 首页 
+		<span class="c-gray en">&gt;</span> 请假管理
+		<span class="c-gray en">&gt;</span> 请假单列表
+		<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+	<div class="Hui-article">
+		<article class="cl pd-20">
+			<div class="text-l">
+        		<a class="btn btn-success radius" id="addBtn" name="" href="/leave/create">新增</a>
+      		</div>
+      		<div class="mt-20">
+				<table class="table table-border table-bordered table-hover table-bg table-sort" id="eeda_table">
+					<thead>
+						<tr class="text-c">
+							<th width="25"><input type="checkbox" name="checkAll" value=""></th>
+							<th width="80">申请人</th>
+			              	<th width="80">开始时间</th>
+			              	<th width="80">结束时间</th>
+			              	<th width="100">请假原因</th>
+			              	<th width="100">流程跟踪</th>
+							<th width="90">操作</th>
+						</tr>
+          			</thead>
+          			<tbody>
+          			</tbody>
+				</table>
+			</div>
+		</article>
+	</div>
+</section>
+#end
+<script type="text/javascript" src="/theme/H-ui.admin.page3.1.1/lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="/theme/H-ui.admin.page3.1.1/lib/lightbox2/2.8.1/js/lightbox.min.js"></script>
+<script>
+	$(document).ready(function() {
+		$('#menu-leave dt').addClass('selected');
+		$('#menu-leave dd').show();
+		$('#menu-leave li:eq(1)').addClass('current');
+		/**
+		* 业务逻辑处理
+		*/
+		var dataTable = $('#eeda_table').DataTable({
+			'processing':true,
+		// 'scrollX': true,
+			//'scrollY':  true, //"300px",
+			searching:false,
+			"serverSide": true,
+			'createdRow': function ( row, data, index ) {
+				$(row).children('td').attr('style', 'text-align: center;');
+				if(data.id){
+					$(row).attr('id', data.id);
+				}
+			},
+			'ajax': '/leave/getList',
+			'columns': [
+				{"data":"id", "sortable":false,
+					render:function(data,type,full,meta){
+						return '<input type="checkbox"  name="id" value='+data+'>';
+					}
+				},
+				{"data":"user_name","sortable":false,
+					render: function(data,type,full,meta){
+						return '<a href="/leave/edit?id='+full.id+'">'+data+'</a>';
+					}
+				},
+				{"data":"start_time", "width":"80px"},
+				{"data":"end_time", "width":"80px"},
+				{"data":"reason", "width":"80px"},
+				{"data":"process_instace_id", "width":"80px",
+					render: function(data,type,full,meta){
+						if(full.process_instace_id){
+							return '<a class="btn btn-success radius" href="/workflow/readProccessImage?processInstanceId='+data
+							+'" data-lightbox="flow-'+ data+'" data-title="流程跟踪">流程跟踪</a>';
+						}
+						return ''
+					}
+				},
+				{"width": "80px",
+					render: function(data,type,full,meta){
+						return '<a class="btn btn-success radius" href="/leave/edit?id='+full.id+'">编辑</a> '
+							+'<button id="'+full.id+'"  class="btn btn-danger radius delete">删除</button>';
+					}
+				}
+			]
+		});
+	});
+</script>

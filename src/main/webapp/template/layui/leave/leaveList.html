@@ -1,0 +1,67 @@
+#@layout()
+#define main()
+<link rel="stylesheet" href="/theme/H-ui.admin.page3.1.1/lib/lightbox2/2.8.1/css/lightbox.css">
+
+<section style="padding: 15px;">
+	<span class="layui-breadcrumb">
+		<a href="">首页</a>
+		<a href="">请假管理</a>
+		<a><cite>请假单列表</cite></a>
+	</span>	
+	<br>
+	<br>
+	<div class="layui-row">
+			<a href="/leave/create" class="layui-btn layui-btn-big">新增</a>
+	</div>
+	<table class="layui-hide" id="jfa_table"></table>
+</section>
+#end
+
+<script type="text/javascript" src="/theme/H-ui.admin.page3.1.1/lib/lightbox2/2.8.1/js/lightbox.min.js"></script>
+
+<script>
+
+		layui.use(['jquery','table'], function(){
+			var table = layui.table, $=layui.$;
+			
+			$('#sidebar_leave').addClass('layui-nav-itemed');
+
+			table.render({
+				elem: '#jfa_table'
+				,url:'/leave/getList'
+				,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+				,cols: [[
+					{field:'id', width:80, title: 'ID', sort: true}
+					,{field:'user_name', width:80, title: '申请人'}
+					,{field:'start_time', width:180, title: '开始时间', sort: true, templet: function(full){
+							if(full.start_time){
+								return full.start_time.substring(0, 10);
+							} 
+							return ''
+						}
+					}
+					,{field:'end_time', width:180, title: '结束时间', templet: function(full){
+							if(full.end_time){
+								return full.end_time.substring(0, 10);
+							} 
+							return ''
+						}}
+					,{field:'reason', title: '请假原因', minWidth: 100} //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
+					,{field:'process_instace_id', width:100, title: '流程跟踪', templet: function(full){
+							if(full.process_instace_id){
+								return '<a class="layui-btn layui-btn-xs" href="/workflow/readProccessImage?processInstanceId='+full.process_instace_id
+								+'" data-lightbox="flow-'+ full.process_instace_id+'" data-title="流程跟踪">流程跟踪</a>';
+							}
+							return ''
+						}
+					 }
+					,{field:'wealth', width:137, title: '操作', templet: function(full){
+							return '<a class="layui-btn layui-btn-xs" href="/leave/edit?id='+full.id+'">编辑</a>'
+							+'<button id="'+full.id+'"  class="layui-btn layui-btn-danger layui-btn-xs">删除</button>';
+						}
+					}
+				]]
+			});
+		});
+	
+</script>

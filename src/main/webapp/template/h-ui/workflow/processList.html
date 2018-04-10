@@ -1,0 +1,71 @@
+#@layout()
+#define main()
+<section class="Hui-article-box">
+	<nav class="breadcrumb hidden-xs"><i class="Hui-iconfont">&#xe67f;</i> 首页 
+		<span class="c-gray en">&gt;</span> 工作流管理
+		<span class="c-gray en">&gt;</span> 流程列表
+		<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+	<div class="Hui-article">
+		<article class="cl pd-20">
+      		<div class="mt-20">
+				<table class="table table-border table-bordered table-hover table-bg table-sort" id="eeda_table">
+					<thead>
+						<tr class="text-c">
+							<th width="25"><input type="checkbox" name="checkAll" value=""></th>
+							<th width="80">流程定义ID</th>
+			              	<th width="80">部署ID</th>
+			              	<th width="80">流程定义名称</th>
+			              	<th width="100">流程定义key</th>
+			              	<th width="100">版本号</th>
+			              	<th width="40">XML资源名称</th>
+			              	<th width="90">图片资源名称</th>
+						</tr>
+          			</thead>
+          			<tbody>
+          			</tbody>
+				</table>
+			</div>
+		</article>
+	</div>
+</section>
+#end
+<script type="text/javascript" src="/theme/H-ui.admin.page3.1.1/lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+<script>
+	$(document).ready(function() {
+		$('#menu-workflow dt').addClass('selected');
+		$('#menu-workflow dd').show();
+		$('#menu-workflow li:eq(0)').addClass('current');
+		/**
+		* 业务逻辑处理
+		*/
+		var dataTable = $('#eeda_table').DataTable({
+			'processing':true,
+			searching:false,
+			"serverSide": true,
+			'createdRow': function ( row, data, index ) {
+				$(row).children('td').attr('style', 'text-align: center;');
+				if(data.ID){
+					$(row).attr('id', data.ID);
+				}
+			},
+			'ajax': '/workflow/processListQuery',
+			'columns': [
+						{"data":"ID_","sortable":false,
+							render:function(data,type,full,meta){
+								return '<input type="checkbox"  name="id" value='+data+'>';
+							}
+						},
+						{"data":"ID_","sortable":false},
+						{"data":"DEPLOYMENT_ID_","width":"80px"},
+						{"data":"NAME_","width":"80px"},
+						{"data":"KEY_","width":"80px"},
+						{"data":"VERSION_","width":"80px"},
+						{"data":"RESOURCE_NAME_","width":"80px"},
+						{"data":"DGRM_RESOURCE_NAME_","width":"80px"}
+			]
+		});
+		
+		
+	
+	});
+</script>

@@ -1,0 +1,119 @@
+<%layout("/BizAdmin/layout/layout.html"){%>
+<style type="text/css">
+	.check_box{
+		display: inline-block;
+   		margin-left:4%;
+	}
+</style>
+<section class="Hui-article-box">
+	<nav class="breadcrumb hidden-xs"><i class="Hui-iconfont">&#xe67f;</i> 首页 
+		<span class="c-gray en">&gt;</span> 请假管理
+		<span class="c-gray en">&gt;</span> 请假单
+		<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+	<div class="page-container">
+		<form class="form form-horizontal" id="orderForm" novalidate="novalidate">
+		<input type="hidden" id="task_id" name="task_id" value="${order.task_id!''}">
+		<input type="hidden" id="order_id" name="order_id" value="${order.id!''}">
+			<div class="row cl">
+				<div class="col-xs-4">
+					<label class="form-label col-xs-4">申请人</label>
+			       	<div class="formControls col-xs-8">
+						<input type="hidden" id="user_id" name="user_id" value="${order.user_id!''}">
+			         	<input disabled required="" type="text" class="input-text disabled" placeholder="" id="user_name" name="user_name" value="${order.user_name!''}" aria-required="true">
+			       	</div>
+				</div>
+			</div>
+			<div class="row cl">
+				<div class="col-xs-4">
+					<label class="form-label col-xs-4">开始时间</label>
+			       	<div class="formControls col-xs-8">
+						 <input disabled required="" type="text" class="input-text disabled Wdate" placeholder="" 
+						 onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'start_time\')}'})"
+						 id="start_time" name="start_time" value="${order.start_time!''}" aria-required="true">
+			       	</div>
+				</div>
+			</div>
+			<div class="row cl">
+				<div class="col-xs-4">
+					<label class="form-label col-xs-4">结束时间</label>
+			       	<div class="formControls col-xs-8">
+						 <input disabled required="" type="text" class="input-text disabled Wdate" placeholder="" 
+						 onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'end_time\')}'})"
+						 id="end_time" name="end_time" value="${order.end_time!''}"  aria-required="true">
+			       	</div>
+				</div>
+			</div>
+			<div class="row cl">
+				<div class="col-xs-12">
+					<label class="form-label col-xs-1">请假原因</label>
+			       	<div class="formControls col-xs-10">
+			         	<input disabled required="" type="text" class="input-text disabled" placeholder="" id="reason" name="reason" value="${order.reason!''}" aria-required="true">
+			       	</div>
+				</div>
+			</div>
+			<div class="row cl">
+				<div class="col-xs-4">
+					<label class="form-label col-xs-4">审批意见</label>
+			       	<div class="formControls col-xs-8">
+						<select name="hrApproved" id="hrApproved">
+							<option value="true">同意</option>
+							<option value="false">拒绝</option>
+						</select>
+			       	</div>
+				</div>
+			</div>
+		</form>
+	</div>
+	
+	<div class="row cl ml-40 mt-20">
+		<button class="btn btn-success radius ml-40" id="saveBtn">完成任务</button>
+		<button class="btn btn-default ml-3">返回</button>
+	</div>
+</section>
+<%}%>
+
+<script type="text/javascript">
+	$(function(){
+		/**
+		 * 业务逻辑处理
+		 */
+		$("#saveBtn").click(function(){
+			if(checkEmpty()){
+				layer.msg('有必填项未填', {icon: 2});
+				return;
+			}
+			var order = {};
+			
+			$("#orderForm input,select").each(function(){
+				var name = $(this).attr("name");
+				if("landform"==name){
+					var checked = $(this).prop("checked");
+					if(checked){
+						landform_list.push($(this).val());
+					}
+				}else{
+					order[name] = $(this).val();
+				}
+			});
+			console.log(order);
+			$.post("/biz/leave/hrVerifySave",{params:JSON.stringify(order)},function(data){
+				if(order){
+					layer.msg('保存成功', {icon: 1});
+					window.location.href="/biz/leave/task";
+				}
+			});
+		});
+		
+		//校验必填项
+		var checkEmpty = function(){
+			var result = false;
+			$("#orderForm .c-red").each(function(){
+				var value = $(this).parent().parent().find("input").val();
+				if(value==""){
+					result = true;
+				}
+			});
+			return result;
+		}
+	});
+</script>

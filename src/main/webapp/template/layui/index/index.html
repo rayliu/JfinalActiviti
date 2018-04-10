@@ -1,0 +1,167 @@
+﻿#@layout()
+#define main()
+<link rel="stylesheet" href="/theme/layuiadmin/style/card.css" media="all">
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space30">
+        <div class="layui-col-md3">
+            <div class="layui-card">
+              <div class="layui-card-header"><strong>待办任务</strong></div>
+              <div class="layui-card-body" style="padding: 15px 20px 20px;">
+                <h1>1</h1>
+              </div>
+            </div>
+        </div>
+        <div class="layui-col-md3">
+            <div class="layui-card">
+              <div class="layui-card-header">流程总数</div>
+              <div class="layui-card-body" style="padding: 15px 20px 20px;">
+                  <h1>1</h1>
+              </div>
+            </div>
+        </div>
+        <div class="layui-col-md3">
+            <div class="layui-card">
+              <div class="layui-card-header">用户总数</div>
+              <div class="layui-card-body" style="padding: 15px 20px 20px;">
+                  <h1>1</h1>
+              </div>
+            </div>
+        </div>
+        <div class="layui-col-md3">
+            <div class="layui-card">
+              <div class="layui-card-header">流程异常</div>
+              <div class="layui-card-body" style="padding: 15px 20px 20px;">
+                  <h1>0</h1>
+              </div>
+            </div>
+        </div>
+    </div>
+    <div class="layui-row">
+      <div class="col-sm-12">
+          <div class="layui-card">
+              <div class="layui-card-header"><h3>项目简介</h3></div>
+              <div class="layui-card-body">
+                  <h3>一站式Java Web框架, 包含UI+后端+工作流等常用组件, 可使项目快速上线, 圆你创业梦</h3>
+                  <br>
+                  JFinal_Activiti智能开发平台，顾名思义就是结合了JFinal的极速开发优点+Activiti工作流程引擎的一站式Java Web框架。
+                  <br>
+                  它可以应用在任何Java Web互联网项目的开发中，尤其适合企业信息管理系统（MIS）、内部办公系统（OA）、企业资源计划系统（ERP） 、客户关系管理系统（CRM）等， 其包含的前端UI和后端主流的整体开发方式，可以显著提高开发效率60%以上，极大降低开发成本。
+              </div>
+            </div>
+      </div>
+    </div>
+    <div class="layui-row layui-col-space15" style="margin-top: 10px;">
+      <div class="layui-col-md8">
+        <div class="layui-row layui-col-space15">
+          <div class="layui-col-md6">
+            <div class="layui-card">
+              <div class="layui-card-header">温馨提醒</div>
+              <div class="layui-card-body">
+                <ol>
+                  <li>1.本套程序基于JFinal开发框架，致力于为您创建一个高效简洁并安全稳定的网站程序。</li>
+                  <li>2.尽管本程序在发布前已经经过QA测试，但我们依然强烈建议各位用户应该时常备份, 包括代码和数据库。</li>
+                  <li>3.本项目基于MIT协议, 不管您的项目是否整体使用本产品(不含引用的第三方lib)，还是部份使用本产品，请保留相关版权信息链接，我们鼓励您勇于改进您觉得不好的地方。</li>
+                  <li>4.您出于自愿而使用本产品，就必须了解使用本产品的风险，所导致的一切损失由使用者自行承担。</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          <div class="layui-col-md6">
+            <div class="layui-card">
+              <div class="layui-card-header">JFinal_Activiti具有以下特点：</div>
+              <div class="layui-card-body">
+                  <ol>
+                      <li>1.采用热门JFinal极速 WEB + ORM 框架，容易上手</li>
+                      <li>2.采用热门Activiti工作流框架，轻松配置业务流程</li>
+                      <li>3.内置提供2套不同风格主题, 提供了两套DEMO模板</li>
+                      <li>4.基于最新版本的Layui 2.2.6</li>
+                      <li>5.可切换成H-ui.Admin </li>
+                      <li>6.开发效率很高，节省80%重复工作, 让您专注于编写业务逻辑</li>
+                  </ol>
+              </div>
+            </div>
+          </div>
+          <div class="layui-col-md12">
+            <div class="layui-card">
+              <div class="layui-card-header">工作流DEMO: 请假流程</div>
+              <div class="layui-card-body">
+                <img src="/static/images/leave.jpg" width="100%">
+                <ul>
+                  <li>1. 申请人新建请假单, 保存并提交, 开始流程</li>
+                  <li>2. 部门经理查看待办任务, 看到一个任务待审批</li>
+                  <li>3. 部门经理点击待办任务, 选择审批'同意', 点击完成任务, 此时生成一个新的任务给人事部</li>
+                  <li>4. 人事部文员查看待办任务, 看到一个任务待审批</li>
+                  
+                  <li>5. 人事部文员点击待办任务, 选择审批'同意', 点击完成任务, 此时生成一个新的任务给申请人(需销假)</li>
+                  <li>6. 申请人查看待办任务, 看到一个任务待操作</li>
+                  <li>7. 申请人点击待办任务(销假), 点击完成任务, 此时流程结束</li>
+                  <li>8. 申请人在请假单列表中点击"跟踪流程", 可查看流程当前流转状态(红色表示已执行节点)</li>
+                  <img src="/static/images/ProccessImage.jpeg">
+                </ul>
+                
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+      
+      <div class="layui-col-md4">
+        <div class="layui-card">
+          <div class="layui-card-header">版本信息</div>
+          <div class="layui-card-body layui-text">
+            <table class="layui-table">
+              <colgroup>
+                <col >
+                <col>
+                <col>
+              </colgroup>
+              <thead>
+                  <tr>
+                    <th>核心依赖</th>
+                    <th>名称</th>
+                    <th>版本号</th>
+                  </tr> 
+                </thead>
+              <tbody>
+                <tr>
+                  <td>后端框架</td>
+                  <td>JFinal</td>
+                  <td>3.3</td>
+                </tr>
+                <tr>
+                    <td>工作流框架</td>
+                    <td>Activiti</td>
+                    <td>6.0.4</td>
+                  </tr>
+                <tr>
+                  <td>前端框架</td>
+                  <td>Layui</td>
+                  <td>2.2.6</td>
+                </tr>
+                <tr>
+                    <td>前端框架(可选)</td>
+                    <td>H-ui.Admin</td>
+                    <td>3.1.1</td>
+                  </tr>
+                <tr>
+                    <td>渲染引擎</td>
+                    <td>enjoy</td>
+                    <td>3.3</td>
+                  </tr>
+                  <tr>
+                      <td>权限框架</td>
+                      <td>Shiro</td>
+                      <td>1.2.2</td>
+                  </tr>
+                
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+#end

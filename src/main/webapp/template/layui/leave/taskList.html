@@ -1,0 +1,60 @@
+#@layout()
+#define main()
+<section style="padding: 15px;">
+	<span class="layui-breadcrumb">
+		<a href="">首页</a>
+		<a href="">请假管理</a>
+		<a><cite>待办任务列表</cite></a>
+	</span>	
+	<br>
+	<br>
+	<table class="layui-hide" id="jfa_table"></table>
+</section>
+
+#end
+
+<script>
+		layui.use(['jquery','table'], function(){
+			var table = layui.table, $=layui.$;
+			
+			$('#sidebar_leave').addClass('layui-nav-itemed');
+			
+			table.render({
+				elem: '#jfa_table'
+				,url:'/leave/taskList'
+				,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+				,cols: [[
+					{field:'Name', title: '任务名称', sort: true, templet: function(full){
+							var KEY = full.TaskDefinitionKey;
+							var url = "#";
+							if(KEY == "deptLeaderAudit"){
+								url="/leave/deptLeaderVerify?task_id="+full.id;
+							}else if(KEY == "hrAudit"){
+								url="/leave/hrVerify?task_id="+full.id;
+							}else if(KEY == "reportBack"){
+								url="/leave/reportBack?task_id="+full.id;
+							}
+							return '<a href="'+url+'">'+full.Name+'</a>';
+						}
+					}
+					,{field:'Owner', width:100, title: '任务持有人'}
+					,{field:'Description',  title: '任务描述'}
+					,{field:'Assignee', width:180, title: '任务接收人'}
+					,{field:'CreateTime',width:180, title: '任务创建时间', minWidth: 100} //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
+					,{field:'', width:137, title: '操作', templet: function(full){
+							var KEY = full.TaskDefinitionKey;
+							var url = "#";
+							if(KEY == "deptLeaderAudit"){
+								url="/leave/deptLeaderVerify?task_id="+full.id;
+							}else if(KEY == "hrAudit"){
+								url="/leave/hrVerify?task_id="+full.id;
+							}else if(KEY == "reportBack"){
+								url="/leave/reportBack?task_id="+full.id;
+							}
+							return '<a class="layui-btn layui-btn-xs" href="'+url+'">编辑</a>';
+						}
+					}
+				]]
+			});
+		});
+</script>

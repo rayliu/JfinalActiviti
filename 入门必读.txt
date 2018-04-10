@@ -1,0 +1,2 @@
+
+单独初始化Activiti数据表: 打开 org.activiti.engine.impl.db.DbSchemaCreate.class, 右键执行Java Application

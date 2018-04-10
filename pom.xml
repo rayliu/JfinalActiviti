@@ -1,0 +1,191 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.eeda123</groupId>
+  <artifactId>JfinalActiviti</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  <name>JfinalActiviti</name>
+  
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+        <activiti.version>6.0.0</activiti.version>
+    </properties>
+    
+    <!-- 使用阿里 maven 库 -->
+    <repositories>
+        <repository>
+            <id>ali-maven</id>
+            <url>http://maven.aliyun.com/nexus/content/groups/public</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+                <checksumPolicy>fail</checksumPolicy>
+            </snapshots>
+        </repository>
+    </repositories>
+    
+    
+  <dependencies>
+    <!-- Jfinal related jars  -->
+    <dependency> 
+        <groupId>com.jfinal</groupId> 
+        <artifactId>jfinal</artifactId> 
+        <version>3.3</version>
+    </dependency>
+
+    <!-- 这个版本 jfinal-shiro 才不会在config中报错-->
+    <dependency>
+      <groupId>com.github.jieblog</groupId>
+      <artifactId>jfinal_shiro</artifactId>
+      <version>1.3</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/jfinal-shiro-1.3.jar</systemPath>
+    </dependency>
+
+    <dependency>
+      <groupId>net.sf.ehcache</groupId>
+      <artifactId>ehcache</artifactId>
+      <version>2.6.11</version>
+      <type>pom</type>
+    </dependency>
+    <dependency>
+	  <groupId>org.apache.shiro</groupId>
+	  <artifactId>shiro-all</artifactId>
+	  <version>1.2.2</version>
+	</dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+        <groupId>com.jfinal</groupId>
+        <artifactId>jetty-server</artifactId>
+        <version>8.1.8</version>
+        <!--
+            此处的 scope 值为 compile 仅为支持 IDEA 下启动项目
+            打 war 包时需要改成 provided，以免将一些无用的 jar 打进去
+        -->
+        <scope>compile</scope>
+    </dependency>
+    <dependency>
+        <groupId>log4j</groupId>
+        <artifactId>log4j</artifactId>
+        <version>1.2.16</version>
+    </dependency>
+    <dependency>
+        <groupId>mysql</groupId>
+        <artifactId>mysql-connector-java</artifactId>
+        <version>5.1.44</version>
+    </dependency>
+    <dependency>
+        <groupId>com.alibaba</groupId>
+        <artifactId>druid</artifactId>
+        <version>1.0.29</version>
+    </dependency>
+    <dependency>
+        <groupId>com.jfinal</groupId>
+        <artifactId>cos</artifactId>
+        <version>2017.5</version>
+    </dependency>
+      <dependency>
+          <groupId>com.google.code.gson</groupId>
+          <artifactId>gson</artifactId>
+          <version>2.3.1</version>
+      </dependency>
+    <!-- activiti jars  -->
+    <dependency>
+        <groupId>org.activiti</groupId>
+        <artifactId>activiti-engine</artifactId>
+        <version>${activiti.version}</version>
+    </dependency>
+    
+    <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>1.7.21</version>
+    </dependency>
+    <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-log4j12</artifactId>
+        <version>1.7.21</version>
+    </dependency>
+    <dependency>
+        <groupId>com.h2database</groupId>
+        <artifactId>h2</artifactId>
+        <version>1.4.193</version>
+    </dependency>
+    <dependency>
+      <groupId>cn.hutool</groupId>
+      <artifactId>hutool-all</artifactId>
+      <version>4.0.9</version>
+    </dependency>
+  </dependencies>
+  
+  <build>
+    <finalName>JfinalActiviti</finalName>
+    <plugins>
+      <plugin>
+          <groupId>org.mortbay.jetty</groupId>
+          <artifactId>jetty-maven-plugin</artifactId>
+          <version>8.1.8.v20121106</version>
+          <configuration>
+              <stopKey>stop</stopKey>
+              <stopPort>5599</stopPort>
+              <webAppConfig>
+                  <contextPath>/</contextPath>
+              </webAppConfig>
+              <scanIntervalSeconds>5</scanIntervalSeconds>
+              <connectors>
+                  <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
+                      <port>8080</port>
+                      <maxIdleTime>60000</maxIdleTime>
+                  </connector>
+              </connectors>
+          </configuration>
+        </plugin>
+      <!-- Maven Assembly Plugin -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>2.4.1</version>
+        
+        <configuration>
+          <!-- get all project dependencies -->
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+          <!-- MainClass in mainfest make a executable jar -->
+          <archive>
+            <manifest>
+              <mainClass>com.example.OnboardingRequest</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+        
+        <executions>
+          <execution>
+            <id>make-assembly</id>
+            <!-- bind to the packaging phase -->
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+                <source>1.6</source>
+                <target>1.6</target>
+            </configuration>
+        </plugin>
+    </plugins>
+  </build>
+</project>

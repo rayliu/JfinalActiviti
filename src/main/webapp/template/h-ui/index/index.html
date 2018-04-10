@@ -1,0 +1,130 @@
+﻿#@layout()
+#define main()
+<section class="Hui-article-box">
+    <nav class="breadcrumb"><i class="Hui-iconfont"></i> <a href="/" class="maincolor">首页</a> 
+        <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+    <div class="Hui-article">
+        <article class="cl pd-20">
+                <div class="row cl">
+                        <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3 pt-10" >
+                          <div class="panel panel-primary">
+                            <div class="panel-header">待办任务</div>
+                            <div class="panel-body">
+                              <span class="f-30 c-primary">
+                                <i class="Hui-iconfont">&#xe613;</i>
+                              </span>
+                              <span class="r f-30 c-primary">
+                                #(order.get("task_count"))
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3 pt-10" >
+                          <div class="panel panel-secondary">
+                            <div class="panel-header">流程总数</div>
+                            <div class="panel-body">
+                              <span class="f-30 c-primary">
+                                <i class="Hui-iconfont">&#xe613;</i>
+                              </span>
+                              <span class="r f-30 c-primary">
+                                    #(order.get("proccess_count"))
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3 pt-10" >
+                          <div class="panel panel-primary">
+                            <div class="panel-header">用户总数</div>
+                            <div class="panel-body">
+                              <span class="f-30 c-primary">
+                                <i class="Hui-iconfont">&#xe613;</i>
+                              </span>
+                              <span class="r f-30 c-primary">
+                                    #(order.get("user_count"))
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3 pt-10" >
+                          <div class="panel panel-warning">
+                            <div class="panel-header">流程异常</div>
+                            <div class="panel-body">
+                              <span class="f-30 c-primary">
+                                <i class="Hui-iconfont">&#xe63a;</i>
+                              </span>
+                              <span class="r f-30 c-primary">
+                                    #(order.get("err_count"))
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                   
+                      <div class="row cl">
+                          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 pt-10" >
+                              <div class="panel panel-default">
+                                <div class="panel-header">JFinal_Activiti优点</div>
+                                <div class="panel-body">
+                                        <p>JFinal_Activiti智能开发平台，顾名思义就是结合了JFinal的极速开发优点+Activiti工作流程引擎的一个平台. 
+                                        </p>
+                                        <p>它可以应用在任何Java Web互联网项目的开发中，尤其适合企业信息管理系统（MIS）、内部办公系统（OA）、企业资源计划系统（ERP） 、客户关系管理系统（CRM）等，
+                                            其包含的前端UI和后端主流的整体开发方式，可以显著提高开发效率60%以上，极大降低开发成本。</p>
+                                </div>
+                              </div>
+                            </div>
+                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 pt-10" >
+                          <div class="panel panel-default">
+                            <div class="panel-header">温馨提醒</div>
+                            <div class="panel-body">
+                                <ol class="linenums">
+                                    <li>
+                                        本套程序基于JFinal开发框架，致力于为您创建一个高效简洁并安全稳定的网站程序。
+                                    </li>
+                                    <li>
+                                        尽管本程序在发布前已经经过QA测试，但我们依然强烈建议各位用户时常备份, 包括代码和数据库；
+                                    </li>
+                                    <li>
+                                        不管您的项目是否整体使用本产品，还是部份使用本产品，都无须保留相关版权信息链接；
+                                    </li>
+                                    <li>
+                                        您出于自愿而使用本产品，就必须了解使用本产品的风险，所导致的一切损失由使用者自行承担；
+                                    </li>
+                                </ol>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+           
+            <p>上次登录IP：222.35.131.79.1  上次登录时间：2014-6-14 11:19:55</p>
+            <table class="table table-border table-bordered table-bg">
+                <thead>
+                    <tr>
+                        <th colspan="7" scope="col">信息统计</th>
+                    </tr>
+                            <tr class="text-c">
+                                <th>待办任务</th>
+                                <th>部署流程数</th>
+                                <th>正在执行流程数</th>
+                                <th>用户</th>
+                                <th>用户组</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="text-c">
+                        <td>1</td>
+                        <td>2</td>
+                        <td>9</td>
+                        <td>0</td>
+                        <td>8</td>
+                    </tr> 
+                </tbody>
+            </table>
+         
+        </article>
+        <footer class="footer">
+            <p>感谢jQuery、layer、laypage、Validform、UEditor、My97DatePicker、iconfont、Datatables、WebUploaded、icheck、highcharts、bootstrap-Switch<br> Copyright &copy;2015 H-ui.admin v3.0 All Rights Reserved.<br> 本后台系统由<a href="http://www.h-ui.net/" target="_blank" title="H-ui前端框架">H-ui前端框架</a>提供前端技术支持</p>
+        </footer>
+    </div>
+</section>
+
+#end
