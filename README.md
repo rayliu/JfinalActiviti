@@ -67,6 +67,11 @@ JFinal以易学易用著称，让您轻松打造自己的Web软件系统，同�
 ## 技术交流
 QQ群: 436923659
 
+## 系统演示
+![github](./doc/images/Login.jpg)
+![github](./doc/images/home.jpg)
+![github](./doc/images/leave.jpg)
+![github](./doc/images/leaveFlow.jpg)
 
 
 
