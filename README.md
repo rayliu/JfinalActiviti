@@ -15,11 +15,11 @@ JFinal以易学易用著称，让您轻松打造自己的Web软件系统，同�
 ## JFinalActiviti 技术特点
 
 1.  采用热门JFinal极速 WEB + ORM 框架，容易上手。
-2.  采用热门Activiti工作流框架，利用BPMN流程编辑器轻松配置业务流程。  
-3.  内置提供2套不同风格主题, 提供了两套DEMO模板。  
-4.  基于最新版本的Layui 2.2.6。
-5.  可切换成H-ui.Admin。
-
+2.  采用热门Activiti工作流框架，利用BPMN流程编辑器轻松配置业务流程。
+3.  采用shiro进行三端登录验证, 支持web, Android(未实现), iOS(未实现)。  
+4.  内置提供Layui2.2.6UI, 提供了工作流DEMO所需的几个模板页面。
+5.  基于[RBAC](https://wenku.baidu.com/view/dbd65c22ccbff121dd368372.html?sxts=1523547424269)的权限管理实现, 不必烦心如何设计权限分配模块, 拿来即用。
+![RBAC](./doc/images/RBAC.jpg)
 
 ## JFinalActiviti 技术选型
 

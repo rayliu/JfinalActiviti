@@ -19,7 +19,7 @@ public class SetAttrLoginUserInterceptor implements Interceptor{
 	public void intercept(Invocation ai) {
 		Subject currentUser = SecurityUtils.getSubject();
 		if(currentUser.isAuthenticated()){
-			Record user = Db.findFirst("select * from t_user where name=?",currentUser.getPrincipal());
+			Record user = Db.findFirst("select * from t_rbac_user where name=?",currentUser.getPrincipal());
 			ai.getController().setAttr("user", user);
 		}else{
 			ai.getController().redirect("/login");
