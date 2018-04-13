@@ -25,39 +25,40 @@
 //			}
 //		});
 		
-//		  //监听提交
-//		  form.on('submit()', function(data){
+		  //监听提交
+		  form.on('submit()', function(data){
 //		    layer.alert(JSON.stringify(data.field), {
 //		      title: '最终的提交信息'
 //		    })
 //		    return false;
-//		  });
+			  
+			  var order = {};
+				$("#orderForm input,select").each(function(){
+					var name = $(this).attr("name");
+					order[name] = $(this).val();
+				});
+				order["reason"] = $('#reason').val();
+			
+				$.post("/leave/save",{params:JSON.stringify(order)},function(data){
+					if(data.id > 0){
+						layer.msg('保存成功', {icon: 1});
+						$('#order_id').val(data.id);
+
+						var stateObj = { foo: "create" }; 
+						history.pushState(stateObj, "edit", "edit?id="+data.id);
+					}else{
+						layer.msg('保存失败', {icon: 2});
+					}
+				}).fail(function(){
+					layer.msg('后台出错', {icon: 2});
+				});
+		  });
 
 		/**
 		* 业务逻辑处理
 		*/
 		$("#saveBtn").click(function(){
-			var order = {};
 			
-			$("#orderForm input,select").each(function(){
-				var name = $(this).attr("name");
-				order[name] = $(this).val();
-			});
-			order["reason"] = $('#reason').val();
-		
-			$.post("/leave/save",{params:JSON.stringify(order)},function(data){
-				if(data.id > 0){
-					layer.msg('保存成功', {icon: 1});
-					$('#order_id').val(data.id);
-
-					var stateObj = { foo: "create" }; 
-					history.pushState(stateObj, "edit", "edit?id="+data.id);
-				}else{
-					layer.msg('保存失败', {icon: 2});
-				}
-			}).fail(function(){
-				layer.msg('后台出错', {icon: 2});
-			});
 		});
 		
 
