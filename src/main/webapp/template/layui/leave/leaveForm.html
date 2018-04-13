@@ -14,7 +14,7 @@
 			<label class="layui-form-label">申请人</label>
 			<div class="layui-input-block">
 				<input type="hidden" name="user_id" autocomplete="off" class="layui-input" value="#(order.get('user_id'))">
-				<input type="text" name="user_name" class="layui-input" disabled value="#(order.get('user_name'))" lay-verify="required">
+				<input type="text" name="user_name" class="layui-input" disabled value="#(order.get('user_name'))" lay-verify="required|user_name" lay-verType="tips">
 			</div>
 		</div>
 		<div class="layui-form-item layui-col-md3">

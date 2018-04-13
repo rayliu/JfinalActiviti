@@ -110,17 +110,21 @@ public class LeaveController extends Controller {
         String task_id = getPara("task_id");
         //获取task
         Task task = ActivitiKit.getTaskService().createTaskQuery().taskId(task_id).singleResult();
-        //获取processInstance
-        ProcessInstance processInstance = ActivitiKit.getRuntimeService().createProcessInstanceQuery()
-                .processInstanceId(task.getProcessInstanceId()).singleResult();
-        
-        //BusinessKey就是我们启动流程时传进来的leave id
-        String leave_id = processInstance.getBusinessKey();
-        //获取请假单 leave 
-        Record order = Db.findFirst("select l.*, user.name user_name from t_leave l left join t_rbac_user user on l.user_id=user.id where l.id=?", leave_id);
-        order.set("task_id", task_id);
-        setAttr("order", order);
-        render("taskDeptLeaderVerify.html");
+        if(task!=null) {
+            //获取processInstance
+            ProcessInstance processInstance = ActivitiKit.getRuntimeService().createProcessInstanceQuery()
+                    .processInstanceId(task.getProcessInstanceId()).singleResult();
+
+            //BusinessKey就是我们启动流程时传进来的leave id
+            String leave_id = processInstance.getBusinessKey();
+            //获取请假单 leave
+            Record order = Db.findFirst("select l.*, user.name user_name from t_leave l left join t_rbac_user user on l.user_id=user.id where l.id=?", leave_id);
+            order.set("task_id", task_id);
+            setAttr("order", order);
+            render("taskDeptLeaderVerify.html");
+        }else{//任务不存在, 跳转到 taskList
+            redirect("/leave/task");
+        }
     }
     
   
@@ -198,7 +202,7 @@ public class LeaveController extends Controller {
         //BusinessKey就是我们启动流程时传进来的leave id
         String leave_id = processInstance.getBusinessKey();
         //获取请假单 leave 
-        Record order = Db.findById("t_leave", leave_id);
+        Record order = Db.findFirst("select l.*, user.name user_name from t_leave l left join t_rbac_user user on l.user_id=user.id where l.id=?", leave_id);
         order.set("task_id", task_id);
         setAttr("order", order);
         render("taskReportBack.html");
@@ -249,7 +253,9 @@ public class LeaveController extends Controller {
             rec.set("id", task.getId());
             rec.set("Name", task.getName());
             rec.set("Description", task.getDescription());
-            rec.set("Assignee", task.getAssignee());
+            Record userRec = Db.findFirst("select * from t_rbac_user where id=?", task.getAssignee());
+            if(userRec!=null)
+                rec.set("Assignee", userRec.get("name"));
             rec.set("Owner", task.getOwner());
             rec.set("TaskDefinitionKey", task.getTaskDefinitionKey());
             rec.set("CreateTime", task.getCreateTime());

@@ -4,7 +4,7 @@
 	<span class="layui-breadcrumb">
 		<a href="">首页</a>
 		<a href="">请假管理</a>
-		<a><cite>待办任务</cite></a>
+		<a><cite>部门领导审批</cite></a>
 	</span>	
 	<br>
 	<br>
@@ -57,8 +57,9 @@
 
 <script type="text/javascript">
 	$(function(){
-		layui.use('form', function(){
-		var form = layui.form;
+		layui.use(['form', 'jquery'], function(){
+			var form = layui.form, $=layui.$;
+			$('#sidebar_leave').addClass('layui-nav-itemed');
 		
 			//监听提交
 			form.on('submit(formDemo)', function(data){

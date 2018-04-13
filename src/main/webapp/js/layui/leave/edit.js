@@ -16,14 +16,14 @@
 		//创建一个编辑器
 		var editIndex = layedit.build('LAY_demo_editor');
 	 
-//		//自定义验证规则
-//		form.verify({
-//			user_name: function(value){
-//				if(/(.+){6,12}$/.test(value)){
-//					return '标题至少得5个字符啊';
-//				}
-//			}
-//		});
+		//自定义验证规则
+		// form.verify({
+		// 	user_name: function(value){
+		// 		if(value.length < 5){
+		// 			return '标题至少得5个字符啊';
+		// 		}
+		// 	}
+		// });
 		
 		  //监听提交
 		  form.on('submit()', function(data){
