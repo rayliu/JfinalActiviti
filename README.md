@@ -47,11 +47,11 @@ JFinal以易学易用著称，让您轻松打造自己的Web软件系统，同�
 
 2、git下载项目后，在Eclipse 左侧空白处右击->import-import-> Existing Maven Projects
 
-3、根据 \src\main\resources\JFinalActiviti.properties 配置数据库
+3、在本地mysql导入数据库 \db_scrip\db_init.sql, 成功后schema名字:jfinal_activiti
 
-4、导入数据库 \db_scrip\db_init.sql
+4、前往目录 \src\main\resources\, 对JFinalActiviti.properties, shiro.ini 配置数据库连接, 改成你本地的DB设置
 
-5、打开 com.jfa.config.JfinalActivitiConfig 文件，右键单击该文件并选择 Debug As ---> Java Application。
+5、打开 com.jfa.config.JfinalActivitiConfig 文件，右键单击该文件并选择 Debug As ---> Java Application
 
 ```
 
