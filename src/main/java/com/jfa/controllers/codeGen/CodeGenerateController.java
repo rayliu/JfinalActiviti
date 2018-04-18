@@ -1,5 +1,6 @@
 package com.jfa.controllers.codeGen;
 
+import com.google.gson.Gson;
 import com.jfa.interceptor.SetAttrLoginUserInterceptor;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
@@ -7,6 +8,7 @@ import com.jfinal.kit.PropKit;
 import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
+
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.subject.Subject;
@@ -74,17 +76,20 @@ public class CodeGenerateController extends Controller {
 
 	//页面点击 生成代码
 	public void genSubmit() throws Exception{
-		String tableName = getPara("tableName");
-		String type = getPara("type");
-		String packagePath = getPara("packagePath");
-		String className = getPara("className");
-		String pageShowType=getPara("pageShowType");
+		String jsonStr = getPara("params");
+		Gson gson = new Gson();
+		Map<String,Object> dto = gson.fromJson(jsonStr,HashMap.class);
+		String tableName = (String)dto.get("tableName");
+		String type = (String)dto.get("type");
+		String packagePath = (String)dto.get("packagePath");
+		String className = (String)dto.get("className");
+		String htmlPath = (String)dto.get("htmlPath");
+		String pageShowType = (String)dto.get("pageShowType");
 
-		//GenVO vo = new GenVO(tableName, type,);
+		GenVO vo = new GenVO(tableName,type,packagePath,className,htmlPath,pageShowType);
 		GeneratorHelperService generatorHelperService = new GeneratorHelperService();
-		boolean success = generatorHelperService.oneTable("jfinal_activiti", tableName);
-
-		renderText("ok");
+		boolean result = generatorHelperService.oneTable("jfinal_activiti", tableName);
+		renderJson("{\"result\":"+result+"}");
 	}
 	/*
 		根据表名生成controller和list, edit页面

@@ -9,7 +9,7 @@
     <property name="jdbcUsername" value="sa" />
     <property name="jdbcPassword" value="" /-->
     
-    <property name="jdbcUrl" value="jdbc:mysql://127.0.0.1:3307/jfinal_activiti?characterEncoding=UTF-8" />
+    <property name="jdbcUrl" value="jdbc:mysql://127.0.0.1:3306/jfinal_activiti?characterEncoding=UTF-8" />
     <property name="jdbcDriver" value="com.mysql.jdbc.Driver" />
     <property name="jdbcUsername" value="root" />
     <property name="jdbcPassword" value="root" />

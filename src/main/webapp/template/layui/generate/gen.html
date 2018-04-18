@@ -1,5 +1,13 @@
 #@layout()
 #define main()
+<style type="text/css">
+	.layui-form-label{
+		width: 120px;
+	}
+	.layui-form-item .layui-input-inline{
+		width: 290px;
+	}
+</style>
 <section style="padding: 15px;">
 	<span class="layui-breadcrumb">
 		<a href="">首页</a>
@@ -9,27 +17,20 @@
 	</span>
 	<br>
 	<br>
-	<style>
-		.layui-form-label{
-			width: 120px;
-		}
-		.layui-form-item .layui-input-inline{
-			width: 290px;
-		}
-	</style>
-	<form class="layui-form" action="">
+	<form class="layui-form" id="order_form">
 		<div class="layui-form-item">
 			<label class="layui-form-label">表名</label>
 			<div class="layui-input-inline">
-				<input type="text disabled" name="title" disabled  lay-verify="required" value="#(tableName??)"
+				<input type="text" name="tableName" disabled  lay-verify="required" value="#(tableName??)"
 				placeholder="" autocomplete="off" class="layui-input">
 			</div>
 			<div class="layui-form-mid layui-word-aux">生成代码的源数据表，一对多情况下请选择主表</div>
 		</div>
+		
 		<div class="layui-form-item">
 			<label class="layui-form-label">模板类型</label>
 			<div class="layui-input-inline">
-				<select name="city" lay-verify="required">
+				<select name="type" lay-verify="required">
 					<option value="pop">增删改查（单表）</option>
 					<option value="page">增删改查（一对多）</option>
 					<option value="page">仅Controller</option>
@@ -38,45 +39,49 @@
 			</div>
 			<div class="layui-form-mid layui-word-aux">生成后台controller, html的list, edit 页面</div>
 		</div>
+		
 		<div class="layui-form-item">
 			<label class="layui-form-label">Controller包路径</label>
 			<div class="layui-input-inline">
-				<input type="text" name="password" required value="com.jfa.controllers.#(tableName??)"
+				<input type="text" name="packagePath" required value="com.jfa.controllers.#(tableName??)"
 				lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
 			</div>
 			<div class="layui-form-mid layui-word-aux">默认包路径：com.jfa.controllers.#(tableName??), 建议修改成更有业务意义的名字</div>
 		</div>
+		
 		<div class="layui-form-item">
 			<label class="layui-form-label">Controller类名</label>
 			<div class="layui-input-inline">
-				<input type="text" name="password" required value="#(tableName??)Controller"
+				<input type="text" name="className" required value="#(tableName??)Controller"
 				lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
 			</div>
 			<div class="layui-form-mid layui-word-aux">默认Controller类名：#(tableName??)Controller.java, 建议修改成更有业务意义的名字</div>
 		</div>
+		
 		<div class="layui-form-item">
-				<label class="layui-form-label">html目录</label>
-				<div class="layui-input-inline">
-					<input type="text" name="password" required value="#(tableName??)"
-					lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
-				</div>
-				<div class="layui-form-mid layui-word-aux">默认html路径：webapp/template/layui/#(tableName??), 建议修改成更有业务意义的名字</div>
+			<label class="layui-form-label">html目录</label>
+			<div class="layui-input-inline">
+				<input type="text" name="htmlPath" required value="#(tableName??)"
+				lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
 			</div>
+			<div class="layui-form-mid layui-word-aux">默认html路径：webapp/template/layui/#(tableName??), 建议修改成更有业务意义的名字</div>
+		</div>
+			
 		<div class="layui-form-item">
 			<label class="layui-form-label">表单显示</label>
 			<div class="layui-input-inline">
-				<select name="city" lay-verify="required">
-					<option value="pop">弹窗</option>
+				<select name="pageShowType" lay-verify="required">
 					<option value="page">页面</option>
+					<option value="pop">弹窗</option>
 				</select>
 			</div>
 		</div>
 		
 		<div class="layui-form-item">
 			<div class="layui-input-block">
-				<button class="layui-btn" lay-submit lay-filter="formDemo">生成代码</button>
+				<button type="button" class="layui-btn" id="generateBtn">生成代码</button>
 				<button type="reset" class="layui-btn layui-btn-primary">重置</button>
-				<button type="reset" class="layui-btn layui-btn-primary">返回</button>
+				<button type="button" class="layui-btn layui-btn-primary">返回</button>
 			</div>
 		</div>
 	</form>
@@ -92,7 +97,6 @@
 		</blockquote>
 		<div class="layui-input-block">
 			
-			
 		</div>
 	</div>
 </section>
@@ -100,25 +104,40 @@
 #end
 
 <script>
-		layui.use(['jquery','table'], function(){
-			var table = layui.table, $=layui.$;
-
-			$('#sidebar_leave').addClass('layui-nav-itemed');
-
-			table.render({
-				elem: '#jfa_table'
-				,url:'/generate/getTableList'
-				//,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
-				,cols: [[
-				        {field:'tableName', title: '表名'}
-				        ,{field:'tableComment', title: '注释'}
-						,{field:'',  title: '操作', templet: function(full){
-							return '<a class="layui-btn layui-btn-xs" href="#">编辑</a>'+
-							'<a class="layui-btn layui-btn-xs" href="#">生成代码</a>';
-						}
-					}
-				]]
-				,page: true
+	$(function(){
+		$("#generateBtn").click(function(){
+			var vo = {};
+			$("order_form select,input").each(function(){
+				var name = $(this).attr("name");
+				vo[name] = $(this).val();
+			});
+			$.post("/generate/genSubmit",{params:JSON.stringify(vo)},function(data){
+				if(data.result){
+					layer.msg("生成成功！",{icon: 1});
+				}
 			});
 		});
+	});
+	
+	layui.use(['jquery','table'], function(){
+		var table = layui.table, $=layui.$;
+
+		$('#sidebar_leave').addClass('layui-nav-itemed');
+
+		table.render({
+			elem: '#jfa_table'
+			,url:'/generate/getTableList'
+			//,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+			,cols: [[
+			        {field:'tableName', title: '表名'}
+			        ,{field:'tableComment', title: '注释'}
+					,{field:'',  title: '操作', templet: function(full){
+						return '<a class="layui-btn layui-btn-xs" href="#">编辑</a>'+
+						'<a class="layui-btn layui-btn-xs" href="#">生成代码</a>';
+					}
+				}
+			]]
+			,page: true
+		});
+	});
 </script>

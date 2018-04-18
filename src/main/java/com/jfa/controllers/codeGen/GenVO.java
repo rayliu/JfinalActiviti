@@ -4,11 +4,12 @@ package com.jfa.controllers.codeGen;
  * Created by a13570610691 on 2018/4/18.
  */
 public class GenVO {
-    public GenVO(String tableName, String type, String packagePath, String className, String pageShowType) {
+    public GenVO(String tableName, String type, String packagePath, String className, String htmlPath, String pageShowType) {
         this.tableName = tableName;
         this.type = type;
         this.packagePath = packagePath;
         this.className = className;
+        this.htmlPath = htmlPath;
         this.pageShowType = pageShowType;
     }
 
@@ -16,7 +17,9 @@ public class GenVO {
     String type = "";
     String packagePath = "";
     String className = "";
+    String htmlPath = "";
     String pageShowType="";
+    
     public String getTableName() {
         return tableName;
     }
@@ -24,8 +27,6 @@ public class GenVO {
     public void setTableName(String tableName) {
         this.tableName = tableName;
     }
-
-
 
     public String getType() {
         return type;
@@ -51,6 +52,14 @@ public class GenVO {
         this.className = className;
     }
 
+    public String getHtmlPath() {
+        return htmlPath;
+    }
+
+    public void setHtmlPath(String htmlPath) {
+        this.htmlPath = htmlPath;
+    }
+    
     public String getPageShowType() {
         return pageShowType;
     }
