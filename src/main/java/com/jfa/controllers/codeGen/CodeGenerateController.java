@@ -67,7 +67,24 @@ public class CodeGenerateController extends Controller {
 	}
 
 	public void gen() throws Exception{
+		String tableName = getPara();
+		setAttr("tableName", tableName);
 		render("gen.html");
+	}
+
+	//页面点击 生成代码
+	public void genSubmit() throws Exception{
+		String tableName = getPara("tableName");
+		String type = getPara("type");
+		String packagePath = getPara("packagePath");
+		String className = getPara("className");
+		String pageShowType=getPara("pageShowType");
+
+		//GenVO vo = new GenVO(tableName, type,);
+		GeneratorHelperService generatorHelperService = new GeneratorHelperService();
+		boolean success = generatorHelperService.oneTable("jfinal_activiti", tableName);
+
+		renderText("ok");
 	}
 	/*
 		根据表名生成controller和list, edit页面
