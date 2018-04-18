@@ -1,9 +1,13 @@
 package com.jfa.config;
 
 import com.github.jieblog.plugin.shiro.core.ShiroPlugin;
+import com.jfa.controllers.codeGen.CodeGenerateController;
 import com.jfa.controllers.index.IndexController;
 import com.jfa.controllers.leave.LeaveController;
 import com.jfa.controllers.login.LoginController;
+
+
+import com.jfa.controllers.t_leave.t_leaveController;
 import com.jfa.controllers.workflow.WorkflowController;
 import com.jfinal.config.Constants;
 import com.jfinal.config.Handlers;
@@ -63,8 +67,14 @@ public class JfinalActivitiConfig extends JFinalConfig {
         String templateFolder = PropKit.get("ui_folder");
         me.add("/", IndexController.class, templateFolder+"/index");   // 第三个参数为该Controller的视图存放路径
         me.add("/login", LoginController.class, templateFolder+"/login");
+        me.add("/generate", CodeGenerateController.class, templateFolder+"/generate");
+
+
         me.add("/leave", LeaveController.class, templateFolder+"/leave");
         me.add("/workflow", WorkflowController.class, templateFolder+"/workflow");
+
+        //注意:自动生成代码后的配置, 这里是按表名生成的, 实际上应该做适当修改.
+        me.add("/t_leave", t_leaveController.class, templateFolder+"/t_leave");//视图存放的路径
     }
     
     public void configEngine(Engine me) {

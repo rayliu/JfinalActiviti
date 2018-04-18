@@ -1,0 +1,117 @@
+#@layout()
+#define main()
+<section style="padding: 15px;">
+	<span class="layui-breadcrumb">
+		<a href="">首页</a>
+		<a href="">代码生成</a>
+		<a href="">数据表</a>
+		<a><cite>代码生成</cite></a>
+	</span>
+	<br>
+	<br>
+	<style>
+		.layui-form-label{
+			width: 120px;
+		}
+		.layui-form-item .layui-input-inline{
+			width: 290px;
+		}
+	</style>
+	<form class="layui-form" action="">
+		<div class="layui-form-item">
+			<label class="layui-form-label">表名</label>
+			<div class="layui-input-inline">
+				<input type="text" name="title" required  lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+			</div>
+			<div class="layui-form-mid layui-word-aux">生成的数据表，一对多情况下请选择主表</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">模板类型</label>
+			<div class="layui-input-inline">
+				<select name="city" lay-verify="required">
+					<option value="pop">增删改查（单表）</option>
+					<option value="page">增删改查（一对多）</option>
+					<option value="page">仅Controller</option>
+					<option value="page">API接口</option>
+				</select>
+			</div>
+			<div class="layui-form-mid layui-word-aux">生成后台controller, html的list, edit 页面</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">Controller包路径</label>
+			<div class="layui-input-inline">
+				<input type="text" name="password" required lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+			</div>
+			<div class="layui-form-mid layui-word-aux">默认包路径：com.jfa.controllers.t_name, 建议修改成更有业务意义的名字</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">Controller类名</label>
+			<div class="layui-input-inline">
+				<input type="text" name="password" required lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+			</div>
+			<div class="layui-form-mid layui-word-aux">默认Controller类名：t_nameController.java, 建议修改成更有业务意义的名字</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">表单显示</label>
+			<div class="layui-input-inline">
+				<select name="city" lay-verify="required">
+					<option value="pop">弹窗</option>
+					<option value="page">页面</option>
+				</select>
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">生成选项</label>
+			<div class="layui-input-block">
+				<input type="checkbox" name="like[write]" title="覆盖现有文件">
+			</div>
+		</div>
+		
+		
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+					<button class="layui-btn" lay-submit lay-filter="formDemo">保存</button>
+				<button class="layui-btn" lay-submit lay-filter="formDemo">保存并生成代码</button>
+				<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+				<button type="reset" class="layui-btn layui-btn-primary">返回</button>
+			</div>
+		</div>
+	</form>
+
+	<div class="layui-form-item">
+		<h3>如何预览?</h3>
+		<div class="layui-input-block">
+			<p>生成代码后, 在JfinalActivitiConfig.java中, 找到方法configRoute(Routes me)添加 </p>
+			<p>me.add("/t_leave", t_leaveController.class, templateFolder+"/t_leave");//视图存放的路径
+			</p>
+			重启服务器, 点击<a href="/t_leave/list">http://localhost:8080/t_leave/list</a>查看
+			
+		</div>
+	</div>
+</section>
+
+#end
+
+<script>
+		layui.use(['jquery','table'], function(){
+			var table = layui.table, $=layui.$;
+
+			$('#sidebar_leave').addClass('layui-nav-itemed');
+
+			table.render({
+				elem: '#jfa_table'
+				,url:'/generate/getTableList'
+				//,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+				,cols: [[
+				        {field:'tableName', title: '表名'}
+				        ,{field:'tableComment', title: '注释'}
+						,{field:'',  title: '操作', templet: function(full){
+							return '<a class="layui-btn layui-btn-xs" href="#">编辑</a>'+
+							'<a class="layui-btn layui-btn-xs" href="#">生成代码</a>';
+						}
+					}
+				]]
+				,page: true
+			});
+		});
+</script>
