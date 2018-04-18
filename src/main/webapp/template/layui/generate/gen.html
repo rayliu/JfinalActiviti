@@ -7,6 +7,19 @@
 	.layui-form-item .layui-input-inline{
 		width: 290px;
 	}
+	.controller_input{
+	display: block;
+    padding-left: 10px;
+    height: 38px;
+    line-height: 1.3;
+    line-height: 38px\9;
+    border-width: 1px;
+    border-style: solid;
+    background-color: #fff;
+    border-radius: 2px;
+    border-color: #e6e6e6;
+    float:left;
+	}
 </style>
 <section style="padding: 15px;">
 	<span class="layui-breadcrumb">
@@ -21,7 +34,7 @@
 		<div class="layui-form-item">
 			<label class="layui-form-label">表名</label>
 			<div class="layui-input-inline">
-				<input type="text" name="tableName" disabled  lay-verify="required" value="#(tableName??)"
+				<input type="text" style="background-color:#f0eded;" name="tableName" disabled  lay-verify="required" value="#(tableName??)"
 				placeholder="" autocomplete="off" class="layui-input">
 			</div>
 			<div class="layui-form-mid layui-word-aux">生成代码的源数据表，一对多情况下请选择主表</div>
@@ -43,8 +56,10 @@
 		<div class="layui-form-item">
 			<label class="layui-form-label">Controller包路径</label>
 			<div class="layui-input-inline">
-				<input type="text" name="packagePath" required value="com.jfa.controllers.#(tableName??)"
-				lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+				<input type="text" style="width:41%;background-color:#f0eded;" disabled required value="com.jfa.controllers."
+				lay-verify="required" placeholder="" autocomplete="off" class="controller_input">
+				<input type="text" style="width:50%;" name="packagePath" required value="#(tableName??)"
+				lay-verify="required" placeholder="" autocomplete="off" class="controller_input">
 			</div>
 			<div class="layui-form-mid layui-word-aux">默认包路径：com.jfa.controllers.#(tableName??), 建议修改成更有业务意义的名字</div>
 		</div>
@@ -107,16 +122,28 @@
 	$(function(){
 		$("#generateBtn").click(function(){
 			var vo = {};
-			$("order_form select,input").each(function(){
+			$("#order_form select,input").each(function(){
 				var name = $(this).attr("name");
 				vo[name] = $(this).val();
 			});
+			var file_exists_flag = "N";
+			metho(vo,file_exists_flag);
+		});
+		
+		var metho = function(vo,file_exists_flag){
+			vo["file_exists_flag"] = file_exists_flag;
 			$.post("/generate/genSubmit",{params:JSON.stringify(vo)},function(data){
 				if(data.result){
-					layer.msg("生成成功！",{icon: 1});
+					layer.msg("生成成功",{icon: 1});
+				}else if(data.message){
+					layer.confirm(data.message,{title:'提示',btn: ['是','否']
+					},function(){
+						file_exists_flag = "Y";
+						metho(vo,file_exists_flag);
+					});
 				}
 			});
-		});
+		}
 	});
 	
 	layui.use(['jquery','table'], function(){

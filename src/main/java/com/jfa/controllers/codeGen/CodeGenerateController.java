@@ -13,6 +13,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.subject.Subject;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +24,7 @@ import java.util.Map;
 //@Before(SetAttrLoginUserInterceptor.class)
 public class CodeGenerateController extends Controller {
 	Subject currentUser = SecurityUtils.getSubject();
-
+	private String projectPath = System.getProperty("user.dir");
 	public void index() {
 		if(!currentUser.isAuthenticated()){
 			redirect("/login");
@@ -85,25 +86,26 @@ public class CodeGenerateController extends Controller {
 		String className = (String)dto.get("className");
 		String htmlPath = (String)dto.get("htmlPath");
 		String pageShowType = (String)dto.get("pageShowType");
-
+		String file_exists_flag = (String)dto.get("file_exists_flag");
+		
+		Record re = new Record();
 		GenVO vo = new GenVO(tableName,type,packagePath,className,htmlPath,pageShowType);
 		GeneratorHelperService generatorHelperService = new GeneratorHelperService();
-		boolean result = generatorHelperService.oneTable("jfinal_activiti", tableName);
-		renderJson("{\"result\":"+result+"}");
-	}
-	/*
-		根据表名生成controller和list, edit页面
-	 */
-	public void table() throws Exception{
-		String tableName = getPara("table_name");
-		if(StrKit.isBlank(tableName)){
-			renderText("fail: param no table_name!");
-			return;
+		
+		if("N".equals(file_exists_flag)){
+			String dir = PropKit.get("packagePath")+"/"+packagePath;
+	        File file = new File(projectPath+dir);
+	        if(file.exists()){
+	        	re.set("message", "包已存在，是否覆盖（如不覆盖，请更改包名）");
+	        }else{
+	        	boolean result = generatorHelperService.oneTable("jfinal_activiti", vo);
+	        	re.set("result", result);
+	        }
+		}else if("Y".equals(file_exists_flag)){
+			boolean result = generatorHelperService.oneTable("jfinal_activiti", vo);
+			re.set("result", result);
 		}
-		GeneratorHelperService generatorHelperService = new GeneratorHelperService();
-		boolean success = generatorHelperService.oneTable("jfinal_activiti", tableName);
-		//success==true ? "success" : "fail";
-		renderText(success? "success" : "fail");
+		renderJson(re);
 	}
 }
 

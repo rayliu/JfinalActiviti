@@ -45,15 +45,15 @@ public class GeneratorHelperService {
         return true;
     }
 
-    public boolean oneTable(String dbname, String tableName)  throws Exception{
+    public boolean oneTable(String dbname, GenVO vo)  throws Exception{
         String sql = "SELECT TABLE_NAME as tableName,TABLE_COMMENT as tableComment from information_schema.`TABLES`" +
                 " where TABLE_SCHEMA=? and TABLE_NAME=?";
-        Record table = Db.findFirst(sql, dbname, tableName);
+        Record table = Db.findFirst(sql, dbname, vo.getTableName());
 
-        return generateCode(dbname, tableName, table);
+        return generateCode(dbname, vo, table);
     }
 
-    private boolean generateCode(String dbname, String tableName, Record tableRec) throws Exception {
+    private boolean generateCode(String dbname, GenVO vo, Record tableRec) throws Exception {
         String sql = "select COLUMN_NAME as columnName," +
                 "COLUMN_TYPE as columnType," +
                 "COLUMN_DEFAULT as columnDefault," +
@@ -61,7 +61,7 @@ public class GeneratorHelperService {
                 "CHARACTER_MAXIMUM_LENGTH as columnCharacterMaximumLength" +
                 " from information_schema.columns where table_schema = ? and table_name = ?";
         List<Record> colList = Db.find(sql, dbname,
-                tableName);
+        		vo.getTableName());
 
 //        List<Record> columnInfos = new ArrayList<Record>(colList.size());
 //
@@ -74,40 +74,41 @@ public class GeneratorHelperService {
 //        createOther(item,"service");
 //        createOther(item,"serviceImpl");
 
-        createController(tableName, colList);
-        createHtml(tableName, colList);
-
+        createController(vo, colList);
+        if("page".equals(vo.getPageShowType())){
+        	 createHtml(vo, colList);
+        }
         return true;
     }
 
-    private void createController(String tableName, List<Record> colList) throws Exception {
-        String packagePath = PropKit.get("packagePath");
+    private void createController(GenVO vo, List<Record> colList) throws Exception {
+    	String packagePath = PropKit.get("packagePath");
 
-
-        String dir = packagePath+"/"+tableName;
+        String dir = packagePath+"/"+vo.getPackagePath();
         File file = new File(projectPath+dir);
         if(!file.exists()){
-            file.mkdirs();
+        	file.mkdirs();
         }
+        
         String templatePath = PropKit.get("templatePath");
-        String filePath = dir+"/"+tableName+"Controller.java";
+        String filePath = dir+"/"+vo.getClassName()+".java";
 
         Map<String, Object> data = Maps.newHashMap();
-        data.put("className", tableName+"Controller");
-        data.put("tableName", tableName);
+        data.put("className", vo.getClassName());
+        data.put("tableName", vo.getTableName());
         data.put("colList", colList);
 
-        packagePath= packagePath+"/"+tableName;
+        packagePath= packagePath+"/"+vo.getPackagePath();
         data.put("packagePath", Joiner.on(".").join(packagePath.split("/")).substring(15));
 
-        createTempleteFile(tableName, filePath, templatePath+"/java/", "controller.flt", data);
+        createTempleteFile(vo.getTableName(), filePath, templatePath+"/java/", "controller.flt", data);
     }
 
-    private void createHtml(String tableName, List<Record> colList) throws Exception {
+    private void createHtml(GenVO vo, List<Record> colList) throws Exception {
         String webappPath = PropKit.get("webappPath");
 
 
-        String dir = webappPath+"/"+tableName;
+        String dir = webappPath+"/"+vo.getHtmlPath();
         File file = new File(projectPath+dir);
         if(!file.exists()){
             file.mkdirs();
@@ -118,19 +119,19 @@ public class GeneratorHelperService {
         String listFilePath = dir+"/list.html";
 
         Map<String, Object> listPageData = Maps.newHashMap();
-        listPageData.put("pathName", tableName);
+        listPageData.put("pathName", vo.getHtmlPath());
         listPageData.put("colList", colList);
 
-        createTempleteFile(tableName, listFilePath, templatePath+"/html/", "list.flt", listPageData);
+        createTempleteFile(vo.getTableName(), listFilePath, templatePath+"/html/", "list.flt", listPageData);
 
         //edit page
         String editFilePath = dir+"/edit.html";
 
         Map<String, Object> editPageData = Maps.newHashMap();
-        editPageData.put("pathName", tableName);
+        editPageData.put("pathName", vo.getHtmlPath());
         editPageData.put("colList", colList);
 
-        createTempleteFile(tableName, editFilePath, templatePath+"/html/", "edit.flt", editPageData);
+        createTempleteFile(vo.getTableName(), editFilePath, templatePath+"/html/", "edit.flt", editPageData);
     }
 
     private void createTempleteFile(String tableName, String filename, String templatePath, String templateName,
