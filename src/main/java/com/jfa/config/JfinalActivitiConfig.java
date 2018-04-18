@@ -7,7 +7,10 @@ import com.jfa.controllers.leave.LeaveController;
 import com.jfa.controllers.login.LoginController;
 
 
+import com.jfa.controllers.sys.SysController;
+import com.jfa.controllers.sys.t_rbac_menu.MenuController;
 import com.jfa.controllers.t_leave.t_leaveController;
+import com.jfa.controllers.t_rbac_menu.t_rbac_menuController;
 import com.jfa.controllers.workflow.WorkflowController;
 import com.jfinal.config.Constants;
 import com.jfinal.config.Handlers;
@@ -67,6 +70,8 @@ public class JfinalActivitiConfig extends JFinalConfig {
         String templateFolder = PropKit.get("ui_folder");
         me.add("/", IndexController.class, templateFolder+"/index");   // 第三个参数为该Controller的视图存放路径
         me.add("/login", LoginController.class, templateFolder+"/login");
+        me.add("/sys", SysController.class, templateFolder+"/sys");
+        me.add("/t_rbac_menu", t_rbac_menuController.class, templateFolder+"/t_rbac_menu");
         me.add("/generate", CodeGenerateController.class, templateFolder+"/generate");
 
 
@@ -84,7 +89,7 @@ public class JfinalActivitiConfig extends JFinalConfig {
 
         String templateFolder = PropKit.get("ui_folder");
         me.addSharedFunction(templateFolder+"/common/_layout.html");
-
+        me.addSharedFunction(templateFolder+"/common/_sys_layout.html");
         //me.addSharedFunction("/common/_paginate.html");
     }
     

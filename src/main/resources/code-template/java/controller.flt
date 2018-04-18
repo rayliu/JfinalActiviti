@@ -1,0 +1,125 @@
+package ${packagePath};
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.jfa.interceptor.SetAttrLoginUserInterceptor;
+import com.jfinal.kit.PropKit;
+import com.jfinal.kit.StrKit;
+
+import org.apache.commons.lang3.BooleanUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import org.apache.shiro.subject.Subject;
+
+import com.google.gson.Gson;
+import com.jfinal.aop.Before;
+import com.jfinal.core.Controller;
+import com.jfinal.log.Log;
+import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.Record;
+import com.jfinal.plugin.activerecord.tx.Tx;
+
+
+//shiro注释, 要求必须登录才能访问
+//@RequiresAuthentication
+//@Before(SetAttrLoginUserInterceptor.class)
+public class ${className} extends Controller {
+    private Log logger = Log.getLog(${className}.class);
+    Subject currentUser = SecurityUtils.getSubject();
+
+    //返回leave list页面
+    public void index() {
+        redirect("/${className}/list");
+    }
+
+    public void list() {
+        render("list.html");
+    }
+
+    //返回list页面所需的json
+    public void getList(){
+        String sLimit = "";
+        String condition = " ";
+
+        if (getPara("limit") != null && getPara("page") != null) {
+            int limit = getParaToInt("limit");
+            int page=getParaToInt("page")-1;
+            sLimit = " limit " + limit*page + ", " + limit;
+        }
+        Record login_user = getAttr("user");
+        String sql=" select * from ${tableName} ";
+        List<Record> orderList = Db.find(sql+condition+" order by id desc "+sLimit);
+
+        String sqlTotal = "select count(1) total from (" + sql + ") B";
+        Record rec = Db.findFirst(sqlTotal);
+
+        Map<String,Object> map = new HashMap<String,Object>();
+        map.put("code", 0);
+        map.put("count", rec.get("total"));
+        map.put("data", orderList);
+
+        renderJson(map);
+    }
+
+    //返回create页面
+    public void create() {
+        Record login_user = getAttr("user");
+
+        Record order = new Record();
+        order.set("user_id", login_user.get("id"));
+        order.set("user_name", login_user.get("name"));
+        setAttr("order", order);
+        render("edit.html");
+    }
+
+    //返回edit页面
+    public void edit() {
+        Record login_user = getAttr("user");
+        String id = getPara("id");
+        Record order = Db.findFirst("select * from ${tableName}  where id=?", id);
+
+        setAttr("order", order);
+        render("edit.html");
+    }
+
+    @Before(Tx.class)
+    public void save(){
+        String jsonStr=getPara("params");
+        Gson gson = new Gson();
+        Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);
+        Record login_user = getAttr("user");
+
+        <#list colList as col>
+            String ${col.columnName!} = (String)dto.get("${col.columnName!}");
+        </#list>
+
+        Record order = new Record();
+        if(StrKit.notBlank(id)){
+            order = Db.findById("${tableName}", id);
+            <#list colList as col>
+                if(StrKit.notBlank(${col.columnName!})){
+                    order.set("${col.columnName!}", ${col.columnName!});
+                }
+            </#list>
+
+            Db.update("${tableName}", order);
+        } else {
+            <#list colList as col>
+                if(StrKit.notBlank(${col.columnName!})){
+                    order.set("${col.columnName!}", ${col.columnName!});
+                }
+            </#list>
+
+            Db.save("${tableName}",order);
+        }
+
+        renderJson(order);
+    }
+
+
+
+}

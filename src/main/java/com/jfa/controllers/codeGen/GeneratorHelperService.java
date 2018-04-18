@@ -95,6 +95,7 @@ public class GeneratorHelperService {
         Map<String, Object> data = Maps.newHashMap();
         data.put("className", tableName+"Controller");
         data.put("tableName", tableName);
+        data.put("colList", colList);
 
         packagePath= packagePath+"/"+tableName;
         data.put("packagePath", Joiner.on(".").join(packagePath.split("/")).substring(15));
@@ -127,7 +128,7 @@ public class GeneratorHelperService {
 
         Map<String, Object> editPageData = Maps.newHashMap();
         editPageData.put("pathName", tableName);
-        listPageData.put("colList", colList);
+        editPageData.put("colList", colList);
 
         createTempleteFile(tableName, editFilePath, templatePath+"/html/", "edit.flt", editPageData);
     }
