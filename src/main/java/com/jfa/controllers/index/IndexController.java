@@ -30,6 +30,15 @@ public class IndexController extends Controller {
 
 		render("index.html");
 	}
+
+	public void logout() {
+		if(!currentUser.isAuthenticated()){
+			redirect("/login");
+			return;
+		}
+		currentUser.logout();
+		redirect("/login");
+	}
 }
 
 

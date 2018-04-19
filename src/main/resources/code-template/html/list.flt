@@ -8,6 +8,7 @@
 	</span>
 	<br>
 	<br>
+	<a href="create" class="layui-btn">新增</a>
 	<table class="layui-hide" id="jfa_table"></table>
 </section>
 

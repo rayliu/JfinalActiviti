@@ -25,15 +25,15 @@ import com.jfinal.plugin.activerecord.tx.Tx;
 
 
 //shiro注释, 要求必须登录才能访问
-//@RequiresAuthentication
-//@Before(SetAttrLoginUserInterceptor.class)
+@RequiresAuthentication
+@Before(SetAttrLoginUserInterceptor.class)
 public class ${className} extends Controller {
     private Log logger = Log.getLog(${className}.class);
     Subject currentUser = SecurityUtils.getSubject();
 
     //返回leave list页面
     public void index() {
-        redirect("/${className}/list");
+        redirect("/${tableName}/list");
     }
 
     public void list() {

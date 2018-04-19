@@ -1,5 +1,6 @@
 package com.jfa.config;
 
+import com.github.jieblog.plugin.shiro.core.ShiroInterceptor;
 import com.github.jieblog.plugin.shiro.core.ShiroPlugin;
 import com.jfa.controllers.codeGen.CodeGenerateController;
 import com.jfa.controllers.index.IndexController;
@@ -57,6 +58,16 @@ public class JfinalActivitiConfig extends JFinalConfig {
         // 加载少量必要配置，随后可用PropKit.get(...)获取值
         PropKit.use("JFinalActiviti.properties");
         me.setDevMode(PropKit.getBoolean("devMode", false));
+
+        String templateFolder = PropKit.get("ui_folder");
+
+        //没有权限时跳转到login
+        me.setError401View(templateFolder+"/common/err/err401.html");//401 authenticate err
+        me.setError403View(templateFolder+"/common/err/err403.html");// authorization err
+
+        //内部出错跳转到对应的提示页面，需要考虑提供更详细的信息。
+        me.setError404View(templateFolder+"/common/err/err404.html");
+        me.setError500View(templateFolder+"/common/err/err500.html");
     }
     
     /**
@@ -91,7 +102,14 @@ public class JfinalActivitiConfig extends JFinalConfig {
      */
     public void configPlugin(Plugins me) {
         // 加载Shiro插件, 加载后给后台java写注解用
-        me.add(new ShiroPlugin(engine));
+        //TODO: 这里的ShiroPlugin for 3.3 版本是有问题的(注解了但是没有起作用,晕), JFinal作者已承诺3.4将解决这个问题
+        //http://www.jfinal.com/share/714
+        ShiroPlugin shiroPlugin = new ShiroPlugin(engine);
+
+        shiroPlugin.setLoginUrl("/login");//登陆url：未验证成功跳转
+        shiroPlugin.setSuccessUrl("/");//登陆成功url：验证成功自动跳转
+        shiroPlugin.setUnauthorizedUrl("/noPermission");//授权url：未授权成功自动跳转
+        me.add(shiroPlugin);
 
         me.add(new EhCachePlugin());
 
@@ -116,7 +134,7 @@ public class JfinalActivitiConfig extends JFinalConfig {
      * 配置全局拦截器
      */
     public void configInterceptor(Interceptors me) {
-        
+        me.add(new ShiroInterceptor());
     }
     
     /**

@@ -74,9 +74,10 @@
 
   <script src="/theme/layui-v2.2.6/layui/layui.js"></script>
   <script>
-	layui.use(['jquery', 'form'], function(){
+	layui.use(['jquery', 'form','layer'], function(){
 		var $=layui.$,
-		form = layui.form;
+		form = layui.form,
+		layer = layui.layer;
 	
 		//监听提交
 		// form.on('submit()', function(data){
@@ -85,6 +86,10 @@
 			
 		// 	return false;
 		// });
+		if('Y'=='#(kick_out??'N')'){
+			layer.msg('您已经在其他地方登录，请重新登录！');
+		}
+			
 
 		$('#submitBtn').click(function(){
 			$('#loginForm').submit();

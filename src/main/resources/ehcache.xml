@@ -14,7 +14,7 @@
            timeToLiveSeconds="3600">
     </defaultCache>
     
-    <!--登录用户-->
+    <!--登录用户基本信息-->
     <cache name="userCache"
            maxEntriesLocalHeap="10000"
            maxEntriesLocalDisk="20000"
@@ -26,6 +26,18 @@
            memoryStoreEvictionPolicy="LFU"
            transactionalMode="off"
             />
+    <!--登录用户session-->
+    <cache name="userSessionCache"
+           maxEntriesLocalHeap="10000"
+           maxEntriesLocalDisk="20000"
+           eternal="false"
+           overflowToDisk="false"
+           diskSpoolBufferSizeMB="50"
+           timeToIdleSeconds="1800"
+           timeToLiveSeconds="3600"
+           memoryStoreEvictionPolicy="LFU"
+           transactionalMode="off"
+    />
 </ehcache>
 <!-- maxEntriesLocalHeap="10000" 内存最多1W条-->
 <!-- maxEntriesLocalDisk="20000" 磁盘最多2W条-->

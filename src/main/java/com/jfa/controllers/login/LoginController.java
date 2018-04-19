@@ -6,11 +6,14 @@ import com.jfinal.core.Controller;
 import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
+import com.jfinal.plugin.ehcache.CacheKit;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
+import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Date;
@@ -81,6 +84,20 @@ public class LoginController extends Controller {
 		}
 
 		if (errMsg.length()==0) {
+			Record userRec = Db.findFirst("select * from t_rbac_user where name=?", username);
+			//记录user session到Ehcache中, 方便踢人(只允许唯一登录)
+			Session oldSession = CacheKit.get("userSessionCache", userRec.get("id"));
+			if(oldSession==null) {
+				CacheKit.put("userSessionCache", userRec.get("id"), currentUser.getSession());
+			}else{
+				//如果用户相同，Session不相同，那么就要处理了
+				Serializable oldSessionId=oldSession.getId();
+				Serializable newSessionId=currentUser.getSession().getId();
+				if (!oldSessionId.equals(newSessionId)){
+					oldSession.setAttribute("kick_out", Boolean.TRUE);
+					logger.debug("kick out user: "+username+", old session id:"+oldSessionId);
+				}
+			}
 			setLoginLog(username);
 			redirect("/");
 		} else {

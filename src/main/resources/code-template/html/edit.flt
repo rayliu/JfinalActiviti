@@ -25,7 +25,7 @@
 			<div class="layui-form-item">
                 <div class="layui-input-block">
                     <button class="layui-btn" id="saveBtn" lay-submit lay-filter="*">保存</button>
-                    <button class="layui-btn layui-btn-primary">返回</button>
+                    <a class="layui-btn layui-btn-primary" href="javascript:history.back()">返回</a>
                 </div>
             </div>
 		</form>
