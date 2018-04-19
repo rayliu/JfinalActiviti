@@ -126,8 +126,7 @@
 				var name = $(this).attr("name");
 				vo[name] = $(this).val();
 			});
-			var file_exists_flag = "N";
-			metho(vo,file_exists_flag);
+			metho(vo,"N");
 		});
 		
 		var metho = function(vo,file_exists_flag){
@@ -138,8 +137,7 @@
 				}else if(data.message){
 					layer.confirm(data.message,{title:'提示',btn: ['是','否']
 					},function(){
-						file_exists_flag = "Y";
-						metho(vo,file_exists_flag);
+						metho(vo,"Y");
 					});
 				}
 			});
