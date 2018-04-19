@@ -1,0 +1,54 @@
+#@layout()
+#define main()
+<section style="padding: 15px;">
+	<span class="layui-breadcrumb">
+		<a>首页</a>
+		<a>用户管理</a>
+		<a><cite>新增用户</cite></a>
+	</span>	
+	<br>
+	<br>
+	<form id="orderForm" class="layui-form layui-row"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+		<input type="hidden" id="order_id" name="order_id" value="#(order.get('id')??)">
+		<div class="layui-form-item layui-col-md3">
+			<label class="layui-form-label">用户名*</label>
+			<div class="layui-input-block">
+				<input type="text" id="name" name="name" class="layui-input"  autocomplete="off"  value="#(order.get('name')??)"  lay-verify="required" lay-verType="tips">
+			</div>
+		</div>
+		<div class="layui-form-item layui-col-md3">
+   		 		<label class="layui-form-label">密码*</label>
+    			<div class="layui-input-block">
+      				<input type="password" id="password" name="password" placeholder="请输入密码" autocomplete="off" class="layui-input" value="#(order.get('password')??)">
+    			</div>
+    			
+  		</div>
+		<div class="layui-form-item layui-col-md3">
+			<label class="layui-form-label">中文名称</label>
+			<div class="layui-input-block">
+				<input type="text" id="cn_name" autocomplete="off" name="cn_name" class="layui-input"  value="#(order.get('cn_name')??)" >
+			</div>
+		</div>
+		<div class="layui-form-item layui-form-text layui-col-md3">
+			<label class="layui-form-label">手机号码</label>
+			<div class="layui-input-block">
+				<input type="text" id="phone" autocomplete="off" name="phone" class="layui-input"  value="#(order.get('mobile')??)"  lay-verify="phone">
+			</div>
+		</div>
+		
+		
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+			<button type="button"  id="saveBtn" class="layui-btn" lay-submit="">保存</button>
+			<button type="button" class="layui-btn" id="addgroup" >新增到用户组</button>
+			<button type="button" class="layui-btn" id="addrole" >新增到角色</button>
+			<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+			<a type="button" class="layui-btn layui-btn-primary" href="/user">返回列表</a>
+			</div>
+		</div>
+		<!-- 更多表单结构排版请移步文档左侧【页面元素-表单】一项阅览 -->
+		</form>
+</section>
+#end
+
+<script type="text/javascript" src="/js/layui/user/edit.js"> </script>

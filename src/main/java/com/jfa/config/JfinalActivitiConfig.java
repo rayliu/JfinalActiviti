@@ -3,11 +3,17 @@ package com.jfa.config;
 import com.github.jieblog.plugin.shiro.core.ShiroInterceptor;
 import com.github.jieblog.plugin.shiro.core.ShiroPlugin;
 import com.jfa.controllers.codeGen.CodeGenerateController;
+import com.jfa.controllers.group.GroupController;
 import com.jfa.controllers.index.IndexController;
 import com.jfa.controllers.leave.LeaveController;
 import com.jfa.controllers.login.LoginController;
 
 
+import com.jfa.controllers.relation.Role_Group_RelationController;
+import com.jfa.controllers.relation.User_Group_RelationController;
+import com.jfa.controllers.relation.User_Role_RelationController;
+import com.jfa.controllers.role.RoleController;
+import com.jfa.controllers.user.UserController;
 import com.jfa.controllers.workflow.WorkflowController;
 import com.jfinal.config.Constants;
 import com.jfinal.config.Handlers;
@@ -81,6 +87,13 @@ public class JfinalActivitiConfig extends JFinalConfig {
         me.add("/generate", CodeGenerateController.class, templateFolder+"/generate");
         me.add("/leave", LeaveController.class, templateFolder+"/leave");
         me.add("/workflow", WorkflowController.class, templateFolder+"/workflow");
+        me.add("/user", UserController.class, templateFolder+"/user");
+        me.add("/role", RoleController.class, templateFolder+"/role");
+        me.add("/group", GroupController.class, templateFolder+"/group");
+        me.add("/user_group_relation", User_Group_RelationController.class, templateFolder+"/user_group_relation");
+        me.add("/role_group_relation", Role_Group_RelationController.class, templateFolder+"/role_group_relation");
+        me.add("/user_role_relation", User_Role_RelationController.class, templateFolder+"/user_role_relation");
+        
 
         //注意:自动生成代码后的配置, 这里是按表名生成的, 实际上应该做适当修改.
 //      me.add("/t_rbac_menu", t_rbac_menuController.class, templateFolder+"/t_rbac_menu");

@@ -1,0 +1,48 @@
+#@layout()
+#define main()
+<link rel="stylesheet" href="/theme/H-ui.admin.page3.1.1/lib/lightbox2/2.8.1/css/lightbox.css">
+
+<section style="padding: 15px;">
+	<span class="layui-breadcrumb">
+		<a href="">首页</a>
+		<a href="">角色管理</a>
+		<a><cite>角色列表</cite></a>
+	</span>	
+	<br>
+	<br>
+	<div class="layui-row">
+			<a href="/role/create" class="layui-btn layui-btn-big">新增</a>
+	</div>
+	<table class="layui-hide" id="jfa_table"></table>
+</section>
+#end
+
+<script type="text/javascript" src="/theme/H-ui.admin.page3.1.1/lib/lightbox2/2.8.1/js/lightbox.min.js"></script>
+
+<script>
+
+		layui.use(['jquery','table'], function(){
+			var table = layui.table, $=layui.$;
+			
+			$('#sidebar_leave').addClass('layui-nav-itemed');
+
+			table.render({
+				elem: '#jfa_table'
+				,url:'/role/getList'
+				,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+				,cols: [[
+					{field:'id', minWidth:20, title: 'ID', sort: true}
+					,{field:'code', minWwidth:20, title: '角色编码'}
+					,{field:'name', minWidth:20, title: '角色名称'}
+					,{field:'remark', minWidth:20, title: '角色说明'}
+					,{field:'group_name', minWidth:20, title: '所属用户组'}
+					,{field:'wealth', width:137, title: '操作', templet: function(full){
+							return '<a class="layui-btn layui-btn-xs" href="/role/edit?id='+full.id+'">编辑</a>'
+							+'<button id="'+full.id+'"  class="layui-btn layui-btn-danger layui-btn-xs">删除</button>';
+						}
+					}
+				]]
+			});
+		}); 
+	
+</script>
