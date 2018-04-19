@@ -1098,7 +1098,7 @@ CREATE TABLE `t_login_log` (
   `ip` varchar(45) DEFAULT NULL,
   `create_stamp` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1107,7 +1107,7 @@ CREATE TABLE `t_login_log` (
 
 LOCK TABLES `t_login_log` WRITE;
 /*!40000 ALTER TABLE `t_login_log` DISABLE KEYS */;
-INSERT INTO `t_login_log` VALUES (1,'ray','192.168.0.108','2018-04-06 00:49:22'),(2,'ray','192.168.0.108','2018-04-06 01:07:55'),(3,'ray','192.168.0.108','2018-04-06 10:15:14'),(4,'ray','192.168.0.108','2018-04-06 11:22:58'),(5,'ray','192.168.0.108','2018-04-06 11:39:46'),(6,'ray','192.168.0.108','2018-04-06 14:58:05'),(7,'ray','192.168.0.108','2018-04-06 15:03:24'),(8,'ray','192.168.0.108','2018-04-06 15:16:43'),(9,'ray','192.168.0.108','2018-04-06 15:54:42'),(10,'ray','192.168.0.108','2018-04-06 15:56:40'),(11,'ray','192.168.0.108','2018-04-06 15:57:53'),(12,'ray','192.168.0.108','2018-04-06 16:28:46'),(13,'ray','192.168.0.108','2018-04-07 06:05:19'),(14,'ray','192.168.0.108','2018-04-07 14:34:44'),(15,'ray','192.168.0.108','2018-04-07 15:45:27'),(16,'ray','192.168.0.108','2018-04-07 15:48:10'),(17,'ray','192.168.0.108','2018-04-07 15:50:14'),(18,'ray','192.168.0.101','2018-04-08 02:20:02'),(19,'ray','192.168.0.101','2018-04-08 06:44:11'),(20,'ray','192.168.0.101','2018-04-08 07:12:20'),(21,'ray','192.168.0.102','2018-04-08 09:39:56'),(22,'ray','192.168.0.101','2018-04-08 09:57:02'),(23,'ray','192.168.0.108','2018-04-08 12:19:16'),(24,'ray','192.168.0.108','2018-04-08 16:48:34'),(25,'ray','192.168.0.108','2018-04-08 17:26:46'),(26,'ray','192.168.0.109','2018-04-10 06:51:29'),(27,'ray','192.168.0.109','2018-04-13 06:59:10'),(28,'ray','192.168.0.109','2018-04-13 06:59:56'),(29,'ray','192.168.0.109','2018-04-13 07:06:52'),(30,'ray','192.168.0.109','2018-04-13 07:26:16'),(31,'ray','192.168.0.109','2018-04-13 07:39:56'),(32,'ray','192.168.0.109','2018-04-13 07:46:59'),(33,'ray','192.168.0.109','2018-04-13 07:55:14');
+INSERT INTO `t_login_log` VALUES (1,'ray','192.168.0.108','2018-04-06 00:49:22'),(2,'ray','192.168.0.108','2018-04-06 01:07:55'),(3,'ray','192.168.0.108','2018-04-06 10:15:14'),(4,'ray','192.168.0.108','2018-04-06 11:22:58'),(5,'ray','192.168.0.108','2018-04-06 11:39:46'),(6,'ray','192.168.0.108','2018-04-06 14:58:05'),(7,'ray','192.168.0.108','2018-04-06 15:03:24'),(8,'ray','192.168.0.108','2018-04-06 15:16:43'),(9,'ray','192.168.0.108','2018-04-06 15:54:42'),(10,'ray','192.168.0.108','2018-04-06 15:56:40'),(11,'ray','192.168.0.108','2018-04-06 15:57:53'),(12,'ray','192.168.0.108','2018-04-06 16:28:46'),(13,'ray','192.168.0.108','2018-04-07 06:05:19'),(14,'ray','192.168.0.108','2018-04-07 14:34:44'),(15,'ray','192.168.0.108','2018-04-07 15:45:27'),(16,'ray','192.168.0.108','2018-04-07 15:48:10'),(17,'ray','192.168.0.108','2018-04-07 15:50:14'),(18,'ray','192.168.0.101','2018-04-08 02:20:02'),(19,'ray','192.168.0.101','2018-04-08 06:44:11'),(20,'ray','192.168.0.101','2018-04-08 07:12:20'),(21,'ray','192.168.0.102','2018-04-08 09:39:56'),(22,'ray','192.168.0.101','2018-04-08 09:57:02'),(23,'ray','192.168.0.108','2018-04-08 12:19:16'),(24,'ray','192.168.0.108','2018-04-08 16:48:34'),(25,'ray','192.168.0.108','2018-04-08 17:26:46'),(26,'ray','192.168.0.109','2018-04-10 06:51:29'),(27,'ray','192.168.0.109','2018-04-13 06:59:10'),(28,'ray','192.168.0.109','2018-04-13 06:59:56'),(29,'ray','192.168.0.109','2018-04-13 07:06:52'),(30,'ray','192.168.0.109','2018-04-13 07:26:16'),(31,'ray','192.168.0.109','2018-04-13 07:39:56'),(32,'ray','192.168.0.109','2018-04-13 07:46:59'),(33,'ray','192.168.0.109','2018-04-13 07:55:14'),(34,'ray','192.168.0.109','2018-04-13 08:42:13'),(35,'ray','192.168.0.109','2018-04-13 09:58:10'),(36,'ray','192.168.0.105','2018-04-17 02:46:28'),(37,'ray','192.168.0.102','2018-04-17 03:43:46'),(38,'ray','192.168.0.101','2018-04-18 08:00:00'),(39,'ray','192.168.0.101','2018-04-18 08:02:20'),(40,'ray','192.168.0.108','2018-04-18 13:21:36'),(41,'ray','192.168.0.108','2018-04-18 14:58:04'),(42,'ray','192.168.0.108','2018-04-18 16:04:50'),(43,'ray','192.168.0.108','2018-04-18 16:06:20'),(44,'ray','192.168.0.108','2018-04-18 16:06:42'),(45,'ray','192.168.0.108','2018-04-18 16:22:04'),(46,'ray','192.168.0.108','2018-04-18 16:22:10'),(47,'ray','192.168.0.101','2018-04-19 01:20:02');
 /*!40000 ALTER TABLE `t_login_log` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1166,12 +1166,13 @@ DROP TABLE IF EXISTS `t_rbac_menu`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `t_rbac_menu` (
-  `id` bigint(20) NOT NULL,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) DEFAULT NULL,
   `url` varchar(45) DEFAULT NULL,
   `parent_id` bigint(20) DEFAULT NULL,
+  `seq` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1180,6 +1181,7 @@ CREATE TABLE `t_rbac_menu` (
 
 LOCK TABLES `t_rbac_menu` WRITE;
 /*!40000 ALTER TABLE `t_rbac_menu` DISABLE KEYS */;
+INSERT INTO `t_rbac_menu` VALUES (1,'OA办公','/oa',NULL,1),(2,'系统设置','/sys',NULL,2),(3,'在线开发','/generate',NULL,3),(4,'测试','/test',NULL,1),(5,'dfsaf','fdsa',NULL,NULL);
 /*!40000 ALTER TABLE `t_rbac_menu` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1241,7 +1243,7 @@ DROP TABLE IF EXISTS `t_rbac_permission`;
 CREATE TABLE `t_rbac_permission` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) DEFAULT NULL,
-  `status` varchar(1) DEFAULT NULL,
+  `type` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -1265,7 +1267,10 @@ DROP TABLE IF EXISTS `t_rbac_ref_group_user`;
 CREATE TABLE `t_rbac_ref_group_user` (
   `group_id` bigint(20) NOT NULL,
   `user_id` bigint(20) NOT NULL,
-  PRIMARY KEY (`group_id`,`user_id`)
+  KEY `fk_gu_group_idx` (`group_id`),
+  KEY `fk_gu_user_idx` (`user_id`),
+  CONSTRAINT `fk_gu_group` FOREIGN KEY (`group_id`) REFERENCES `t_rbac_group` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_gu_user` FOREIGN KEY (`user_id`) REFERENCES `t_rbac_user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1279,6 +1284,32 @@ LOCK TABLES `t_rbac_ref_group_user` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `t_rbac_ref_perm_element`
+--
+
+DROP TABLE IF EXISTS `t_rbac_ref_perm_element`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `t_rbac_ref_perm_element` (
+  `permission_id` bigint(20) NOT NULL,
+  `page_element_id` bigint(20) NOT NULL,
+  KEY `fk_pe_perm_idx` (`permission_id`),
+  KEY `fk_pe_element_idx` (`page_element_id`),
+  CONSTRAINT `fk_pe_element` FOREIGN KEY (`page_element_id`) REFERENCES `t_rbac_page_element` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_pe_perm` FOREIGN KEY (`permission_id`) REFERENCES `t_rbac_permission` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `t_rbac_ref_perm_element`
+--
+
+LOCK TABLES `t_rbac_ref_perm_element` WRITE;
+/*!40000 ALTER TABLE `t_rbac_ref_perm_element` DISABLE KEYS */;
+/*!40000 ALTER TABLE `t_rbac_ref_perm_element` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `t_rbac_ref_perm_menu`
 --
 
@@ -1288,7 +1319,10 @@ DROP TABLE IF EXISTS `t_rbac_ref_perm_menu`;
 CREATE TABLE `t_rbac_ref_perm_menu` (
   `permission_id` bigint(20) NOT NULL,
   `menu_id` bigint(20) NOT NULL,
-  PRIMARY KEY (`permission_id`,`menu_id`)
+  KEY `fk_pm_perm_idx` (`permission_id`),
+  KEY `fk_pm_menu_idx` (`menu_id`),
+  CONSTRAINT `fk_pm_menu` FOREIGN KEY (`menu_id`) REFERENCES `t_rbac_menu` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_pm_perm` FOREIGN KEY (`permission_id`) REFERENCES `t_rbac_permission` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1302,26 +1336,29 @@ LOCK TABLES `t_rbac_ref_perm_menu` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `t_rbac_ref_perm_page`
+-- Table structure for table `t_rbac_ref_perm_operation`
 --
 
-DROP TABLE IF EXISTS `t_rbac_ref_perm_page`;
+DROP TABLE IF EXISTS `t_rbac_ref_perm_operation`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `t_rbac_ref_perm_page` (
+CREATE TABLE `t_rbac_ref_perm_operation` (
   `permission_id` bigint(20) NOT NULL,
-  `page_element_id` bigint(20) NOT NULL,
-  PRIMARY KEY (`permission_id`,`page_element_id`)
+  `operation_id` bigint(20) NOT NULL,
+  KEY `fk_operation_idx` (`operation_id`),
+  KEY `fk_perm` (`permission_id`),
+  CONSTRAINT `fk_operation` FOREIGN KEY (`operation_id`) REFERENCES `t_rbac_operation` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_perm` FOREIGN KEY (`permission_id`) REFERENCES `t_rbac_permission` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `t_rbac_ref_perm_page`
+-- Dumping data for table `t_rbac_ref_perm_operation`
 --
 
-LOCK TABLES `t_rbac_ref_perm_page` WRITE;
-/*!40000 ALTER TABLE `t_rbac_ref_perm_page` DISABLE KEYS */;
-/*!40000 ALTER TABLE `t_rbac_ref_perm_page` ENABLE KEYS */;
+LOCK TABLES `t_rbac_ref_perm_operation` WRITE;
+/*!40000 ALTER TABLE `t_rbac_ref_perm_operation` DISABLE KEYS */;
+/*!40000 ALTER TABLE `t_rbac_ref_perm_operation` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -1334,10 +1371,10 @@ DROP TABLE IF EXISTS `t_rbac_ref_user_role`;
 CREATE TABLE `t_rbac_ref_user_role` (
   `role_id` bigint(20) NOT NULL,
   `user_id` bigint(20) NOT NULL,
-  PRIMARY KEY (`role_id`,`user_id`),
-  KEY `f_user_idx` (`user_id`),
-  CONSTRAINT `f_role` FOREIGN KEY (`role_id`) REFERENCES `t_rbac_role` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `f_user` FOREIGN KEY (`user_id`) REFERENCES `t_rbac_user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  KEY `fk_ur_user_idx` (`user_id`),
+  KEY `fk_ur_role_idx` (`role_id`),
+  CONSTRAINT `fk_ur_role` FOREIGN KEY (`role_id`) REFERENCES `t_rbac_role` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_ur_user` FOREIGN KEY (`user_id`) REFERENCES `t_rbac_user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1410,4 +1447,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-13 16:38:25
+-- Dump completed on 2018-04-19 15:24:28
