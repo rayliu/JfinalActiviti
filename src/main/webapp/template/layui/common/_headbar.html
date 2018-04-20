@@ -1,29 +1,39 @@
 <div class="layui-header">
-<div class="layui-logo"><a class="layui-logo" href="/">JFinalActiviti 1.0</a></div>
-<!-- 头部区域（可配合layui已有的水平导航） -->
-<ul class="layui-nav layui-layout-left">
-	<li class="layui-nav-item"><a href="">OA办公</a></li>
-	<li class="layui-nav-item"><a href="/sys">系统设置</a></li>
-	<li class="layui-nav-item"><a href="">在线开发</a></li>
-	<li class="layui-nav-item">
-	<a href="javascript:;">其它设置</a>
-	<dl class="layui-nav-child">
-		<dd><a href="">邮件管理</a></dd>
-		<dd><a href="">消息管理</a></dd>
-		<dd><a href="">授权管理</a></dd>
-	</dl>
-	</li>
-</ul>
-<ul class="layui-nav layui-layout-right">
-	<li class="layui-nav-item">
-	<a href="javascript:;">
-		#(user.get("name")??)
-	</a>
-	<dl class="layui-nav-child">
-		<dd><a href="">基本资料</a></dd>
-		<dd><a href="">安全设置</a></dd>
-	</dl>
-	</li>
-	<li class="layui-nav-item"><a href="/logout">退出</a></li>
-</ul>
+	<div class="layui-logo"><a class="layui-logo" href="/">JFinalActiviti 1.0</a></div>
+	<!-- 头部区域（可配合layui已有的水平导航） -->
+	<ul class="layui-nav layui-layout-left">
+		#for(parentMenu:parentMenuList)
+		<li class="layui-nav-item parentMenu"><a href="javascript:volid(0);" parentMenu_id="#(parentMenu.id??)">#(parentMenu.name??)</a></li>
+		#end
+		<li class="layui-nav-item">
+			<a href="javascript:;">其它设置</a>
+			<dl class="layui-nav-child">
+				<dd><a href="">邮件管理</a></dd>
+				<dd><a href="">消息管理</a></dd>
+				<dd><a href="">授权管理</a></dd>
+			</dl>
+		</li>
+	</ul>
+	<ul class="layui-nav layui-layout-right">
+		<li class="layui-nav-item">
+			<a href="javascript:;">
+				#(user.get("name")??)
+			</a>
+			<dl class="layui-nav-child">
+				<dd><a href="">基本资料</a></dd>
+				<dd><a href="">安全设置</a></dd>
+			</dl>
+		</li>
+		<li class="layui-nav-item"><a href="/logout">退出</a></li>
+	</ul>
 </div>
+<script type="text/javascript" src="/theme/H-ui.admin.page3.1.1/lib/jquery/1.9.1/jquery.min.js"></script> 
+<script>
+	$(function(){
+	$(".parentMenu").click(function(){
+		$.post("/",{parentMenu_id:"2"},function(data){
+			
+		});
+	});
+});
+</script>

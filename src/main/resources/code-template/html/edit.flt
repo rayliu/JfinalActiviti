@@ -3,34 +3,32 @@
 
 <section style="padding: 15px;">
 	<span class="layui-breadcrumb">
-    		<a href="">首页</a>
-    		<a href="">XX管理</a>
-    		<a><cite>XX列表</cite></a>
-    	</span>
-    	<br>
-    	<br>
+		<a href="">首页</a>
+		<a href="">XX管理</a>
+		<a><cite>XX列表</cite></a>
+	</span>
+	<br>
+	<br>
 
-		<form class="form" id="orderForm" novalidate="novalidate">
-            <#list colList as col>
-                <div class="layui-form-item">
-                    <label class="layui-form-label">${col.columnName!}</label>
-                    <div class="layui-input-inline">
-                        <input type="text" name="${col.columnName!}"  lay-verify="required" value="#(order.get( "${col.columnName!}" )??)"
-                        placeholder="" autocomplete="off" class="layui-input">
-                    </div>
-                    <div class="layui-form-mid layui-word-aux"></div>
+	<form class="form" id="orderForm" novalidate="novalidate">
+        <#list colList as col>
+            <div class="layui-form-item">
+                <label class="layui-form-label">${col.columnName!}</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="${col.columnName!}"  lay-verify="required" value="#(order.get( "${col.columnName!}" )??)"
+                    placeholder="" autocomplete="off" class="layui-input">
                 </div>
-            </#list>
-
-			<div class="layui-form-item">
-                <div class="layui-input-block">
-                    <button class="layui-btn" id="saveBtn" lay-submit lay-filter="*">保存</button>
-                    <a class="layui-btn layui-btn-primary" href="javascript:history.back()">返回</a>
-                </div>
+                <div class="layui-form-mid layui-word-aux"></div>
             </div>
-		</form>
+        </#list>
 
-
+		<div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" id="saveBtn" lay-submit lay-filter="*">保存</button>
+                <a class="layui-btn layui-btn-primary" href="javascript:history.back()">返回</a>
+            </div>
+        </div>
+	</form>
 
 </section>
 #end

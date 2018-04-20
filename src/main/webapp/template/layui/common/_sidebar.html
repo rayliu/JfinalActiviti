@@ -1,44 +1,23 @@
 <div class="layui-side layui-bg-black">
 	<div class="layui-side-scroll">
 		<!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+		
 		<ul class="layui-nav layui-nav-tree"  lay-filter="test">
 			<li id="sidebar_home" class="layui-nav-item "><a href="/">首页</a></li>
-			<li id="sidebar_leave" class="layui-nav-item">
-				<a class="" href="javascript:;">请假管理</a>
-				<dl class="layui-nav-child">
-					<dd><a href="/leave/task">待办任务</a></dd>
-					<dd><a href="/leave/list">请假单</a></dd>
-				</dl>
-			</li>
-			<li id="sidebar_workflow" class="layui-nav-item">
-				<a href="javascript:;">工作流管理</a>
-				<dl class="layui-nav-child">
-					<dd><a href="/workflow/processList">流程列表</a></dd>
-				</dl>
-			</li>
-			
-			<li class="layui-nav-item">
-				<a href="javascript:;">用户管理</a>
-				<dl class="layui-nav-child">
-					<dd><a href="/user/list">用户管理</a></dd>
-					<dd><a href="/role/list">角色管理</a></dd>
-					<dd><a href="/group/list">用户组管理</a></dd>
-					<dd><a href="/user_group_relation/list">用户-组 关联</a></dd>
-					<dd><a href="/role_group_relation/list">角色-组 关联</a></dd>
-					<dd><a href="/user_role_relation/list">角色-用户 关联</a></dd>
-					<dd><a href="/page_element/list">页面元素权限点</a></dd>
-					<dd><a href="/operation/list">功能操作权限点</a></dd>
-					
-				</dl>
-			</li>
-			<li class="layui-nav-item">
-				<a href="javascript:;">代码生成</a>
-				<dl class="layui-nav-child">
-					<dd><a href="/generate/tableList">数据表管理</a></dd>
-					<dd><a href="/workflow/processList">用户组(角色)管理</a></dd>
-					<dd><a href="/workflow/processList">用户-组 关联</a></dd>
-				</dl>
-			</li>
+			#for(parentMenu:parentMenuList??)
+				#if(parentMenu.id??==1)
+					#for(menu:parentMenu.menuList??)
+					<li class="layui-nav-item">
+						<a href="javascript:;">#(menu.name??)</a>
+						<dl class="layui-nav-child">
+							#for(menuItem:menu.menuItemList??)
+							<dd><a href="#(menuItem.url)">#(menuItem.name??)</a></dd>
+							#end
+						</dl>
+					</li>
+					#end
+				#end
+			#end
 		</ul>
 	</div>
 </div>
