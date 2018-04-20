@@ -9,6 +9,8 @@ import com.jfa.controllers.leave.LeaveController;
 import com.jfa.controllers.login.LoginController;
 
 
+import com.jfa.controllers.operation.OperationController;
+import com.jfa.controllers.pageElement.PageElementController;
 import com.jfa.controllers.relation.Role_Group_RelationController;
 import com.jfa.controllers.relation.User_Group_RelationController;
 import com.jfa.controllers.relation.User_Role_RelationController;
@@ -93,7 +95,8 @@ public class JfinalActivitiConfig extends JFinalConfig {
         me.add("/user_group_relation", User_Group_RelationController.class, templateFolder+"/user_group_relation");
         me.add("/role_group_relation", Role_Group_RelationController.class, templateFolder+"/role_group_relation");
         me.add("/user_role_relation", User_Role_RelationController.class, templateFolder+"/user_role_relation");
-        
+        me.add("/page_element", PageElementController.class, templateFolder+"/page_element");
+        me.add("/operation", OperationController.class, templateFolder+"/operation");
 
         //注意:自动生成代码后的配置, 这里是按表名生成的, 实际上应该做适当修改.
 //      me.add("/t_rbac_menu", t_rbac_menuController.class, templateFolder+"/t_rbac_menu");
