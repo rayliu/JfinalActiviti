@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : localhost
-Source Server Version : 50720
+Source Server         : localhost_3306
+Source Server Version : 50639
 Source Host           : localhost:3306
 Source Database       : jfinal_activiti
 
 Target Server Type    : MYSQL
-Target Server Version : 50720
+Target Server Version : 50639
 File Encoding         : 65001
 
-Date: 2018-04-20 15:38:45
+Date: 2018-04-20 17:25:49
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -926,7 +926,7 @@ CREATE TABLE `t_login_log` (
   `ip` varchar(45) DEFAULT NULL,
   `create_stamp` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_login_log
@@ -978,6 +978,8 @@ INSERT INTO `t_login_log` VALUES ('44', 'ray', '192.168.0.108', '2018-04-19 00:0
 INSERT INTO `t_login_log` VALUES ('45', 'ray', '192.168.0.108', '2018-04-19 00:22:04');
 INSERT INTO `t_login_log` VALUES ('46', 'ray', '192.168.0.108', '2018-04-19 00:22:10');
 INSERT INTO `t_login_log` VALUES ('47', 'ray', '192.168.0.101', '2018-04-19 09:20:02');
+INSERT INTO `t_login_log` VALUES ('48', 'ray', '192.168.0.103', '2018-04-20 17:07:52');
+INSERT INTO `t_login_log` VALUES ('49', 'ray', '192.168.0.103', '2018-04-20 17:19:49');
 
 -- ----------------------------
 -- Table structure for t_rbac_group
@@ -989,11 +991,13 @@ CREATE TABLE `t_rbac_group` (
   `desc` varchar(45) DEFAULT NULL,
   `is_delete` bigint(2) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_rbac_group
 -- ----------------------------
+INSERT INTO `t_rbac_group` VALUES ('1', '管理员', null, '0');
+INSERT INTO `t_rbac_group` VALUES ('2', '管理', '管理员', '0');
 
 -- ----------------------------
 -- Table structure for t_rbac_group_role
@@ -1008,6 +1012,7 @@ CREATE TABLE `t_rbac_group_role` (
 -- ----------------------------
 -- Records of t_rbac_group_role
 -- ----------------------------
+INSERT INTO `t_rbac_group_role` VALUES ('2', '1');
 
 -- ----------------------------
 -- Table structure for t_rbac_menu
@@ -1069,26 +1074,30 @@ CREATE TABLE `t_rbac_operation` (
   `code` varchar(45) DEFAULT NULL,
   `name` varchar(45) DEFAULT NULL,
   `filter_url_path` varchar(45) DEFAULT NULL,
+  `is_delete` int(2) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_rbac_operation
 -- ----------------------------
+INSERT INTO `t_rbac_operation` VALUES ('1', 'user_create', '跳转到创建用户页面', '/user/create', '0');
 
 -- ----------------------------
 -- Table structure for t_rbac_page_element
 -- ----------------------------
 DROP TABLE IF EXISTS `t_rbac_page_element`;
 CREATE TABLE `t_rbac_page_element` (
-  `id` bigint(20) NOT NULL,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `code` varchar(45) DEFAULT NULL,
+  `is_delete` int(2) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_rbac_page_element
 -- ----------------------------
+INSERT INTO `t_rbac_page_element` VALUES ('1', 'home_alert1', '0');
 
 -- ----------------------------
 -- Table structure for t_rbac_permission
@@ -1121,6 +1130,8 @@ CREATE TABLE `t_rbac_ref_group_user` (
 -- ----------------------------
 -- Records of t_rbac_ref_group_user
 -- ----------------------------
+INSERT INTO `t_rbac_ref_group_user` VALUES ('2', '1');
+INSERT INTO `t_rbac_ref_group_user` VALUES ('1', '1');
 
 -- ----------------------------
 -- Table structure for t_rbac_ref_perm_element
@@ -1131,8 +1142,8 @@ CREATE TABLE `t_rbac_ref_perm_element` (
   `page_element_id` bigint(20) NOT NULL,
   KEY `fk_pe_perm_idx` (`permission_id`),
   KEY `fk_pe_element_idx` (`page_element_id`),
-  CONSTRAINT `fk_pe_element` FOREIGN KEY (`page_element_id`) REFERENCES `t_rbac_page_element` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_pe_perm` FOREIGN KEY (`permission_id`) REFERENCES `t_rbac_permission` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_pe_perm` FOREIGN KEY (`permission_id`) REFERENCES `t_rbac_permission` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `t_rbac_ref_perm_element_ibfk_1` FOREIGN KEY (`page_element_id`) REFERENCES `t_rbac_page_element` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -1174,6 +1185,20 @@ CREATE TABLE `t_rbac_ref_perm_operation` (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for t_rbac_ref_perm_page
+-- ----------------------------
+DROP TABLE IF EXISTS `t_rbac_ref_perm_page`;
+CREATE TABLE `t_rbac_ref_perm_page` (
+  `permission_id` bigint(20) NOT NULL,
+  `page_element_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`permission_id`,`page_element_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of t_rbac_ref_perm_page
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for t_rbac_ref_perm_role
 -- ----------------------------
 DROP TABLE IF EXISTS `t_rbac_ref_perm_role`;
@@ -1206,6 +1231,7 @@ CREATE TABLE `t_rbac_ref_user_role` (
 -- ----------------------------
 -- Records of t_rbac_ref_user_role
 -- ----------------------------
+INSERT INTO `t_rbac_ref_user_role` VALUES ('1', '1');
 
 -- ----------------------------
 -- Table structure for t_rbac_role
@@ -1216,12 +1242,14 @@ CREATE TABLE `t_rbac_role` (
   `code` varchar(45) DEFAULT NULL,
   `name` varchar(45) DEFAULT NULL,
   `is_delete` bigint(2) NOT NULL DEFAULT '0',
+  `remark` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_rbac_role
 -- ----------------------------
+INSERT INTO `t_rbac_role` VALUES ('1', '001', '管理员', '0', '系统最高权限');
 
 -- ----------------------------
 -- Table structure for t_rbac_user
@@ -1240,3 +1268,4 @@ CREATE TABLE `t_rbac_user` (
 -- ----------------------------
 -- Records of t_rbac_user
 -- ----------------------------
+INSERT INTO `t_rbac_user` VALUES ('1', 'ray', '7c4a8d09ca3762af61e59520943dc26494f8941b', '瑞', '11111111', '0');

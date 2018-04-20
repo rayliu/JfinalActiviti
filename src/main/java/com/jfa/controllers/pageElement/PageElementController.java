@@ -94,8 +94,6 @@ public class PageElementController extends Controller {
 
         String id=(String)dto.get("order_id");
         String code = (String)dto.get("code");
-        String name = (String)dto.get("code");
-        String page_dom_id = (String)dto.get("page_dom_id");
 
         Record order = new Record();
         if(StrKit.notBlank(id)){
@@ -103,25 +101,12 @@ public class PageElementController extends Controller {
                 if(StrKit.notBlank(code)){
                     order.set("code", code);
                 }
-                if(StrKit.notBlank(name)){
-                    order.set("name", name);
-                }
-                if(StrKit.notBlank(page_dom_id)){
-                    order.set("page_dom_id", page_dom_id);
-                }
 
             Db.update("t_rbac_page_element", order);
         } else {
         	 if(StrKit.notBlank(code)){
                  order.set("code", code);
              }
-             if(StrKit.notBlank(name)){
-                 order.set("name", name);
-             }
-             if(StrKit.notBlank(page_dom_id)){
-                 order.set("page_dom_id", page_dom_id);
-             }
-
             Db.save("t_rbac_page_element",order);
         }
 

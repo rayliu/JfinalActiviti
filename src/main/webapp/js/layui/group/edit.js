@@ -18,7 +18,7 @@
 		  //监听提交
 		form.on('submit()',function(data){
 		  var order={};
-		  $("#orderForm input").each(function(){
+		  $("#orderForm input,select").each(function(){
 			 var name = $(this).attr("name");
 			 order[name]=$(this).val();
 		  });
