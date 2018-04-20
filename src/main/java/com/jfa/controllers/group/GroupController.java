@@ -49,7 +49,7 @@ public class GroupController extends Controller{
 	        }
 			
 			Record login_user = getAttr("user");
-			 String sql="SELECT * FROM t_rbac_group";
+			 String sql="SELECT * FROM t_rbac_group where is_delete=0";
 			 List<Record> orderList = Db.find(sql+condition+" order by id desc");
 			 
 			 String sqlTotal = "select count(1) total from (" + sql + ") B";
@@ -72,6 +72,8 @@ public class GroupController extends Controller{
 		
 		//返回create页面
 		public void create(){
+			List<Record> group = Db.find("select * from t_rbac_group where is_delete=0");
+	        setAttr("group", group);
 			render("groupForm.html");
 		}
 		
@@ -81,6 +83,9 @@ public class GroupController extends Controller{
 		        String id = getPara("id");
 		        Record order = Db.findFirst("select * from t_rbac_group where id=?",id);
 		        setAttr("order", order);
+		        
+		    	List<Record> group = Db.find("select * from t_rbac_group where is_delete=0");
+		        setAttr("group", group);
 		        render("groupForm.html");
 		}
 		
@@ -109,6 +114,15 @@ public class GroupController extends Controller{
 			  renderJson(order);
 		}
 		
-		
+		public void delete(){
+			String id= getPara("id");
+			Record re=Db.findById("t_rbac_group", id);
+			Boolean result = false;
+			if(re!=null){
+				re.set("is_delete", 1);
+				result = Db.update("t_rbac_group",re);
+			}
+			renderJson("{\"result\":"+result+"}");
+		}
 		
 }

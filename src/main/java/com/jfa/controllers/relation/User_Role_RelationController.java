@@ -41,11 +41,11 @@ public class User_Role_RelationController extends Controller{
 		
 		Record login_user = getAttr("user");
 		
-		 String sql="SELECT * FROM t_rbac_user";
+		 String sql="SELECT * FROM t_rbac_user where is_delete=0";
 		 List<Record> user = Db.find(sql+condition+" order by id desc");
 		 setAttr("users",user);
 		 
-		 String group_sql="SELECT * FROM t_rbac_role";
+		 String group_sql="SELECT * FROM t_rbac_role where is_delete=0";
 		 List<Record> role = Db.find(group_sql+condition+" order by id desc");
 		 setAttr("role",role);
 		 
@@ -83,6 +83,8 @@ public class User_Role_RelationController extends Controller{
 				record.set("role_id", (String)rolefrom_list.get(i));
 				Db.save("t_rbac_ref_user_role", record);
 			}
+		}else{
+			Db.delete("delete from t_rbac_ref_user_role where user_id = ?",user_id);
 		}
 		renderJson(record);
 		

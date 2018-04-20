@@ -51,6 +51,7 @@ public class RoleController extends Controller{
 		 String sql="SELECT trr.*,GROUP_CONCAT(trg.name) group_name FROM t_rbac_role trr"
 		 		+ " LEFT JOIN t_rbac_group_role tgr ON tgr.role_id = trr.id"
 		 		+ " LEFT JOIN t_rbac_group trg ON trg.id = tgr.group_id "
+		 		+ " WHERE trr.is_delete=0"
 		 		+ " GROUP BY trr.id";
 		 List<Record> orderList = Db.find(sql+condition+" order by id desc");
 		 
@@ -128,6 +129,17 @@ public class RoleController extends Controller{
 			order=Db.findFirst("select * from t_rbac_role where `name`=? and `code`=?",name,code);
 		}
 		renderJson(order); 	
+	}
+	
+	public void delete(){
+		String id= getPara("id");
+		Record re=Db.findById("t_rbac_role", id);
+		Boolean result = false;
+		if(re!=null){
+			re.set("is_delete", 1);
+			result = Db.update("t_rbac_role",re);
+		}
+		renderJson("{\"result\":"+result+"}");
 	}
 	
 	

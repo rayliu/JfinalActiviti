@@ -36,11 +36,28 @@
 					,{field:'desc', minWidth:20, title: '父级用户组名称'}
 					,{field:'wealth', width:137, title: '操作', templet: function(full){
 							return '<a class="layui-btn layui-btn-xs" href="/group/edit?id='+full.id+'">编辑</a>'
-							+'<button id="'+full.id+'"  class="layui-btn layui-btn-danger layui-btn-xs">删除</button>';
+							+'<button id="'+full.id+'"  class="layui-btn layui-btn-danger layui-btn-xs delete">删除</button>';
 						}
 					}
 				]]
 			});
 		}); 
+		
+		$("body").on("click",".delete",function(){
+			var id = $(this).attr("id")
+        	layer.confirm('确认要删除吗？',function(){
+        	$.post("/group/delete",{id:id},function(data){
+        		if(data.result){
+        			layer.msg('删除成功',{icon:1});
+        			setTimeout(function(){
+        				location.href="/group";
+        			},1000);
+        		}else{
+        			layer.msg('删除失败',{icon:2});
+        		}
+        	});
+        });
+			
+		});
 	
 </script>

@@ -49,12 +49,11 @@ public class UserController extends Controller{
         }
 		
 		Record login_user = getAttr("user");
-		 String sql="SELECT tru.*,GROUP_CONCAT(trr.name) role_name,GROUP_CONCAT(trg.name) group_name FROM t_rbac_user tru"
-		 		+ " LEFT JOIN t_rbac_ref_user_role trur ON trur.user_id = tru.id"
-		 		+ " LEFT JOIN t_rbac_role trr ON trr.id = trur.role_id"
-		 		+ " LEFT JOIN t_rbac_ref_group_user trrg ON trrg.user_id = tru.id "
-		 		+ " LEFT JOIN t_rbac_group trg ON trg.id = trrg.group_id "
-		 		+ " GROUP BY tru.id";
+		 String sql="SELECT tru.*,"
+		 		+ " (select GROUP_CONCAT(trr.name) from t_rbac_ref_user_role trrur LEFT JOIN t_rbac_role trr on trr.id = trrur.role_id where trrur.user_id = tru.id) role_name,"
+		 		+ " (select GROUP_CONCAT(trg.name) from t_rbac_ref_group_user trrgu LEFT JOIN t_rbac_group trg on trg.id = trrgu.group_id where trrgu.user_id = tru.id) group_name"
+		 		+ " FROM t_rbac_user tru"
+		 		+ " WHERE  tru.is_delete=0";
 		 List<Record> orderList = Db.find(sql+condition+" order by id desc");
 		 
 		 String sqlTotal = "select count(1) total from (" + sql + ") B";
@@ -144,6 +143,16 @@ public class UserController extends Controller{
 	}
 	
 	
+	public void delete(){
+		String id= getPara("id");
+		Record re=Db.findById("t_rbac_user", id);
+		Boolean result = false;
+		if(re!=null){
+			re.set("is_delete", 1);
+			result = Db.update("t_rbac_user",re);
+		}
+		renderJson("{\"result\":"+result+"}");
+	}
 	
 	
 	
