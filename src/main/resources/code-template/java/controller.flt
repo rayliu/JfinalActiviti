@@ -9,7 +9,7 @@ import java.util.Map;
 import com.jfa.interceptor.SetAttrLoginUserInterceptor;
 import com.jfinal.kit.PropKit;
 import com.jfinal.kit.StrKit;
-
+import com.shuyan.wxl.annotation.JAction;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
@@ -24,9 +24,11 @@ import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 
 
-//shiro注释, 要求必须登录才能访问
+//shiro注解, 要求必须登录才能访问
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
+//JAction注解, 无需在config中再配置
+@JAction(value = "/${tableName}",viewPath = "/${tableName}")
 public class ${className} extends Controller {
     private Log logger = Log.getLog(${className}.class);
     Subject currentUser = SecurityUtils.getSubject();

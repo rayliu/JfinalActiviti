@@ -29,6 +29,7 @@ import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 import com.jfinal.plugin.druid.DruidPlugin;
 import com.jfinal.plugin.ehcache.EhCachePlugin;
 import com.jfinal.template.Engine;
+import com.shuyan.wxl.routes.AutoBindRoutes;
 
 /**
  * 
@@ -83,12 +84,16 @@ public class JfinalActivitiConfig extends JFinalConfig {
      */
     public void configRoute(Routes me) {
         String templateFolder = PropKit.get("ui_folder");
+
+        //注意! 这里写的是JFinal系统级别的controller, 如非必要不要改动
         me.add("/", IndexController.class, templateFolder+"/index");   // 第三个参数为该Controller的视图存放路径
         me.add("/login", LoginController.class, templateFolder+"/login");
 //      me.add("/sys", SysController.class, templateFolder+"/sys");
         me.add("/generate", CodeGenerateController.class, templateFolder+"/generate");
-        me.add("/leave", LeaveController.class, templateFolder+"/leave");
+
         me.add("/workflow", WorkflowController.class, templateFolder+"/workflow");
+
+        //RBAC 控制
         me.add("/user", UserController.class, templateFolder+"/user");
         me.add("/role", RoleController.class, templateFolder+"/role");
         me.add("/group", GroupController.class, templateFolder+"/group");
@@ -98,8 +103,11 @@ public class JfinalActivitiConfig extends JFinalConfig {
         me.add("/page_element", PageElementController.class, templateFolder+"/page_element");
         me.add("/operation", OperationController.class, templateFolder+"/operation");
 
-        //注意:自动生成代码后的配置, 这里是按表名生成的, 实际上应该做适当修改.
-//      me.add("/t_rbac_menu", t_rbac_menuController.class, templateFolder+"/t_rbac_menu");
+        //------这里开始是业务类的Controller, 会自动扫描加载
+        // 默认这里是按表名生成URL path, 实际上应该做适当修改. 请在controller的注释中修改
+        me.add(new AutoBindRoutes("com.jfa.controllers", templateFolder));
+
+        //me.add("/leave", LeaveController.class, templateFolder+"/leave");
     }
     
     public void configEngine(Engine me) {

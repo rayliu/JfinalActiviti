@@ -10,6 +10,7 @@ import com.jfa.controllers.workflow.util.ActivitiKit;
 import com.jfa.interceptor.SetAttrLoginUserInterceptor;
 import com.jfinal.kit.PropKit;
 import com.jfinal.kit.StrKit;
+import com.shuyan.wxl.annotation.JAction;
 import org.activiti.engine.IdentityService;
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.ProcessEngines;
@@ -32,9 +33,12 @@ import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 
 
-//shiro注释, 要求必须登录才能访问
+//shiro注解, 要求必须登录才能访问
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
+
+//JAction注解, 无需在config中再配置
+@JAction(value = "/leave",viewPath = "/leave")
 public class LeaveController extends Controller {
     private Log logger = Log.getLog(LeaveController.class);
     Subject currentUser = SecurityUtils.getSubject();

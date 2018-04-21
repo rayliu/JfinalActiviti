@@ -168,29 +168,4 @@ public class GeneratorHelperService {
         }
     }
 
-
-
-//    private void createOther(TableInfo item,String type) {
-//        String path = getUpPath();
-//        String lastDir = type;
-//        if("serviceImpl".equals(type)){
-//            lastDir = "service/impl";
-//        }
-//
-//        String dir = String.format("%s/%s",path,lastDir);
-//        File file = new File(dir);
-//        if(!file.exists()){
-//            file.mkdirs();
-//        }
-//        String templetePath = String.format("%s%s", localProjectPath,propertyMap.get("templetePath"));
-//        String filePath = String.format("%s/%s.java", dir,item.getModleName()+type.substring(0,1).toUpperCase()+type.substring(1));
-//
-//        Map<String, Object> data = Maps.newHashMap();
-//        data.put("modelParam", String.format("%s%s",item.getModleName().substring(0, 1).toLowerCase(),item.getModleName().substring(1)));
-//        data.put("modellower", item.getModleName().toLowerCase());
-//        data.put("item", item);
-//        data.put("packagePath", Joiner.on(".").join(propertyMap.get("packagePath").split("/")).substring(15));
-//
-//        createTempleteFile(filePath,templetePath,String.format("%s.flt", type),data);
-//    }
 }
