@@ -11,12 +11,12 @@
     	<br>
     	<br>
 
-	<form class="form" id="orderForm" class="layui-form layui-row">
+	<form id="orderForm" class="layui-form layui-row">
 	       <input  type="hidden" id="order_id" name="order_id"  value="#(order.get('id')??)">
                      <div class="layui-form-item layui-col-md3">
                     <label class="layui-form-label">角色</label>
                     <div class="layui-input-inline">
-                    <select  id="role_id" name="role_id" lay-search="">
+                    <select  id="role_id" name="role_id" lay-search="" lay-verify="required" lay-filter="">
         					<option value="">直接选择或搜索选择</option>
         					#for(r:role)
           					<option #if(r.id== order.get('role_id')??) selected="selected"  #end value="#(r.id)">#(r.name)</option>
@@ -29,7 +29,7 @@
                 <div class="layui-inline">
                     <label class="layui-form-label">权限点</label>
                     <div class="layui-input-inline">
-                     <select  id="permission_id" name="permission_id" lay-search="">
+                     <select  id="permission_id" name="permission_id" lay-search="" lay-verify="required" lay-filter="">
         					<option value="">直接选择或搜索选择</option>
         					#for(p:permission)
           					<option #if(p.id== order.get('permission_id')??) selected="selected"  #end value="#(p.id)">#(p.name)</option>
