@@ -38,14 +38,13 @@
 		});
 		
 		$("body").on("click",".delete",function(){
+			var self=$(this);
 			var id = $(this).attr("id")
         	layer.confirm('确认要删除吗？',function(){
         	$.post("/perm_role/delete",{id:id},function(data){
         		if(data.result){
+        			self.parent().parent().parent().remove();
         			layer.msg('删除成功',{icon:1});
-        			setTimeout(function(){
-        				location.href="/perm_role";
-        			},1000);
         		}else{
         			layer.msg('删除失败',{icon:2});
         		}
