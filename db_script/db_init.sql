@@ -1256,7 +1256,8 @@ DROP TABLE IF EXISTS `t_rbac_page_element`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `t_rbac_page_element` (
-  `id` bigint(20) NOT NULL,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) DEFAULT NULL,
   `code` varchar(45) DEFAULT NULL,
    `is_delete` bigint(2) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)

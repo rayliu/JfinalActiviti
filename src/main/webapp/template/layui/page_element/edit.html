@@ -12,16 +12,15 @@
 
 		<form class="form" id="orderForm" class="layui-form layui-row">
 			<input type="hidden" id="order_id" name="order_id" value="#(order.get('id')??)">
-					
-					<div class="layui-form-item layui-col-md3">
-                    <label class="layui-form-label">id</label>
+				<div class="layui-form-item layui-col-md4">
+                    <label class="layui-form-label">名字</label>
                     <div class="layui-input-inline">
-                        <input type="text" id="id" name="id"  lay-verify="required" value="#(order.get('code')??)" placeholder="" autocomplete="off" class="layui-input">
+                        <input type="text" id="name" name="name"  lay-verify="required" value="#(order.get('name')??)" placeholder="" autocomplete="off" class="layui-input">
                     </div>
                     <div class="layui-form-mid layui-word-aux"></div>
                 </div>
 			
-                 <div class="layui-form-item layui-col-md3">
+                 <div class="layui-form-item layui-col-md4">
                     <label class="layui-form-label">code</label>
                     <div class="layui-input-inline">
                         <input type="text" id="code" name="code"  lay-verify="required" value="#(order.get('code')??)" placeholder="" autocomplete="off" class="layui-input">

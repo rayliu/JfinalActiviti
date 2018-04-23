@@ -51,7 +51,7 @@ public class PageElementController extends Controller {
             sLimit = " limit " + limit*page + ", " + limit;
         }
         Record login_user = getAttr("user");
-        String sql=" select * from t_rbac_page_element where is_delete=0";
+        String sql=" select * from t_rbac_page_element where is_delete = '0'";
         List<Record> orderList = Db.find(sql+condition+" order by id desc "+sLimit);
 
         String sqlTotal = "select count(1) total from (" + sql + ") B";
@@ -87,26 +87,24 @@ public class PageElementController extends Controller {
 
     @Before(Tx.class)
     public void save(){
-        String jsonStr=getPara("params");
+        String jsonStr = getPara("params");
         Gson gson = new Gson();
         Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);
         Record login_user = getAttr("user");
 
-        String id=(String)dto.get("order_id");
+        String id = (String)dto.get("order_id");
+        String name = (String)dto.get("name");
         String code = (String)dto.get("code");
 
         Record order = new Record();
         if(StrKit.notBlank(id)){
             order = Db.findById("t_rbac_page_element", id);
-                if(StrKit.notBlank(code)){
-                    order.set("code", code);
-                }
-
+        	order.set("name", name);
+            order.set("code", code);
             Db.update("t_rbac_page_element", order);
         } else {
-        	 if(StrKit.notBlank(code)){
-                 order.set("code", code);
-             }
+        	order.set("name", name);
+            order.set("code", code);
             Db.save("t_rbac_page_element",order);
         }
 
@@ -114,10 +112,10 @@ public class PageElementController extends Controller {
     }
     
     public void delete(){
-		String id= getPara("id");
-		Record re=Db.findById("t_rbac_page_element", id);
+		String id = getPara("id");
 		Boolean result = false;
-		if(re!=null){
+		if(StrKit.notBlank(id)){
+			Record re = Db.findById("t_rbac_page_element", id);
 			re.set("is_delete", 1);
 			result = Db.update("t_rbac_page_element",re);
 		}
