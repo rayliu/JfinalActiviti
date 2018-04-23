@@ -1,0 +1,87 @@
+#@layout()
+#define main()
+
+<section style="padding: 15px;">
+	<span class="layui-breadcrumb">
+   		<a href="">首页</a>
+   		<a href="">菜单管理</a>
+   		<a><cite>菜单列表</cite></a>
+   	</span>
+   	<br>
+   	<br>
+
+	<form class="form" id="orderForm" novalidate="novalidate">
+	    <div class="layui-form-item">
+	        <label class="layui-form-label">菜单名</label>
+	        <div class="layui-input-inline">
+	            <input type="text" name="name"  lay-verify="required" value="#(order.get( "name" )??)"
+	            placeholder="" autocomplete="off" class="layui-input">
+	        </div>
+	        <div class="layui-form-mid layui-word-aux"></div>
+	    </div>
+	    <div class="layui-form-item">
+	        <label class="layui-form-label">url</label>
+	        <div class="layui-input-inline">
+	            <input type="text" name="url"  lay-verify="required" value="#(order.get( "url" )??)"
+	            placeholder="" autocomplete="off" class="layui-input">
+	        </div>
+	        <div class="layui-form-mid layui-word-aux"></div>
+	    </div>
+	    <div class="layui-form-item">
+	        <label class="layui-form-label">父级ID</label>
+	        <div class="layui-input-inline">
+	            <input type="text" name="parent_id"  lay-verify="required" value="#(order.get( "parent_id" )??)"
+	            placeholder="" autocomplete="off" class="layui-input">
+	        </div>
+	        <div class="layui-form-mid layui-word-aux"></div>
+	    </div>
+	    <div class="layui-form-item">
+	        <label class="layui-form-label">排序序号</label>
+	        <div class="layui-input-inline">
+	            <input type="text" name="seq"  lay-verify="required" value="#(order.get( "seq" )??)"
+	            placeholder="" autocomplete="off" class="layui-input">
+	        </div>
+	        <div class="layui-form-mid layui-word-aux"></div>
+	    </div>
+
+		<div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" id="saveBtn" lay-submit lay-filter="*">保存</button>
+                <a class="layui-btn layui-btn-primary" href="javascript:history.back()">返回</a>
+            </div>
+		</div>
+	</form>
+
+</section>
+#end
+
+<script type="text/javascript">
+    layui.use(['jquery', 'form', 'laydate'], function(){
+        var form = layui.form, $=layui.$, laydate=layui.laydate;
+
+        //监听提交
+        form.on('submit(*)', function(data){
+            var order = {};
+            $("#orderForm input,select").each(function(){
+                var name = $(this).attr("name");
+                order[name] = $(this).val();
+            });
+            $.post("/menu/save",{params:JSON.stringify(order)},function(data){
+                if(data.id > 0){
+                    layer.msg('操作成功', {icon: 1});
+                    $('#order_id').val(data.id);
+
+                    var stateObj = { foo: "create" };
+                    history.pushState(stateObj, "edit", "edit?id="+data.id);
+                }else{
+                    layer.msg('操作失败', {icon: 2});
+                }
+            }).fail(function(){
+                layer.msg('后台出错', {icon: 2});
+            });
+
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        });
+    });
+
+</script>

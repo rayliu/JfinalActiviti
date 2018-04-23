@@ -1172,6 +1172,7 @@ CREATE TABLE `t_rbac_menu` (
   `url` varchar(45) DEFAULT NULL,
   `parent_id` bigint(20) DEFAULT NULL,
   `seq` int(11) DEFAULT NULL,
+  `is_delete` int(11) DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;

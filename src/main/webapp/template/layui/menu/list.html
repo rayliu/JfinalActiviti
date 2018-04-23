@@ -1,0 +1,58 @@
+#@layout()
+#define main()
+<section style="padding: 15px;">
+	<span class="layui-breadcrumb">
+		<a href="">首页</a>
+		<a href="">菜单管理</a>
+		<a><cite>菜单列表</cite></a>
+	</span>
+	<br>
+	<br>
+	<a href="create" class="layui-btn">新增</a>
+	<table class="layui-hide" id="jfa_table"></table>
+</section>
+
+#end
+
+<script>
+		layui.use(['jquery','table'], function(){
+			var table = layui.table, $=layui.$;
+
+			$('#sidebar_leave').addClass('layui-nav-itemed');
+
+			table.render({
+				elem: '#jfa_table'
+				,url:'/menu/getList'
+				//,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+				,cols: [[
+				            {field:'id', title: '菜单ID'}
+				            ,{field:'name', title: '菜单名'}
+				            ,{field:'url', title: 'url'}
+				            ,{field:'parent_id', title: '父级ID'}
+				            ,{field:'seq', title: '排序序号'}
+					,{field:'', width:137, title: '操作', templet: function(full){
+							return '<a class="layui-btn layui-btn-xs" href="edit?id='+full.id+'">编辑</a>' +
+                            	'<a class="layui-btn layui-btn-xs layui-btn-danger delete" id="'+full.id+'">删除</a>'  ;
+						}
+					}
+				]]
+				,page: true
+			});
+		});
+		$("body").on("click",".delete",function(){
+			var self = $(this);
+			var id = self.attr("id");
+			//询问框
+			layer.confirm('确认删除?', {title:'提示'}, function(){
+				$.post("/menu/delete",{id:id},function(data){
+					if(data.result){
+						self.parent().parent().parent().remove();
+						layer.msg('删除成功',{icon:1});
+					}else{
+						layer.msg('删除失败',{icon:2});
+					}
+				});
+			});
+		
+		});
+</script>

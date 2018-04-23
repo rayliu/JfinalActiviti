@@ -9,6 +9,7 @@ import com.jfa.controllers.leave.LeaveController;
 import com.jfa.controllers.login.LoginController;
 
 
+import com.jfa.controllers.menu.MenuController;
 import com.jfa.controllers.operation.OperationController;
 import com.jfa.controllers.pageElement.PageElementController;
 import com.jfa.controllers.relation.Role_Group_RelationController;
@@ -92,7 +93,7 @@ public class JfinalActivitiConfig extends JFinalConfig {
         me.add("/generate", CodeGenerateController.class, templateFolder+"/generate");
 
         me.add("/workflow", WorkflowController.class, templateFolder+"/workflow");
-
+        me.add("/menu", MenuController.class, templateFolder+"/menu");
         //RBAC 控制
         me.add("/user", UserController.class, templateFolder+"/user");
         me.add("/role", RoleController.class, templateFolder+"/role");
