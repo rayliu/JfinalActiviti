@@ -12,6 +12,8 @@ import com.jfa.controllers.login.LoginController;
 import com.jfa.controllers.menu.MenuController;
 import com.jfa.controllers.operation.OperationController;
 import com.jfa.controllers.pageElement.PageElementController;
+import com.jfa.controllers.perm_role.Perm_RoleController;
+import com.jfa.controllers.permission.PermissionController;
 import com.jfa.controllers.relation.Role_Group_RelationController;
 import com.jfa.controllers.relation.User_Group_RelationController;
 import com.jfa.controllers.relation.User_Role_RelationController;
@@ -103,8 +105,10 @@ public class JfinalActivitiConfig extends JFinalConfig {
         me.add("/user_role_relation", User_Role_RelationController.class, templateFolder+"/user_role_relation");
         me.add("/page_element", PageElementController.class, templateFolder+"/page_element");
         me.add("/operation", OperationController.class, templateFolder+"/operation");
-
-        //------这里开始是业务类的Controller, 会自动扫描加载
+        me.add("/permission", PermissionController.class, templateFolder+"/permission");
+        me.add("/perm_role", Perm_RoleController.class, templateFolder+"/perm_role");
+		
+      //------这里开始是业务类的Controller, 会自动扫描加载
         // 默认这里是按表名生成URL path, 实际上应该做适当修改. 请在controller的注释中修改
         me.add(new AutoBindRoutes("com.jfa.controllers", templateFolder));
 

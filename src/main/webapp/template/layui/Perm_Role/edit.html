@@ -1,0 +1,101 @@
+#@layout()
+#define main()
+<link rel="stylesheet" href="/theme/H-ui.admin.page3.1.1/lib/lightbox2/2.8.1/css/lightbox.css">
+
+<section style="padding: 15px;">
+	<span class="layui-breadcrumb">
+    		<a href="">首页</a>
+    		<a href="">用户管理</a>
+    		<a><cite>角色-权限分配编辑页</cite></a>
+    	</span>
+    	<br>
+    	<br>
+
+	<form class="form" id="orderForm" class="layui-form layui-row">
+	       <input  type="hidden" id="order_id" name="order_id"  value="#(order.get('id')??)">
+                     <div class="layui-form-item layui-col-md3">
+                    <label class="layui-form-label">角色</label>
+                    <div class="layui-input-inline">
+                    <select  id="role_id" name="role_id" lay-search="">
+        					<option value="">直接选择或搜索选择</option>
+        					#for(r:role)
+          					<option #if(r.id== order.get('role_id')??) selected="selected"  #end value="#(r.id)">#(r.name)</option>
+          					#end
+       				 </select>
+                    </div>
+                </div>
+                
+              <div class="layui-form-item layui-col-md3">
+                <div class="layui-inline">
+                    <label class="layui-form-label">权限点</label>
+                    <div class="layui-input-inline">
+                     <select  id="permission_id" name="permission_id" lay-search="">
+        					<option value="">直接选择或搜索选择</option>
+        					#for(p:permission)
+          					<option #if(p.id== order.get('permission_id')??) selected="selected"  #end value="#(p.id)">#(p.name)</option>
+          					#end
+       				 </select>
+                    </div>
+                    </div>
+                </div>
+
+			<div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button type="button"  id="saveBtn" class="layui-btn" lay-submit="">保存</button>
+                    <a class="layui-btn layui-btn-primary"  href="/perm_role" >返回</a>
+                </div>
+            </div>
+		</form>
+
+
+
+</section>
+#end
+
+<script type="text/javascript">
+layui.use(['jquery', 'form', 'laydate', 'layedit'], function(){
+	var form = layui.form, $=layui.$, laydate=layui.laydate,layedit = layui.layedit;
+	
+	$('#sidebar_leave').addClass('layui-nav-itemed');
+	
+	/*//执行一个laydate实例
+	laydate.render({
+		elem: '#start_time' //指定元素
+	});
+	//执行一个laydate实例
+	laydate.render({
+		elem: '#end_time' //指定元素
+	});*/
+
+	//创建一个编辑器
+	var editIndex = layedit.build('LAY_demo_editor');
+	
+	  //监听提交
+	form.on('submit()',function(data){
+	  var order={};
+	  $("#orderForm input,select").each(function(){
+		 var name = $(this).attr("name");
+		 order[name]=$(this).val();
+	  });
+	  
+	  $.post("/perm_role/save",{params:JSON.stringify(order)},function(data){
+		  if(data.role_id>0){
+			  layer.msg('保存成功',{icon:1});
+			  var stateObj = { foo : "create"};
+			history.pushState(stateObj,"edit","edit?id="+data.id);
+			setTimeout(function(){
+				location.href="/perm_role";
+			},1000);
+		  }else{
+			  layer.msg('保存失败',{icon:2});
+		  }
+	  }).fail(function(){
+		  layer.msg('后台出错',{icon:2});
+	  	});
+	  });
+	
+	
+});
+
+</script>
+<script type="text/javascript" src="/theme/H-ui.admin.page3.1.1/lib/lightbox2/2.8.1/js/lightbox.min.js"></script>

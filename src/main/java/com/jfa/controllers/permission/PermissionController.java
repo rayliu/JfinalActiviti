@@ -1,0 +1,136 @@
+package com.jfa.controllers.permission;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.jfa.interceptor.SetAttrLoginUserInterceptor;
+import com.jfinal.kit.PropKit;
+import com.jfinal.kit.StrKit;
+
+import org.apache.commons.lang3.BooleanUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import org.apache.shiro.subject.Subject;
+
+import com.google.gson.Gson;
+import com.jfinal.aop.Before;
+import com.jfinal.core.Controller;
+import com.jfinal.log.Log;
+import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.Record;
+import com.jfinal.plugin.activerecord.tx.Tx;
+
+
+//shiro注释, 要求必须登录才能访问
+@RequiresAuthentication
+@Before(SetAttrLoginUserInterceptor.class)
+public class PermissionController extends Controller {
+    private Log logger = Log.getLog(PermissionController.class);
+    Subject currentUser = SecurityUtils.getSubject();
+
+    //返回leave list页面
+    public void index() {
+        redirect("/permission/list");
+    }
+
+    public void list() {
+        render("list.html");
+    }
+
+    //返回list页面所需的json
+    public void getList(){
+        String sLimit = "";
+        String condition = " ";
+
+        if (getPara("limit") != null && getPara("page") != null) {
+            int limit = getParaToInt("limit");
+            int page=getParaToInt("page")-1;
+            sLimit = " limit " + limit*page + ", " + limit;
+        }
+        Record login_user = getAttr("user");
+        String sql=" select * from t_rbac_permission where is_delete=0";
+        List<Record> orderList = Db.find(sql+condition+" order by id desc "+sLimit);
+
+        String sqlTotal = "select count(1) total from (" + sql + ") B";
+        Record rec = Db.findFirst(sqlTotal);
+
+        Map<String,Object> map = new HashMap<String,Object>();
+        map.put("code", 0);
+        map.put("count", rec.get("total"));
+        map.put("data", orderList);
+
+        renderJson(map);
+    }
+
+    //返回create页面
+    public void create() {
+        Record login_user = getAttr("user");
+
+        Record order = new Record();
+        order.set("user_id", login_user.get("id"));
+        order.set("user_name", login_user.get("name"));
+        setAttr("order", order);
+        render("edit.html");
+    }
+
+    //返回edit页面
+    public void edit() {
+        Record login_user = getAttr("user");
+        String id = getPara("id");
+        Record order = Db.findFirst("select * from t_rbac_permission  where id=?", id);
+
+        setAttr("order", order);
+        render("edit.html");
+    }
+
+    @Before(Tx.class)
+    public void save(){
+        String jsonStr=getPara("params");
+        Gson gson = new Gson();
+        Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);
+        Record login_user = getAttr("user");
+
+            String id = (String)dto.get("order_id");
+            String name = (String)dto.get("name");
+            String type = (String)dto.get("type");
+
+        Record order = new Record();
+        if(StrKit.notBlank(id)){
+            order = Db.findById("t_rbac_permission", id);
+                if(StrKit.notBlank(name)){
+                    order.set("name", name);
+                }
+                if(StrKit.notBlank(type)){
+                    order.set("type", type);
+                }
+
+            Db.update("t_rbac_permission", order);
+        } else {
+                if(StrKit.notBlank(name)){
+                    order.set("name", name);
+                }
+                if(StrKit.notBlank(type)){
+                    order.set("type", type);
+                }
+
+            Db.save("t_rbac_permission",order);
+        }
+
+        renderJson(order);
+    }
+
+    public void delete(){
+		String id= getPara("id");
+		Record re=Db.findById("t_rbac_permission", id);
+		Boolean result = false;
+		if(re!=null){
+			re.set("is_delete", 1);
+			result = Db.update("t_rbac_permission",re);
+		}
+		renderJson("{\"result\":"+result+"}");
+	}
+
+}
