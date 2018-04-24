@@ -38,11 +38,4 @@
 			});
 		});
 		
-		form.on('select(level)',function(data){
-			var user_id=data.value;
-			var id = data.value;
-					location.href="/user_group_relation/edit?id="+id+"&&user_id="+user_id;
-		});
-		
-
 	});

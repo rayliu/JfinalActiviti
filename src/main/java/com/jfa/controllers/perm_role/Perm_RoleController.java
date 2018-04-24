@@ -67,38 +67,27 @@ public class Perm_RoleController extends Controller {
         renderJson(map);
     }
 
-    //返回create页面
-    public void create() {
-        Record login_user = getAttr("user");
-
-        Record order = new Record();
-        order.set("user_id", login_user.get("id"));
-        order.set("user_name", login_user.get("name"));
-        setAttr("order", order);
-        List<Record> role =Db.find("select * from t_rbac_role");
-        setAttr("role",role);
-        
-        List<Record> permission =Db.find("select * from t_rbac_permission");
-        setAttr("permission",permission);
-        
-        render("edit.html");
-    }
-
     //返回edit页面
     public void edit() {
         Record login_user = getAttr("user");
-        String permission_id= getPara("permission_id");
         String role_id= getPara("role_id");
+        
         Record order = Db.findFirst("select * from t_rbac_ref_perm_role  where role_id=?", role_id);
         setAttr("order", order);
         
-        List<Record> role =Db.find("select * from t_rbac_role");
+        List<Record> group = Db.find("select * from t_rbac_group");
+        setAttr("group",group);
+        
+        List<Record> role = Db.find("select * from t_rbac_role");
         setAttr("role",role);
         
-        List<Record> permission =Db.find("select * from t_rbac_permission");
-        setAttr("permission",permission);
-        
-        
+        List<Record> menuList = Db.find("select * from t_rbac_permission where type='MENU'");
+        setAttr("menuList",menuList);
+        List<Record> elementList = Db.find("select * from t_rbac_permission where type='ELEMENT'");
+        setAttr("elementList",elementList);
+        List<Record> operationList = Db.find("select * from t_rbac_permission where type='OPERATION'");
+        setAttr("operationList",operationList);
+    	
         render("edit.html");
     }
 
@@ -109,35 +98,114 @@ public class Perm_RoleController extends Controller {
         Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);
         Record login_user = getAttr("user");
 
-        String order_id = (String)dto.get("order_id");
-            String role_id = (String)dto.get("role_id");
-            String permission_id = (String)dto.get("permission_id");
-
-        Record order = new Record();
-        if(StrKit.notBlank(order_id)){
-        	order=Db.findById("t_rbac_ref_perm_role",order_id);
-                if(StrKit.notBlank(role_id)){
-                    order.set("role_id", role_id);
-                }
-                if(StrKit.notBlank(permission_id)){
-                    order.set("permission_id", permission_id);
-                }
-
-            Db.update("t_rbac_ref_perm_role", order);
-        } else {
-                if(StrKit.notBlank(role_id)){
-                	order.set("role_id", role_id);
-                }
-                if(StrKit.notBlank(permission_id)){
-                	order.set("permission_id", permission_id);
-                }
-
-            Db.save("t_rbac_ref_perm_role",order);
-        }
-
-        renderJson(order);
+        String group_id = (String)dto.get("group_id");
+        String role_id = (String)dto.get("role_id");
+        List<String> menuIds = (ArrayList<String>) dto.get("menuIds");
+        List<String> pageIds = (ArrayList<String>) dto.get("pageIds");
+        List<String> operationIds = (ArrayList<String>) dto.get("operationIds");
+        boolean result = false;
+        Db.delete("delete from t_rbac_ref_perm_role where role_id = ?",role_id);
+        for(int i = 0;i<menuIds.size();i++){
+        	Record re = new Record();
+    		re.set("role_id", role_id);
+    		re.set("permission_id", menuIds.get(i));
+    		result = Db.save("t_rbac_ref_perm_role",re);
+    	}
+		for(int i = 0;i<pageIds.size();i++){
+			Record re = new Record();
+			re.set("role_id", role_id);
+    		re.set("permission_id", pageIds.get(i));
+    		result = Db.save("t_rbac_ref_perm_role",re);
+		}
+		for(int i = 0;i<operationIds.size();i++){
+			Record re = new Record();
+			re.set("role_id", role_id);
+    		re.set("permission_id", operationIds.get(i));
+    		result = Db.save("t_rbac_ref_perm_role",re);
+		}
+		
+        renderJson("{\"result\":"+result+"}");
     }
+    
+    public void menuList(){
+    	Record user = Db.findFirst("select * from t_rbac_user where name=?",currentUser.getPrincipal());
+    	String condition = "";
+		if(1==user.getInt("id")){
+			condition = "";
+		}else{
+			condition = " and tru.id = '"+user.get("id")+"'";
+		}
+    	String sql = "SELECT trm.* FROM t_rbac_menu trm"
+				+ " LEFT JOIN t_rbac_ref_perm_menu trrpm on trrpm.menu_id = trm.id"
+				+ " LEFT JOIN t_rbac_permission trp on trp.id = trrpm.permission_id"
+				+ " LEFT JOIN t_rbac_ref_perm_role trrpr on trrpr.permission_id = trp.id"
+				+ " LEFT JOIN t_rbac_role trr on trr.id = trrpr.role_id"
+				+ " LEFT JOIN t_rbac_ref_user_role trrur on trrur.role_id = trr.id"
+				+ " LEFT JOIN t_rbac_user tru on tru.id = trrur.user_id"
+				+ " where 1=1 ";
+    	List<Record> orderList = Db.find(sql+condition+" order by trr.id desc ");
+    	String sqlTotal = "select count(1) total from (" + sql + ") B";
+    	Record rec = Db.findFirst(sqlTotal);
 
+    	Map<String,Object> map = new HashMap<String,Object>();
+    	map.put("code", 0);
+    	map.put("count", rec.get("total"));
+    	map.put("data", orderList);
+    	renderJson(map);
+    }
+    
+    public void pageList(){
+		Record user = Db.findFirst("select * from t_rbac_user where name=?",currentUser.getPrincipal());
+		String condition = "";
+			if(1==user.getInt("id")){
+				condition = "";
+			}else{
+				condition = " and tru.id = '"+user.get("id")+"'";
+			}
+		String sql = "SELECT trm.* FROM t_rbac_menu trm"
+					+ " LEFT JOIN t_rbac_ref_perm_menu trrpm on trrpm.menu_id = trm.id"
+					+ " LEFT JOIN t_rbac_permission trp on trp.id = trrpm.permission_id"
+					+ " LEFT JOIN t_rbac_ref_perm_role trrpr on trrpr.permission_id = trp.id"
+					+ " LEFT JOIN t_rbac_role trr on trr.id = trrpr.role_id"
+					+ " LEFT JOIN t_rbac_ref_user_role trrur on trrur.role_id = trr.id"
+					+ " LEFT JOIN t_rbac_user tru on tru.id = trrur.user_id"
+					+ " where 1=1 ";
+		List<Record> orderList = Db.find(sql+condition+" order by trr.id desc ");
+		String sqlTotal = "select count(1) total from (" + sql + ") B";
+		Record rec = Db.findFirst(sqlTotal);
 
+	   	Map<String,Object> map = new HashMap<String,Object>();
+	   	map.put("code", 0);
+	   	map.put("count", rec.get("total"));
+	   	map.put("data", orderList);
+	   	renderJson(map);
+   }
+    
+    public void operationList(){
+		Record user = Db.findFirst("select * from t_rbac_user where name=?",currentUser.getPrincipal());
+		String condition = "";
+		if(1==user.getInt("id")){
+			condition = "";
+		}else{
+			condition = " and tru.id = '"+user.get("id")+"'";
+		}
+      	String sql = "SELECT trm.* FROM t_rbac_menu trm"
+   				+ " LEFT JOIN t_rbac_ref_perm_menu trrpm on trrpm.menu_id = trm.id"
+   				+ " LEFT JOIN t_rbac_permission trp on trp.id = trrpm.permission_id"
+   				+ " LEFT JOIN t_rbac_ref_perm_role trrpr on trrpr.permission_id = trp.id"
+   				+ " LEFT JOIN t_rbac_role trr on trr.id = trrpr.role_id"
+   				+ " LEFT JOIN t_rbac_ref_user_role trrur on trrur.role_id = trr.id"
+   				+ " LEFT JOIN t_rbac_user tru on tru.id = trrur.user_id"
+   				+ " where 1=1 ";
+      	List<Record> orderList = Db.find(sql+condition+" order by trr.id desc ");
+      	String sqlTotal = "select count(1) total from (" + sql + ") B";
+      	Record rec = Db.findFirst(sqlTotal);
+
+      	Map<String,Object> map = new HashMap<String,Object>();
+      	map.put("code", 0);
+      	map.put("count", rec.get("total"));
+      	map.put("data", orderList);
+      	renderJson(map);
+	}
 
 }

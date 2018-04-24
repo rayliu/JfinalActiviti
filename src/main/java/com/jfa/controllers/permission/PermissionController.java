@@ -65,24 +65,33 @@ public class PermissionController extends Controller {
         renderJson(map);
     }
 
-    //返回create页面
-    public void create() {
-        Record login_user = getAttr("user");
-
-        Record order = new Record();
-        order.set("user_id", login_user.get("id"));
-        order.set("user_name", login_user.get("name"));
-        setAttr("order", order);
-        render("edit.html");
-    }
-
     //返回edit页面
     public void edit() {
         Record login_user = getAttr("user");
         String id = getPara("id");
+        
         Record order = Db.findFirst("select * from t_rbac_permission  where id=?", id);
-
+        if(order!=null){
+        	if("MENU".equals(order.get("type"))){
+            	Record re = Db.findFirst("select * from t_rbac_ref_perm_menu where permission_id = ?",id);
+            	order.set("menu_id", re.get("menu_id"));
+            }else if("ELEMENT".equals(order.get("type"))){
+            	Record re = Db.findFirst("select * from t_rbac_page_element where permission_id = ?",id);
+            	order.set("element_id", re.get("page_element_id"));
+            }else if("OPERATION".equals(order.get("type"))){
+            	Record re = Db.findFirst("select * from t_rbac_operation where permission_id = ?",id);
+            	order.set("operation_id", re.get("operation_id"));
+            }
+        }
         setAttr("order", order);
+        
+        List<Record> menuList = Db.find("select * from t_rbac_menu");
+        setAttr("menuList",menuList);
+        List<Record> elementList = Db.find("select * from t_rbac_page_element");
+        setAttr("elementList",elementList);
+        List<Record> operationList = Db.find("select * from t_rbac_operation");
+        setAttr("operationList",operationList);
+        
         render("edit.html");
     }
 
@@ -93,30 +102,42 @@ public class PermissionController extends Controller {
         Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);
         Record login_user = getAttr("user");
 
-            String id = (String)dto.get("order_id");
-            String name = (String)dto.get("name");
-            String type = (String)dto.get("type");
+        String id = (String)dto.get("order_id");
+        String name = (String)dto.get("name");
+        String type = (String)dto.get("type");
+        String menu_id = (String)dto.get("menu_id");
+        String element_id = (String)dto.get("element_id");
+        String operation_id = (String)dto.get("operation_id");
 
         Record order = new Record();
         if(StrKit.notBlank(id)){
             order = Db.findById("t_rbac_permission", id);
-                if(StrKit.notBlank(name)){
-                    order.set("name", name);
-                }
-                if(StrKit.notBlank(type)){
-                    order.set("type", type);
-                }
-
+            Db.delete("delete from t_rbac_ref_perm_menu where permission_id = ?",id);
+            Db.delete("delete from t_rbac_ref_perm_element where permission_id = ?",id);
+            Db.delete("delete from t_rbac_ref_perm_operation where permission_id = ?",id);
+            order.set("name", name);
+            order.set("type", type);
             Db.update("t_rbac_permission", order);
         } else {
-                if(StrKit.notBlank(name)){
-                    order.set("name", name);
-                }
-                if(StrKit.notBlank(type)){
-                    order.set("type", type);
-                }
-
+            order.set("name", name);
+            order.set("type", type);
             Db.save("t_rbac_permission",order);
+        }
+        if("MENU".equals(type)){
+        	Record re = new Record();
+        	re.set("menu_id", menu_id);
+        	re.set("permission_id", order.get("id"));
+        	Db.save("t_rbac_ref_perm_menu", re);
+        }else if("ELEMENT".equals(type)){
+        	Record re = new Record();
+        	re.set("page_element_id", element_id);
+        	re.set("permission_id", order.get("id"));
+        	Db.save("t_rbac_ref_perm_element", re);
+        }else if("OPERATION".equals(type)){
+        	Record re = new Record();
+        	re.set("operation_id", operation_id);
+        	re.set("permission_id", order.get("id"));
+        	Db.save("t_rbac_ref_perm_operation", re);
         }
 
         renderJson(order);
