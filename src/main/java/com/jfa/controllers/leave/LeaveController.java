@@ -339,6 +339,13 @@ public class LeaveController extends Controller {
         renderJson(order);
     }
     
+    public void print(){
+        Record login_user = getAttr("user");
+        String id = getPara("id");
+        Record order = Db.findFirst("select l.*, user.name user_name from t_leave l left join t_rbac_user user on l.user_id=user.id where l.id=?",id);
 
+        setAttr("order", order);
+        render("leaveFormPrint.html");
+    }
 
 }

@@ -76,4 +76,15 @@
 				layer.msg('后台出错', {icon: 2});
 			});
 		});
+
+		$("#printBtn").click(function(){
+			layer.open({
+				title: '打印预览'
+				,type: 2
+				,resize: false 
+				,area: ['893px', '800px']
+				,content: '/leave/print?id=6' //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
+			  }); 
+			
+		});
 	});

@@ -1,0 +1,374 @@
+<!--_meta 作为公共模版分离出去-->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>JFinalActiviti</title>
+  <link rel="stylesheet" type="text/css" href="/theme/layui-v2.2.6/layui/css/layui.css" />
+</head>
+<body class="layui-layout-body">
+	
+	<div id="layui-body-print" class="layui-body" style="left: 0px;">
+			<button type="button" id="printBtn" class="layui-btn" style="margin: 15px;">下载</button>
+			为演示分页故意多加了很多个form
+			<section style="padding: 15px;">
+				<h1 style="text-align: center;">请假单</h1>
+				<form id="orderForm" class="layui-form layui-row"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+					<input type="hidden" id="order_id" name="order_id" value="#(order.get('id'))">
+					<div class="layui-form-item layui-col-md3">
+						<label class="layui-form-label">申请人</label>
+						<div class="layui-input-block">
+							<input type="hidden" name="user_id" autocomplete="off" class="layui-input" value="#(order.get('user_id'))">
+							<input type="text" name="user_name" class="layui-input" disabled value="#(order.get('user_name'))" lay-verify="required|user_name" lay-verType="tips">
+						</div>
+					</div>
+					<div class="layui-form-item layui-col-md3">
+						<label class="layui-form-label">开始时间</label>
+						<div class="layui-input-block">
+							<input type="text" id="start_time" autocomplete="off" name="start_time" class="layui-input" 
+							value="#(order.get('start_time'))" lay-verify="required">
+						</div>
+					</div>
+					<div class="layui-form-item layui-col-md3">
+						<label class="layui-form-label">结束时间</label>
+						<div class="layui-input-block">
+							<input type="text" id="end_time" autocomplete="off" name="end_time" class="layui-input" 
+							value="#(order.get('end_time'))" lay-verify="required">
+						</div>
+					</div>
+					<div class="layui-form-item layui-form-text layui-col-md6">
+						<label class="layui-form-label">请假原因</label>
+						<div class="layui-input-block">
+							<textarea id="reason" name="reason" autocomplete="off" lay-verify="required" placeholder="请输入内容" class="layui-textarea">#(order.get('reason'))</textarea>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<div class="layui-input-block">
+						
+						</div>
+					</div>
+					<!-- 更多表单结构排版请移步文档左侧【页面元素-表单】一项阅览 -->
+				</form>
+				<form id="orderForm1" class="layui-form layui-row"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+					<input type="hidden" id="order_id" name="order_id" value="#(order.get('id'))">
+					<div class="layui-form-item layui-col-md3">
+						<label class="layui-form-label">申请人</label>
+						<div class="layui-input-block">
+							<input type="hidden" name="user_id" autocomplete="off" class="layui-input" value="#(order.get('user_id'))">
+							<input type="text" name="user_name" class="layui-input" disabled value="#(order.get('user_name'))" lay-verify="required|user_name" lay-verType="tips">
+						</div>
+					</div>
+					<div class="layui-form-item layui-col-md3">
+						<label class="layui-form-label">开始时间</label>
+						<div class="layui-input-block">
+							<input type="text" id="start_time" autocomplete="off" name="start_time" class="layui-input" 
+							value="#(order.get('start_time'))" lay-verify="required">
+						</div>
+					</div>
+					<div class="layui-form-item layui-col-md3">
+						<label class="layui-form-label">结束时间</label>
+						<div class="layui-input-block">
+							<input type="text" id="end_time" autocomplete="off" name="end_time" class="layui-input" 
+							value="#(order.get('end_time'))" lay-verify="required">
+						</div>
+					</div>
+					<div class="layui-form-item layui-form-text layui-col-md6">
+						<label class="layui-form-label">请假原因</label>
+						<div class="layui-input-block">
+							<textarea id="reason" name="reason" autocomplete="off" lay-verify="required" placeholder="请输入内容" class="layui-textarea">#(order.get('reason'))</textarea>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<div class="layui-input-block">
+						
+						</div>
+					</div>
+					<!-- 更多表单结构排版请移步文档左侧【页面元素-表单】一项阅览 -->
+				</form>
+				<form id="orderForm2" class="layui-form layui-row"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+					<input type="hidden" id="order_id" name="order_id" value="#(order.get('id'))">
+					<div class="layui-form-item layui-col-md3">
+						<label class="layui-form-label">申请人</label>
+						<div class="layui-input-block">
+							<input type="hidden" name="user_id" autocomplete="off" class="layui-input" value="#(order.get('user_id'))">
+							<input type="text" name="user_name" class="layui-input" disabled value="#(order.get('user_name'))" lay-verify="required|user_name" lay-verType="tips">
+						</div>
+					</div>
+					<div class="layui-form-item layui-col-md3">
+						<label class="layui-form-label">开始时间</label>
+						<div class="layui-input-block">
+							<input type="text" id="start_time" autocomplete="off" name="start_time" class="layui-input" 
+							value="#(order.get('start_time'))" lay-verify="required">
+						</div>
+					</div>
+					<div class="layui-form-item layui-col-md3">
+						<label class="layui-form-label">结束时间</label>
+						<div class="layui-input-block">
+							<input type="text" id="end_time" autocomplete="off" name="end_time" class="layui-input" 
+							value="#(order.get('end_time'))" lay-verify="required">
+						</div>
+					</div>
+					<div class="layui-form-item layui-form-text layui-col-md6">
+						<label class="layui-form-label">请假原因</label>
+						<div class="layui-input-block">
+							<textarea id="reason" name="reason" autocomplete="off" lay-verify="required" placeholder="请输入内容" class="layui-textarea">#(order.get('reason'))</textarea>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<div class="layui-input-block">
+						
+						</div>
+					</div>
+					<!-- 更多表单结构排版请移步文档左侧【页面元素-表单】一项阅览 -->
+				</form>
+				<form id="orderForm3" class="layui-form layui-row"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+					<input type="hidden" id="order_id" name="order_id" value="#(order.get('id'))">
+					<div class="layui-form-item layui-col-md3">
+						<label class="layui-form-label">申请人</label>
+						<div class="layui-input-block">
+							<input type="hidden" name="user_id" autocomplete="off" class="layui-input" value="#(order.get('user_id'))">
+							<input type="text" name="user_name" class="layui-input" disabled value="#(order.get('user_name'))" lay-verify="required|user_name" lay-verType="tips">
+						</div>
+					</div>
+					<div class="layui-form-item layui-col-md3">
+						<label class="layui-form-label">开始时间</label>
+						<div class="layui-input-block">
+							<input type="text" id="start_time" autocomplete="off" name="start_time" class="layui-input" 
+							value="#(order.get('start_time'))" lay-verify="required">
+						</div>
+					</div>
+					<div class="layui-form-item layui-col-md3">
+						<label class="layui-form-label">结束时间</label>
+						<div class="layui-input-block">
+							<input type="text" id="end_time" autocomplete="off" name="end_time" class="layui-input" 
+							value="#(order.get('end_time'))" lay-verify="required">
+						</div>
+					</div>
+					<div class="layui-form-item layui-form-text layui-col-md6">
+						<label class="layui-form-label">请假原因</label>
+						<div class="layui-input-block">
+							<textarea id="reason" name="reason" autocomplete="off" lay-verify="required" placeholder="请输入内容" class="layui-textarea">#(order.get('reason'))</textarea>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<div class="layui-input-block">
+						
+						</div>
+					</div>
+					<!-- 更多表单结构排版请移步文档左侧【页面元素-表单】一项阅览 -->
+				</form>
+				<form id="orderForm4" class="layui-form layui-row"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+					<input type="hidden" id="order_id" name="order_id" value="#(order.get('id'))">
+					<div class="layui-form-item layui-col-md3">
+						<label class="layui-form-label">申请人</label>
+						<div class="layui-input-block">
+							<input type="hidden" name="user_id" autocomplete="off" class="layui-input" value="#(order.get('user_id'))">
+							<input type="text" name="user_name" class="layui-input" disabled value="#(order.get('user_name'))" lay-verify="required|user_name" lay-verType="tips">
+						</div>
+					</div>
+					<div class="layui-form-item layui-col-md3">
+						<label class="layui-form-label">开始时间</label>
+						<div class="layui-input-block">
+							<input type="text" id="start_time" autocomplete="off" name="start_time" class="layui-input" 
+							value="#(order.get('start_time'))" lay-verify="required">
+						</div>
+					</div>
+					<div class="layui-form-item layui-col-md3">
+						<label class="layui-form-label">结束时间</label>
+						<div class="layui-input-block">
+							<input type="text" id="end_time" autocomplete="off" name="end_time" class="layui-input" 
+							value="#(order.get('end_time'))" lay-verify="required">
+						</div>
+					</div>
+					<div class="layui-form-item layui-form-text layui-col-md6">
+						<label class="layui-form-label">请假原因</label>
+						<div class="layui-input-block">
+							<textarea id="reason" name="reason" autocomplete="off" lay-verify="required" placeholder="请输入内容" class="layui-textarea">#(order.get('reason'))</textarea>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<div class="layui-input-block">
+						
+						</div>
+					</div>
+					<!-- 更多表单结构排版请移步文档左侧【页面元素-表单】一项阅览 -->
+				</form>
+				<form id="orderForm5" class="layui-form layui-row"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+					<input type="hidden" id="order_id" name="order_id" value="#(order.get('id'))">
+					<div class="layui-form-item layui-col-md3">
+						<label class="layui-form-label">申请人</label>
+						<div class="layui-input-block">
+							<input type="hidden" name="user_id" autocomplete="off" class="layui-input" value="#(order.get('user_id'))">
+							<input type="text" name="user_name" class="layui-input" disabled value="#(order.get('user_name'))" lay-verify="required|user_name" lay-verType="tips">
+						</div>
+					</div>
+					<div class="layui-form-item layui-col-md3">
+						<label class="layui-form-label">开始时间</label>
+						<div class="layui-input-block">
+							<input type="text" id="start_time" autocomplete="off" name="start_time" class="layui-input" 
+							value="#(order.get('start_time'))" lay-verify="required">
+						</div>
+					</div>
+					<div class="layui-form-item layui-col-md3">
+						<label class="layui-form-label">结束时间</label>
+						<div class="layui-input-block">
+							<input type="text" id="end_time" autocomplete="off" name="end_time" class="layui-input" 
+							value="#(order.get('end_time'))" lay-verify="required">
+						</div>
+					</div>
+					<div class="layui-form-item layui-form-text layui-col-md6">
+						<label class="layui-form-label">请假原因</label>
+						<div class="layui-input-block">
+							<textarea id="reason" name="reason" autocomplete="off" lay-verify="required" placeholder="请输入内容" class="layui-textarea">#(order.get('reason'))</textarea>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<div class="layui-input-block">
+						
+						</div>
+					</div>
+					<!-- 更多表单结构排版请移步文档左侧【页面元素-表单】一项阅览 -->
+				</form>
+				<form id="orderForm6" class="layui-form layui-row"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+					<input type="hidden" id="order_id" name="order_id" value="#(order.get('id'))">
+					<div class="layui-form-item layui-col-md3">
+						<label class="layui-form-label">申请人</label>
+						<div class="layui-input-block">
+							<input type="hidden" name="user_id" autocomplete="off" class="layui-input" value="#(order.get('user_id'))">
+							<input type="text" name="user_name" class="layui-input" disabled value="#(order.get('user_name'))" lay-verify="required|user_name" lay-verType="tips">
+						</div>
+					</div>
+					<div class="layui-form-item layui-col-md3">
+						<label class="layui-form-label">开始时间</label>
+						<div class="layui-input-block">
+							<input type="text" id="start_time" autocomplete="off" name="start_time" class="layui-input" 
+							value="#(order.get('start_time'))" lay-verify="required">
+						</div>
+					</div>
+					<div class="layui-form-item layui-col-md3">
+						<label class="layui-form-label">结束时间</label>
+						<div class="layui-input-block">
+							<input type="text" id="end_time" autocomplete="off" name="end_time" class="layui-input" 
+							value="#(order.get('end_time'))" lay-verify="required">
+						</div>
+					</div>
+					<div class="layui-form-item layui-form-text layui-col-md6">
+						<label class="layui-form-label">请假原因</label>
+						<div class="layui-input-block">
+							<textarea id="reason" name="reason" autocomplete="off" lay-verify="required" placeholder="请输入内容" class="layui-textarea">#(order.get('reason'))</textarea>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<div class="layui-input-block">
+						
+						</div>
+					</div>
+					<!-- 更多表单结构排版请移步文档左侧【页面元素-表单】一项阅览 -->
+				</form>
+		
+				<form id="orderForm7" class="layui-form layui-row"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+					<input type="hidden" id="order_id" name="order_id" value="#(order.get('id'))">
+					<div class="layui-form-item layui-col-md3">
+						<label class="layui-form-label">申请人</label>
+						<div class="layui-input-block">
+							<input type="hidden" name="user_id" autocomplete="off" class="layui-input" value="#(order.get('user_id'))">
+							<input type="text" name="user_name" class="layui-input" disabled value="#(order.get('user_name'))" lay-verify="required|user_name" lay-verType="tips">
+						</div>
+					</div>
+					<div class="layui-form-item layui-col-md3">
+						<label class="layui-form-label">开始时间</label>
+						<div class="layui-input-block">
+							<input type="text" id="start_time" autocomplete="off" name="start_time" class="layui-input" 
+							value="#(order.get('start_time'))" lay-verify="required">
+						</div>
+					</div>
+					<div class="layui-form-item layui-col-md3">
+						<label class="layui-form-label">结束时间</label>
+						<div class="layui-input-block">
+							<input type="text" id="end_time" autocomplete="off" name="end_time" class="layui-input" 
+							value="#(order.get('end_time'))" lay-verify="required">
+						</div>
+					</div>
+					<div class="layui-form-item layui-form-text layui-col-md6">
+						<label class="layui-form-label">请假原因</label>
+						<div class="layui-input-block">
+							<textarea id="reason" name="reason" autocomplete="off" lay-verify="required" placeholder="请输入内容" class="layui-textarea">#(order.get('reason'))</textarea>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<div class="layui-input-block">
+						
+						</div>
+					</div>
+					<!-- 更多表单结构排版请移步文档左侧【页面元素-表单】一项阅览 -->
+				</form>
+	</div>
+	
+</body>
+</html>
+<script src="https://cdn.bootcss.com/html2canvas/0.5.0-beta4/html2canvas.js"></script>
+<script src="https://cdn.bootcss.com/jspdf/1.3.4/jspdf.debug.js"></script>
+<script src="/theme/layui-v2.2.6/layui/layui.js"></script>
+<script>
+		layui.use(['jquery', 'form', 'laydate', 'layedit'], function(){
+			var form = layui.form, $=layui.$, laydate=layui.laydate,layedit = layui.layedit;
+
+			$('#printBtn').click(function(){
+				$("#layui-body-print").removeClass('layui-body');
+				layer.load(1);
+				//此处关闭
+				setTimeout(function(){
+					layer.closeAll('loading');
+					printAction();
+					$("#layui-body-print").addClass('layui-body');
+				}, 3000);
+				
+			});
+
+			var printAction = function(){
+				
+				var target = $("section")[0];
+				target.style.background = "#FFFFFF";
+
+				html2canvas(target, {
+					onrendered:function(canvas) {
+						var contentWidth = canvas.width;
+						var contentHeight = canvas.height;
+
+						//一页pdf显示html页面生成的canvas高度;
+						var pageHeight = contentWidth / 592.28 * 841.89;
+						//未生成pdf的html页面高度
+						var leftHeight = contentHeight;
+						//页面偏移
+						var position = 0;
+						//a4纸的尺寸[595.28,841.89]，html页面生成的canvas在pdf中图片的宽高
+						var imgWidth = 595.28;
+						var imgHeight = 592.28/contentWidth * contentHeight;
+
+						var pageData = canvas.toDataURL('image/jpeg', 1.0);
+
+						var pdf = new jsPDF('', 'pt', 'a4');
+
+						//有两个高度需要区分，一个是html页面的实际高度，和生成pdf的页面高度(841.89)
+						//当内容未超过pdf一页显示的范围，无需分页
+						if (leftHeight < pageHeight) {
+							pdf.addImage(pageData, 'JPEG', 0, 0, imgWidth, imgHeight );
+						} else {
+							while(leftHeight > 0) {
+								pdf.addImage(pageData, 'JPEG', 0, position, imgWidth, imgHeight)
+								leftHeight -= pageHeight;
+								position -= 841.89;
+								//避免添加空白页
+								if(leftHeight > 0) {
+									pdf.addPage();
+								}
+							}
+						}
+
+						pdf.save("report.pdf");
+					}
+				})
+			};//end of function
+		});
+</script>
