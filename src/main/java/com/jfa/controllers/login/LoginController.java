@@ -117,12 +117,6 @@ public class LoginController extends Controller {
 		Db.save("t_login_log", rec);
 	}
 
-	public void logout() {
-		Subject currentUser = SecurityUtils.getSubject();
-		currentUser.logout();
-		redirect("/login");
-	}
-
 	public static String getIpAddress(HttpServletRequest request){
 		String ipAddress = request.getHeader("x-forwarded-for");
 

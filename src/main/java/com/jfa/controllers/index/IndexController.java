@@ -6,8 +6,11 @@ import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.Sqls;
+import com.jfinal.plugin.ehcache.CacheKit;
+
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 
 //shiro注释, 要求必须登录才能访问
@@ -36,6 +39,14 @@ public class IndexController extends Controller {
 			redirect("/login");
 			return;
 		}
+		
+		
+		Record userRec = Db.findFirst("select * from t_rbac_user where name=?", currentUser.getPrincipal());
+		Session oldSession = CacheKit.get("userSessionCache", userRec.get("id"));
+		if(oldSession!=null) {
+			CacheKit.remove("userSessionCache", userRec.get("id"));
+		}
+		
 		currentUser.logout();
 		redirect("/login");
 	}
