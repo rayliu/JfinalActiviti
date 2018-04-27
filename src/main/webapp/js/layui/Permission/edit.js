@@ -19,7 +19,6 @@ $(function(){
 		  $.post("/permission/save",{params:JSON.stringify(order)},function(data){
 			  if(data.id>0){
 				  layer.msg('保存成功',{icon:1});
-				  var stateObj = { foo : "create"};
 				  setTimeout(function(){
 					  location.href="/permission/list";
 				  },1000);
@@ -32,30 +31,36 @@ $(function(){
 		  });
 	});
 	
+	var type = $("#type").val();
+	if("MENU"==type){
+		$(".element,.operation").hide();
+		$(".menu").show();
+	}else if("ELEMENT"==type){
+		$(".menu,.operation").hide();
+		$(".element").show();
+	}else if("OPERATION"==type){
+		$(".menu,.element").hide();
+		$(".operation").show();
+	}
+	
 	layui.use('form', function(){
 		  var form = layui.form;
 		  form.on('select(type)', function(data){
 			  if("MENU"==data.value){
-				  $("#menu").show();
+				  $(".element,.operation").hide();
+				  $(".menu").show();
 				  $("#menu").attr("lay-verify","required");
-				  $("#element").hide();
-				  $("#operation").hide();
-				  $("#element").attr("lay-verify","");
-				  $("#operation").attr("lay-verify","");
+				  $("#element,#operation").attr("lay-verify","");
 			  }else if("ELEMENT"==data.value){
-				  $("#element").show();
+				  $(".menu,.operation").hide();
+				  $(".element").show();
 				  $("#element").attr("lay-verify","required");
-				  $("#menu").hide();
-				  $("#operation").hide();
-				  $("#menu").attr("lay-verify","");
-				  $("#operation").attr("lay-verify","");
+				  $("#menu,#operation").attr("lay-verify","");
 			  }else if("OPERATION"==data.value){
-				  $("#operation").show();
+				  $(".menu,.element").hide();
+				  $(".operation").show();
 				  $("#operation").attr("lay-verify","required");
-				  $("#menu").hide();
-				  $("#element").hide();
-				  $("#menu").attr("lay-verify","");
-				  $("#element").attr("lay-verify","");
+				  $("#menu,#element").attr("lay-verify","");
 			  }
 		});  
 	});

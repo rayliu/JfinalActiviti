@@ -8,7 +8,6 @@
 	</span>
 	<br>
 	<br>
-	<a href="edit" class="layui-btn">新增</a>
 	<table class="layui-hide" id="jfa_table"></table>
 </section>
 
@@ -25,11 +24,20 @@
 				,url:'/perm_role/getList'
 				//,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
 				,cols: [[
-				            {field:'role_code', title: 'role_code'}
-				            ,{field:'role_name', title: '角色名字'}
-				            ,{field:'permission_name', title: '权限点'}
+							{field:'id', title: 'id'}
+				            ,{field:'code', title: 'role_code'}
+				            ,{field:'name', title: '角色名字'}
+				            ,{field:'total', title: '权限点',
+				            	templet: function(full){
+				            		if(full.total>0){
+				            			return '<span>权限点已设置</span>';
+				            		}else{
+				            			return '<span>权限点未设置</span>';
+				            		}
+				            	}
+				            }
 				            ,{field:'wealth', width:137, title: '操作', templet: function(full){
-								return '<a class="layui-btn layui-btn-xs" href="/perm_role/edit?role_id='+full.role_id+'&&permission_id='+full.permission_id+'">编辑</a>'
+								return '<a class="layui-btn layui-btn-xs" href="/perm_role/edit?role_id='+full.id+'">编辑</a>'
 								+'<button id="'+full.id+'"  class="layui-btn layui-btn-danger layui-btn-xs delete">删除</button>';
 							}
 					}

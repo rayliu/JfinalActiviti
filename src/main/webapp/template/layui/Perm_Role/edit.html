@@ -19,7 +19,6 @@
 
 	<form id="orderForm" class="layui-form">
 		<div class="layui-row">
-			<input  type="hidden" id="order_id" name="order_id"  value="#(order.get('id')??)">
 			<div class="layui-col-md7">
 				<div class="layui-col-md6">
 			       <div class="layui-form-item">
@@ -28,7 +27,7 @@
 				            <select  id="group_id" name="group_id" lay-search="" lay-verify="required">
 								<option value="">直接选择或搜索选择</option>
 								#for(g:group)
-			 					<option value="#(g.id)">#(g.name)</option>
+			 					<option #if(g.id == perm_role.group_id??) selected="selected" #end value="#(g.id)">#(g.name)</option>
 			 					#end
 							</select>
 						</div>
@@ -40,7 +39,7 @@
 						<select  id="role_id" name="role_id" lay-search="" lay-verify="required">
 							<option value="">直接选择或搜索选择</option>
 							#for(r:role)
-							<option #if(r.id== order.get('role_id')??) selected="selected"  #end value="#(r.id)">#(r.name)</option>
+							<option #if(r.id == perm_role.role_id??) selected="selected" #end value="#(r.id)">#(r.name)</option>
 							#end
 						</select>
 					</div>
@@ -64,7 +63,9 @@
 			    		<div class="layui-row">
 					    	#for(m:menuList)
 				    			<div class="layui-col-md2" style="height:30px;">
-				    				<input type="checkbox" class="menu" lay-skin="primary" id="#(m.id??)"><span>&nbsp;&nbsp;#(m.name??)</span>
+				    				
+				    				<input #for(p:permList) #if(p.type??=='MENU' && p.permission_id??==m.id??) checked #end #end type="checkbox"  class="menu" lay-skin="primary" id="#(m.id??)"><span>&nbsp;&nbsp;#(m.name??)</span>
+				    				
 				    			</div>
 					    	#end
 				    	</div>
@@ -79,7 +80,7 @@
 			    		<div class="layui-row">
 					    	#for(e:elementList)
 				    			<div class="layui-col-md2" style="height:30px;">
-				    				<input type="checkbox" class="element" lay-skin="primary" id="#(e.id??)"><span>&nbsp;&nbsp;#(e.name??)</span>
+				    				<input #for(p:permList) #if(p.type??=='ELEMENT' && p.permission_id??==e.id??) checked #end #end type="checkbox" class="element" lay-skin="primary" id="#(e.id??)"><span>&nbsp;&nbsp;#(e.name??)</span>
 				    			</div>
 					    	#end
 				    	</div>
@@ -94,7 +95,7 @@
 			    		<div class="layui-row">
 					    	#for(o:operationList)
 				    			<div class="layui-col-md2" style="height:30px;">
-				    				<input type="checkbox" class="operation" lay-skin="primary" id="#(o.id??)"><span>&nbsp;&nbsp;#(o.name??)</span>
+				    				<input #for(p:permList) #if(p.type??=='OPERATION' && p.permission_id??==o.id??) checked #end #end type="checkbox" class="operation" lay-skin="primary" id="#(o.id??)"><span>&nbsp;&nbsp;#(o.name??)</span>
 				    			</div>
 					    	#end
 				    	</div>

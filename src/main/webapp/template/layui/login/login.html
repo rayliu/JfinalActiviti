@@ -86,7 +86,17 @@
 			
 		// 	return false;
 		// });
-		if('Y'=='#(kick_out??'N')'){
+		
+		//获取url中的参数
+		function GetQueryString(name)
+		{
+		     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+		     var r = window.location.search.substr(1).match(reg);
+		     if(r!=null)return  unescape(r[2]); return null;
+		}
+		
+		if('Y'== GetQueryString
+				("kick_out")){
 			layer.msg('您已经在其他地方登录，请重新登录！');
 		}
 			

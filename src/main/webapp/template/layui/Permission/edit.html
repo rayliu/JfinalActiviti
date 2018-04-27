@@ -32,7 +32,7 @@
                     	</div>
                 	</div>
                 	<div>
-	                    <div class="layui-input-inline">
+	                    <div class="layui-input-inline menu">
 	                        <select  id="menu" name="menu" lay-search="" lay-verify="required">
 								<option value="">直接选择或搜索选择</option>
 								#for(m:menuList)
@@ -40,15 +40,15 @@
 								#end
 							</select>
                     	</div>
-                    	<div class="layui-input-inline" style="display:none;">
+                    	<div class="layui-input-inline element" style="display:none;">
 	                        <select  id="element" name="element" lay-search="" lay-verify="">
 								<option value="">直接选择或搜索选择</option>
 								#for(e:elementList)
-								<option #if(order.get('type')??=='ELEMENT'&&order.get('element_id')??==e.id??) selected="selected"  #end value="#(e.id??)">#(e.name??)</option>
+								<option #if(order.get('type')??=='ELEMENT'&&order.get('element_id')??==e.id??) selected="selected" #end value="#(e.id??)">#(e.name??)</option>
 								#end
 							</select>
                     	</div>
-                    	<div class="layui-input-inline" style="display:none;">
+                    	<div class="layui-input-inline operation" style="display:none;">
 	                        <select  id="operation" name="operation" lay-search="" lay-verify="">
 								<option value="">直接选择或搜索选择</option>
 								#for(o:operationList)

@@ -1121,6 +1121,7 @@ DROP TABLE IF EXISTS `t_rbac_group`;
 CREATE TABLE `t_rbac_group` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) DEFAULT NULL,
+  `parent_id` bigint(20) NOT NULL,
   `desc` varchar(45) DEFAULT NULL,
   `is_delete` bigint(2) DEFAULT 0 NOT NULL,
   PRIMARY KEY (`id`)
@@ -1218,6 +1219,7 @@ INSERT INTO `jfinal_activiti`.`t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `
 INSERT INTO `jfinal_activiti`.`t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`) VALUES ('34', '角色-用户 关联2', '/user_role_relation/list', '23', '3');
 INSERT INTO `jfinal_activiti`.`t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`) VALUES ('35', '数据表管理2', '/generate/tableList', '24', '3');
 INSERT INTO `jfinal_activiti`.`t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`) VALUES ('36', '菜单', '/menu/list', '8', '3');
+INSERT INTO `jfinal_activiti`.`t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`) VALUES ('36', '组织架构', '/organize_structure/edit', '8', '3');
 
 /*!40000 ALTER TABLE `t_rbac_menu` ENABLE KEYS */;
 UNLOCK TABLES;

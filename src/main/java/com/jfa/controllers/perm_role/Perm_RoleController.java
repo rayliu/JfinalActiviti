@@ -51,9 +51,7 @@ public class Perm_RoleController extends Controller {
             sLimit = " limit " + limit*page + ", " + limit;
         }
         Record login_user = getAttr("user");
-        String sql="SELECT trrpr.*,trr.code role_code,trr.name role_name,trp.name permission_name FROM t_rbac_ref_perm_role trrpr"
-        		+ " LEFT JOIN  t_rbac_role trr ON trr.id = trrpr.role_id"
-        		+ " LEFT JOIN t_rbac_permission trp ON trp.id = trrpr.permission_id";
+        String sql="select trr.*,(select count(*) from t_rbac_ref_perm_role trrpr where trrpr.role_id = trr.id) total from t_rbac_role trr";
         List<Record> orderList = Db.find(sql+condition+" order by trr.id desc "+sLimit);
 
         String sqlTotal = "select count(1) total from (" + sql + ") B";
@@ -72,8 +70,16 @@ public class Perm_RoleController extends Controller {
         Record login_user = getAttr("user");
         String role_id= getPara("role_id");
         
-        Record order = Db.findFirst("select * from t_rbac_ref_perm_role  where role_id=?", role_id);
-        setAttr("order", order);
+        Record perm_role = Db.findFirst("select trrpr.*,trgr.group_id from t_rbac_ref_perm_role trrpr"
+        		+ " left join t_rbac_role trr on trr.id = trrpr.role_id"
+        		+ " left join t_rbac_group_role trgr on trgr.role_id = trr.id"
+        		+ " where trrpr.role_id=?", role_id);
+        setAttr("perm_role", perm_role);
+        
+        List<Record> permList = Db.find("select trrpr.*,trp.type from t_rbac_ref_perm_role trrpr"
+        		+ " left join t_rbac_permission trp on trp.id = trrpr.permission_id"
+        		+ " where role_id=?", role_id);
+        setAttr("permList", permList);
         
         List<Record> group = Db.find("select * from t_rbac_group");
         setAttr("group",group);

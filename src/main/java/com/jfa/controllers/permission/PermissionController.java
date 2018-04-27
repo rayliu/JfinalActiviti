@@ -76,10 +76,10 @@ public class PermissionController extends Controller {
             	Record re = Db.findFirst("select * from t_rbac_ref_perm_menu where permission_id = ?",id);
             	order.set("menu_id", re.get("menu_id"));
             }else if("ELEMENT".equals(order.get("type"))){
-            	Record re = Db.findFirst("select * from t_rbac_page_element where permission_id = ?",id);
+            	Record re = Db.findFirst("select * from t_rbac_ref_perm_element where permission_id = ?",id);
             	order.set("element_id", re.get("page_element_id"));
             }else if("OPERATION".equals(order.get("type"))){
-            	Record re = Db.findFirst("select * from t_rbac_operation where permission_id = ?",id);
+            	Record re = Db.findFirst("select * from t_rbac_ref_perm_operation where permission_id = ?",id);
             	order.set("operation_id", re.get("operation_id"));
             }
         }

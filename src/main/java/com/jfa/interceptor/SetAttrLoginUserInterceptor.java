@@ -28,38 +28,45 @@ public class SetAttrLoginUserInterceptor implements Interceptor{
 			Record user = Db.findFirst("select * from t_rbac_user where name=?",currentUser.getPrincipal());
 			ai.getController().setAttr("user", user);
 			
-			String condition = "";
+			String parentMenu_sql = "";
+			String menu_sql = "";
+			String menuItem_sql = "";
+			
 			if(1==user.getInt("id")){
-				condition = "";
+				parentMenu_sql = "SELECT * FROM t_rbac_menu trm where seq='1'";
+				menu_sql = "SELECT * FROM t_rbac_menu trm where seq='2' and parent_id = ?";
+				menuItem_sql = "SELECT * FROM t_rbac_menu trm where seq='3' and parent_id = ?";
 			}else{
-				condition = " tru.id = '"+user.get("id")+"' and ";
-			}
-			List<Record> parentMenuList = Db.find("SELECT trm.* FROM t_rbac_menu trm"
-					+ " LEFT JOIN t_rbac_ref_perm_menu trrpm on trrpm.menu_id = trm.id"
-					+ " LEFT JOIN t_rbac_permission trp on trp.id = trrpm.permission_id"
-					+ " LEFT JOIN t_rbac_ref_perm_role trrpr on trrpr.permission_id = trp.id"
-					+ " LEFT JOIN t_rbac_role trr on trr.id = trrpr.role_id"
-					+ " LEFT JOIN t_rbac_ref_user_role trrur on trrur.role_id = trr.id"
-					+ " LEFT JOIN t_rbac_user tru on tru.id = trrur.user_id"
-					+ " where "+condition+" trm.seq='1'");
-			for(int i = 0;i<parentMenuList.size();i++){
-				List<Record> menuList = Db.find("select trm.* from t_rbac_menu trm"
+				parentMenu_sql = "SELECT trm.* FROM t_rbac_menu trm"
 						+ " LEFT JOIN t_rbac_ref_perm_menu trrpm on trrpm.menu_id = trm.id"
 						+ " LEFT JOIN t_rbac_permission trp on trp.id = trrpm.permission_id"
 						+ " LEFT JOIN t_rbac_ref_perm_role trrpr on trrpr.permission_id = trp.id"
 						+ " LEFT JOIN t_rbac_role trr on trr.id = trrpr.role_id"
 						+ " LEFT JOIN t_rbac_ref_user_role trrur on trrur.role_id = trr.id"
 						+ " LEFT JOIN t_rbac_user tru on tru.id = trrur.user_id"
-						+ " where "+condition+" trm.seq = '2' and trm.parent_id = ?",parentMenuList.get(i).get("id"));
-				for(int j = 0;j<menuList.size();j++){
-					List<Record> menuItemList = Db.find("select trm.* from t_rbac_menu trm"
+						+ " where trm.seq='1' and tru.id = "+user.getStr("id");
+				menu_sql = "select trm.* from t_rbac_menu trm"
+						+ " LEFT JOIN t_rbac_ref_perm_menu trrpm on trrpm.menu_id = trm.id"
+						+ " LEFT JOIN t_rbac_permission trp on trp.id = trrpm.permission_id"
+						+ " LEFT JOIN t_rbac_ref_perm_role trrpr on trrpr.permission_id = trp.id"
+						+ " LEFT JOIN t_rbac_role trr on trr.id = trrpr.role_id"
+						+ " LEFT JOIN t_rbac_ref_user_role trrur on trrur.role_id = trr.id"
+						+ " LEFT JOIN t_rbac_user tru on tru.id = trrur.user_id"
+						+ " where trm.seq = '2' and trm.parent_id = ? and tru.id = "+user.getStr("id");
+				menuItem_sql = "select trm.* from t_rbac_menu trm"
 							+ " LEFT JOIN t_rbac_ref_perm_menu trrpm on trrpm.menu_id = trm.id"
 							+ " LEFT JOIN t_rbac_permission trp on trp.id = trrpm.permission_id"
 							+ " LEFT JOIN t_rbac_ref_perm_role trrpr on trrpr.permission_id = trp.id"
 							+ " LEFT JOIN t_rbac_role trr on trr.id = trrpr.role_id"
 							+ " LEFT JOIN t_rbac_ref_user_role trrur on trrur.role_id = trr.id"
 							+ " LEFT JOIN t_rbac_user tru on tru.id = trrur.user_id"
-							+ " where "+condition+" trm.seq = '3' and trm.parent_id = ?",menuList.get(j).get("id"));
+							+ " where trm.seq = '3' and trm.parent_id = ? and tru.id = "+user.getStr("id");
+			}
+			List<Record> parentMenuList = Db.find(parentMenu_sql+" group by trm.id");
+			for(int i = 0;i<parentMenuList.size();i++){
+				List<Record> menuList = Db.find(menu_sql+" group by trm.id",parentMenuList.get(i).get("id"));
+				for(int j = 0;j<menuList.size();j++){
+					List<Record> menuItemList = Db.find(menuItem_sql+" group by trm.id",menuList.get(j).get("id"));
 					menuList.get(j).set("menuItemList", menuItemList);
 				}
 				parentMenuList.get(i).set("menuList", menuList);
@@ -70,8 +77,8 @@ public class SetAttrLoginUserInterceptor implements Interceptor{
 			Session session=currentUser.getSession();
 			logger.debug("session id:"+session.getId());
 			if(session.getAttribute("kick_out")!=null && (Boolean)session.getAttribute("kick_out")){
-				ai.getController().setAttr("kick_out", "Y");
-				ai.getController().redirect("/login");
+				session.stop();
+				ai.getController().redirect("/login?kick_out=Y");
 				return;
 			}
 
