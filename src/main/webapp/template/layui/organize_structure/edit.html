@@ -1,0 +1,76 @@
+#@layout()
+#define main()
+
+<section style="padding: 15px;">
+	<span class="layui-breadcrumb">
+		<a href="">首页</a>
+		<a href="">组织架构</a>
+	</span>
+	<br>
+	<br>
+	<div class="body">
+		<div class="structManage">
+			<div class="c_nav">
+				<a href="javascript:void(0);" class="on bd_r"><span class="icon_diff icon_party" style="margin-right:2px;"></span>组织架构</a>
+				<a href="javascript:void(0);" class=""><span class="icon_diff icon_group" style="margin-right:2px;"></span>邮件群组</a>
+			</div>
+			
+			#for(gl1:group1_list??)
+			<div class="organization" title="#(gl1.name??)">
+				<div class="click" #if(for.index==0)style="background-color:#d9e3ec;"#end>
+					<i class="layui-icon">&#xe623;</i><i class="layui-icon">&#xe7a0;</i><span id="#(gl1.id??)">#(gl1.name??)</span>
+				</div>
+				<ul class="" style="margin-left:7%;">
+					#for(gl2:gl1.group2_list??)
+					<li>
+						<div class="organization" title="#(gl2.name??)">
+							<div class="click">
+								<i class="layui-icon">&#xe623;</i><i class="layui-icon">&#xe7a0;</i><span id="#(gl2.id??)">#(gl2.name??)</span>
+							</div>
+							<ul class="" style="margin-left:7%;">
+								#for(gl3:gl2.group3_list??)
+									<li>
+										<div class="organization" title="#(gl3.name??)">
+											<div class="click">
+												<i class="layui-icon">&#xe623;</i><i class="layui-icon">&#xe7a0;</i><span id="#(gl3.id??)">#(gl3.name??)</span>
+											</div>
+											<ul class="" style="margin-left:7%;">
+												
+											</ul>
+										</div>
+									</li>
+								#end
+							</ul>
+						</div>
+					</li>
+					#end
+				</ul>
+			</div>
+			#end
+		</div>
+		<div class="accountListPanel">
+			<input type="hidden" id="group_id" value="#(group1_list[0].id??)"/>
+			<div class="con_head">
+				<div class="con_head_title" >#(group1_list[0].name??)</div>
+				<p><span id="updateGroupName">修改名字</span> | <span id="createGroup">新建子部门</span> | <span id="createUser">添加成员</span></p>
+			</div>
+			<div class="con_body">
+				<table id="eeda_table" lay-filter="test"></table>
+				
+				<!-- #if(group1_list[0].id??==99999)
+					
+				#else
+					<div style="width:450px;height:400px;margin:0 auto;">
+						<div style="padding:150px 0 0 120px;">
+							<div>当前部门下没有成员，你可以</div>
+							<div style="padding:10px 0 0 60px;"><button type="button" class="layui-btn layui-btn-sm createUser">添加成员</button></div>
+						</div>
+					</div>
+				#end -->
+			</div>
+		</div>
+	</div>
+</section>
+#end
+<script src="/theme/layui-v2.2.6/layui/lay/modules/layer.js"></script>
+<script src="/js/layui/organize_structure/edit.js"></script>
