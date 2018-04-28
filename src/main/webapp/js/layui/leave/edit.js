@@ -78,12 +78,13 @@
 		});
 
 		$("#printBtn").click(function(){
+			var id=$("#order_id").val();
 			layer.open({
 				title: '打印预览'
 				,type: 2
 				,resize: false 
-				,area: ['893px', '800px']
-				,content: '/leave/print?id=6' //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
+				,area: ['900px', '800px']
+				,content: '/leave/print?id='+id //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
 			  }); 
 			
 		});

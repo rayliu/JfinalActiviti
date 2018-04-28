@@ -1,5 +1,7 @@
 package com.jfa.controllers.index;
 
+import javax.servlet.http.HttpSession;
+
 import com.jfa.interceptor.SetAttrLoginUserInterceptor;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
