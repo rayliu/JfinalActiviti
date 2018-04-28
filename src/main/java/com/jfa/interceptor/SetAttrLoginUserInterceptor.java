@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.jfa.util.SharedUtil;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.ehcache.CacheKit;
@@ -41,45 +42,16 @@ public class SetAttrLoginUserInterceptor implements Interceptor{
 			}
 			
 			//菜单权限list
-			String parentMenu_sql = "";
-			String menu_sql = "";
-			String menuItem_sql = "";
-			
-			if(1==user.getInt("id")){
-				parentMenu_sql = "SELECT * FROM t_rbac_menu trm where seq='1'";
-				menu_sql = "SELECT * FROM t_rbac_menu trm where seq='2' and parent_id = ?";
-				menuItem_sql = "SELECT * FROM t_rbac_menu trm where seq='3' and parent_id = ?";
-			}else{
-				parentMenu_sql = "SELECT trm.* FROM t_rbac_menu trm"
-						+ " LEFT JOIN t_rbac_ref_perm_menu trrpm on trrpm.menu_id = trm.id"
-						+ " LEFT JOIN t_rbac_permission trp on trp.id = trrpm.permission_id"
-						+ " LEFT JOIN t_rbac_ref_perm_role trrpr on trrpr.permission_id = trp.id"
-						+ " LEFT JOIN t_rbac_role trr on trr.id = trrpr.role_id"
-						+ " LEFT JOIN t_rbac_ref_user_role trrur on trrur.role_id = trr.id"
-						+ " LEFT JOIN t_rbac_user tru on tru.id = trrur.user_id"
-						+ " where trm.seq='1' and tru.id = "+user.getStr("id");
-				menu_sql = "select trm.* from t_rbac_menu trm"
-						+ " LEFT JOIN t_rbac_ref_perm_menu trrpm on trrpm.menu_id = trm.id"
-						+ " LEFT JOIN t_rbac_permission trp on trp.id = trrpm.permission_id"
-						+ " LEFT JOIN t_rbac_ref_perm_role trrpr on trrpr.permission_id = trp.id"
-						+ " LEFT JOIN t_rbac_role trr on trr.id = trrpr.role_id"
-						+ " LEFT JOIN t_rbac_ref_user_role trrur on trrur.role_id = trr.id"
-						+ " LEFT JOIN t_rbac_user tru on tru.id = trrur.user_id"
-						+ " where trm.seq = '2' and trm.parent_id = ? and tru.id = "+user.getStr("id");
-				menuItem_sql = "select trm.* from t_rbac_menu trm"
-							+ " LEFT JOIN t_rbac_ref_perm_menu trrpm on trrpm.menu_id = trm.id"
-							+ " LEFT JOIN t_rbac_permission trp on trp.id = trrpm.permission_id"
-							+ " LEFT JOIN t_rbac_ref_perm_role trrpr on trrpr.permission_id = trp.id"
-							+ " LEFT JOIN t_rbac_role trr on trr.id = trrpr.role_id"
-							+ " LEFT JOIN t_rbac_ref_user_role trrur on trrur.role_id = trr.id"
-							+ " LEFT JOIN t_rbac_user tru on tru.id = trrur.user_id"
-							+ " where trm.seq = '3' and trm.parent_id = ? and tru.id = "+user.getStr("id");
-			}
-			List<Record> parentMenuList = Db.find(parentMenu_sql+" group by trm.id");
+			String parentMenuConditions = " and trm.seq='1'";
+			List<Record> parentMenuList = Db.find(SharedUtil.menuSql(user.getStr("id"),parentMenuConditions));
 			for(int i = 0;i<parentMenuList.size();i++){
-				List<Record> menuList = Db.find(menu_sql+" group by trm.id",parentMenuList.get(i).get("id"));
+				String menuConditions = " and trm.seq='2' and trm.parent_id = "+parentMenuList.get(i).get("id");
+				
+				List<Record> menuList = Db.find(SharedUtil.menuSql(user.getStr("id"),menuConditions));
 				for(int j = 0;j<menuList.size();j++){
-					List<Record> menuItemList = Db.find(menuItem_sql+" group by trm.id",menuList.get(j).get("id"));
+					String menuItemConditions = " and trm.seq='3' and trm.parent_id = "+menuList.get(j).get("id");
+					
+					List<Record> menuItemList = Db.find(SharedUtil.menuSql(user.getStr("id"),menuItemConditions));
 					menuList.get(j).set("menuItemList", menuItemList);
 				}
 				parentMenuList.get(i).set("menuList", menuList);

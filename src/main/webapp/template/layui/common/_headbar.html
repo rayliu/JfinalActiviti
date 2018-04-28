@@ -3,14 +3,18 @@
 	<!-- 头部区域（可配合layui已有的水平导航） -->
 	<ul class="layui-nav layui-layout-left">
 		#for(parentMenu:parentMenuList)
-		<li class="layui-nav-item parentMenu #if(parentMenu.id==parentMenu_id) layui-this #end"><a href="/?parentMenu_id=#(parentMenu.id??)">#(parentMenu.name??)</a></li>
+			#if(for.index<8)
+			<li class="layui-nav-item parentMenu #if(parentMenu.id==parentMenu_id) layui-this #end"><a href="/?parentMenu_id=#(parentMenu.id??)">#(parentMenu.name??)</a></li>
+			#end
 		#end
 		<li class="layui-nav-item">
 			<a href="javascript:;">其它设置</a>
 			<dl class="layui-nav-child">
-				<dd><a href="">邮件管理</a></dd>
-				<dd><a href="">消息管理</a></dd>
-				<dd><a href="">授权管理</a></dd>
+			#for(parentMenu:parentMenuList)
+				#if(for.index>=8)
+				<dd><a href="/?parentMenu_id=#(parentMenu.id??)">#(parentMenu.name??)</a></dd>
+				#end
+			#end
 			</dl>
 		</li>
 	</ul>

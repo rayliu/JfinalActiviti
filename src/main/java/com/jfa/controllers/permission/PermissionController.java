@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.jfa.interceptor.SetAttrLoginUserInterceptor;
+import com.jfa.util.SharedUtil;
 import com.jfinal.kit.PropKit;
 import com.jfinal.kit.StrKit;
 
@@ -85,9 +86,9 @@ public class PermissionController extends Controller {
         }
         setAttr("order", order);
         
-        List<Record> menuList = Db.find("select * from t_rbac_menu");
+        List<Record> menuList = Db.find(SharedUtil.menuSql(login_user.getStr("id")));
         setAttr("menuList",menuList);
-        List<Record> elementList = Db.find("select * from t_rbac_page_element");
+        List<Record> elementList = Db.find(SharedUtil.elementSql(login_user.getStr("id")));
         setAttr("elementList",elementList);
         List<Record> operationList = Db.find("select * from t_rbac_operation");
         setAttr("operationList",operationList);
