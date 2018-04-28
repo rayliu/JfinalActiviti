@@ -33,7 +33,7 @@
                 	</div>
                 	<div>
 	                    <div class="layui-input-inline menu">
-	                        <select  id="menu" name="menu" lay-search="" lay-verify="required">
+	                        <select  id="menu" name="menu" lay-search="" lay-verify="">
 								<option value="">直接选择或搜索选择</option>
 								#for(m:menuList)
 								<option #if(order.get('type')??=='MENU'&&order.get('menu_id')??==m.id??) selected="selected"  #end value="#(m.id??)">#(m.name??)</option>

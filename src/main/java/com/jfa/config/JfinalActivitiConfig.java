@@ -122,6 +122,7 @@ public class JfinalActivitiConfig extends JFinalConfig {
 
         String templateFolder = PropKit.get("ui_folder");
         me.addSharedFunction(templateFolder+"/common/_layout.html");
+        me.addSharedMethod(new com.jfa.util.SharedController());
         //me.addSharedFunction(templateFolder+"/common/_sys_layout.html");
         //me.addSharedFunction("/common/_paginate.html");
     }

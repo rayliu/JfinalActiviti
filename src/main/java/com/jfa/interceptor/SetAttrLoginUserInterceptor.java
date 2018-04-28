@@ -40,6 +40,7 @@ public class SetAttrLoginUserInterceptor implements Interceptor{
 				session.setAttribute("parentMenu_id", parentMenu_id_int);
 			}
 			
+			//菜单权限list
 			String parentMenu_sql = "";
 			String menu_sql = "";
 			String menuItem_sql = "";
@@ -83,8 +84,40 @@ public class SetAttrLoginUserInterceptor implements Interceptor{
 				}
 				parentMenuList.get(i).set("menuList", menuList);
 			}
+			
+			String element_sql = "";
+			//页面元素权限list
+			if(1==user.getInt("id")){
+				element_sql = "SELECT * FROM t_rbac_page_element trpe where trpe.is_delete = '0'";
+			}else{
+				element_sql = "SELECT trpe.* FROM t_rbac_page_element trpe"
+						+ " LEFT JOIN t_rbac_ref_perm_element trrpe on trrpe.page_element_id = trpe.id"
+						+ " LEFT JOIN t_rbac_permission trp on trp.id = trrpe.permission_id"
+						+ " LEFT JOIN t_rbac_ref_perm_role trrpr on trrpr.permission_id = trp.id"
+						+ " LEFT JOIN t_rbac_role trr on trr.id = trrpr.role_id"
+						+ " LEFT JOIN t_rbac_ref_user_role trrur on trrur.role_id = trr.id"
+						+ " where trpe.is_delete = '0' and trrur.user_id = "+user.getStr("id");;
+			}
+			List<Record> elementList = Db.find(element_sql+" group by trpe.id");
+			String operation_sql = "";
+			//页面元素权限list
+			if(1==user.getInt("id")){
+				operation_sql = "SELECT * FROM t_rbac_operation tro where tro.is_delete = '0'";
+			}else{
+				operation_sql = "SELECT tro.* FROM t_rbac_operation tro"
+						+ " LEFT JOIN t_rbac_ref_perm_operation trrpo on trrpo.operation_id = tro.id"
+						+ " LEFT JOIN t_rbac_permission trp on trp.id = trrpo.permission_id"
+						+ " LEFT JOIN t_rbac_ref_perm_role trrpr on trrpr.permission_id = trp.id"
+						+ " LEFT JOIN t_rbac_role trr on trr.id = trrpr.role_id"
+						+ " LEFT JOIN t_rbac_ref_user_role trrur on trrur.role_id = trr.id"
+						+ " where tro.is_delete = '0' and trrur.user_id = "+user.getStr("id");;
+			}
+			List<Record> operationList = Db.find(operation_sql+" group by tro.id");
+			
 			ai.getController().setAttr("parentMenuList", parentMenuList);
 			ai.getController().setAttr("parentMenu_id", parentMenu_id_int);
+			ai.getController().setAttr("elementList", elementList);
+			ai.getController().setAttr("operationList", operationList);
 			//判断是否唯一登录
 			logger.debug("session id:"+session.getId());
 			if(session.getAttribute("kick_out")!=null && (Boolean)session.getAttribute("kick_out")){

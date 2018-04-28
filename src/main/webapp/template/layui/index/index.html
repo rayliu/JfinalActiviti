@@ -3,38 +3,46 @@
 <link rel="stylesheet" href="/theme/layuiadmin/style/card.css" media="all">
 <div class="layui-fluid">
     <div class="layui-row layui-col-space30">
-        <div class="layui-col-md3">
-            <div class="layui-card">
-              <div class="layui-card-header"><strong>待办任务</strong></div>
-              <div class="layui-card-body" style="padding: 15px 20px 20px;">
-                <h1>1</h1>
-              </div>
-            </div>
-        </div>
-        <div class="layui-col-md3">
-            <div class="layui-card">
-              <div class="layui-card-header">流程总数</div>
-              <div class="layui-card-body" style="padding: 15px 20px 20px;">
-                  <h1>1</h1>
-              </div>
-            </div>
-        </div>
-        <div class="layui-col-md3">
-            <div class="layui-card">
-              <div class="layui-card-header">用户总数</div>
-              <div class="layui-card-body" style="padding: 15px 20px 20px;">
-                  <h1>1</h1>
-              </div>
-            </div>
-        </div>
-        <div class="layui-col-md3">
-            <div class="layui-card">
-              <div class="layui-card-header">流程异常</div>
-              <div class="layui-card-body" style="padding: 15px 20px 20px;">
-                  <h1>0</h1>
-              </div>
-            </div>
-        </div>
+	    	#if(elementContains(elementList,"agency_task"))
+	        <div class="layui-col-md3">
+	            <div class="layui-card">
+	              <div class="layui-card-header"><strong>待办任务</strong></div>
+	              <div class="layui-card-body" style="padding: 15px 20px 20px;">
+	                <h1>1</h1>
+	              </div>
+	            </div>
+	        </div>
+	        #end
+	        #if(elementContains(elementList,"procedure_total"))
+	        <div class="layui-col-md3">
+	            <div class="layui-card">
+	              <div class="layui-card-header">流程总数</div>
+	              <div class="layui-card-body" style="padding: 15px 20px 20px;">
+	                  <h1>1</h1>
+	              </div>
+	            </div>
+	        </div>
+	        #end
+	        #if(elementContains(elementList,"user_total"))
+	        <div class="layui-col-md3">
+	            <div class="layui-card">
+	              <div class="layui-card-header">用户总数</div>
+	              <div class="layui-card-body" style="padding: 15px 20px 20px;">
+	                  <h1>1</h1>
+	              </div>
+	            </div>
+	        </div>
+	        #end
+	       #if(elementContains(elementList,"procedure_error"))
+	        <div class="layui-col-md3">
+	            <div class="layui-card">
+	              <div class="layui-card-header">流程异常</div>
+	              <div class="layui-card-body" style="padding: 15px 20px 20px;">
+	                  <h1>0</h1>
+	              </div>
+	            </div>
+	        </div>
+	        #end
     </div>
     <div class="layui-row">
       <div class="col-sm-12">

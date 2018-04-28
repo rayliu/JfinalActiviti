@@ -35,12 +35,15 @@ $(function(){
 	if("MENU"==type){
 		$(".element,.operation").hide();
 		$(".menu").show();
+		$("#menu").attr("lay-verify","required");
 	}else if("ELEMENT"==type){
 		$(".menu,.operation").hide();
 		$(".element").show();
+		 $("#element").attr("lay-verify","required");
 	}else if("OPERATION"==type){
 		$(".menu,.element").hide();
 		$(".operation").show();
+		 $("#operation").attr("lay-verify","required");
 	}
 	
 	layui.use('form', function(){

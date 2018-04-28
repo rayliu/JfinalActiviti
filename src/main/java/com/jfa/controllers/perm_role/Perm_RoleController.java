@@ -107,7 +107,7 @@ public class Perm_RoleController extends Controller {
         String group_id = (String)dto.get("group_id");
         String role_id = (String)dto.get("role_id");
         List<String> menuIds = (ArrayList<String>) dto.get("menuIds");
-        List<String> pageIds = (ArrayList<String>) dto.get("pageIds");
+        List<String> elementIds = (ArrayList<String>) dto.get("elementIds");
         List<String> operationIds = (ArrayList<String>) dto.get("operationIds");
         boolean result = false;
         Db.delete("delete from t_rbac_ref_perm_role where role_id = ?",role_id);
@@ -117,10 +117,10 @@ public class Perm_RoleController extends Controller {
     		re.set("permission_id", menuIds.get(i));
     		result = Db.save("t_rbac_ref_perm_role",re);
     	}
-		for(int i = 0;i<pageIds.size();i++){
+		for(int i = 0;i<elementIds.size();i++){
 			Record re = new Record();
 			re.set("role_id", role_id);
-    		re.set("permission_id", pageIds.get(i));
+    		re.set("permission_id", elementIds.get(i));
     		result = Db.save("t_rbac_ref_perm_role",re);
 		}
 		for(int i = 0;i<operationIds.size();i++){

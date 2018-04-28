@@ -42,10 +42,10 @@ $(function(){
 				var id = $(this).attr("id");
 				menuIds.push(id);
 			});
-			var pageIds = [];
-			$($(".page:checked")).each(function(){
+			var elementIds = [];
+			$($(".element:checked")).each(function(){
 				var id = $(this).attr("id");
-				pageIds.push(id);
+				elementIds.push(id);
 			});
 			var operationIds = [];
 			$($(".operation:checked")).each(function(){
@@ -54,7 +54,7 @@ $(function(){
 			});
 			var order={};
 			order["menuIds"] = menuIds;
-			order["pageIds"] = pageIds;
+			order["elementIds"] = elementIds;
 			order["operationIds"] = operationIds;
 			order["group_id"] = $("#group_id").val();
 			order["role_id"] = $("#role_id").val();
