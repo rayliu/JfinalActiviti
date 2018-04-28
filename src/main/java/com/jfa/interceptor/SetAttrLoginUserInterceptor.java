@@ -15,6 +15,7 @@ import org.apache.shiro.subject.Subject;
 import com.jfinal.aop.Interceptor;
 import com.jfinal.aop.Invocation;
 import com.jfinal.core.Controller;
+import com.jfinal.kit.StrKit;
 import com.jfinal.log.Log;
 
 public class SetAttrLoginUserInterceptor implements Interceptor{
@@ -27,6 +28,17 @@ public class SetAttrLoginUserInterceptor implements Interceptor{
 			Controller controller = ai.getController();
 			Record user = Db.findFirst("select * from t_rbac_user where name=?",currentUser.getPrincipal());
 			ai.getController().setAttr("user", user);
+			
+			Session session = currentUser.getSession();
+			String parentMenu_id = ai.getController().getPara("parentMenu_id");
+			
+			Object parentMenu_id_object = session.getAttribute("parentMenu_id");
+			int parentMenu_id_int = Integer.parseInt(parentMenu_id_object==null?"1":parentMenu_id_object.toString());
+			
+			if(StrKit.notBlank(parentMenu_id)){
+				parentMenu_id_int = Integer.valueOf(parentMenu_id);
+				session.setAttribute("parentMenu_id", parentMenu_id_int);
+			}
 			
 			String parentMenu_sql = "";
 			String menu_sql = "";
@@ -72,9 +84,8 @@ public class SetAttrLoginUserInterceptor implements Interceptor{
 				parentMenuList.get(i).set("menuList", menuList);
 			}
 			ai.getController().setAttr("parentMenuList", parentMenuList);
-			
+			ai.getController().setAttr("parentMenu_id", parentMenu_id_int);
 			//判断是否唯一登录
-			Session session=currentUser.getSession();
 			logger.debug("session id:"+session.getId());
 			if(session.getAttribute("kick_out")!=null && (Boolean)session.getAttribute("kick_out")){
 				session.stop();

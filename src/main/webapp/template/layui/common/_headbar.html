@@ -3,7 +3,7 @@
 	<!-- 头部区域（可配合layui已有的水平导航） -->
 	<ul class="layui-nav layui-layout-left">
 		#for(parentMenu:parentMenuList)
-		<li class="layui-nav-item parentMenu #if(for.index==0) layui-this #end"><a href="javascript:volid(0);" parentMenu_id="#(parentMenu.id??)">#(parentMenu.name??)</a></li>
+		<li class="layui-nav-item parentMenu #if(parentMenu.id==parentMenu_id) layui-this #end"><a href="/?parentMenu_id=#(parentMenu.id??)">#(parentMenu.name??)</a></li>
 		#end
 		<li class="layui-nav-item">
 			<a href="javascript:;">其它设置</a>
@@ -28,12 +28,3 @@
 	</ul>
 </div>
 <script type="text/javascript" src="/theme/H-ui.admin.page3.1.1/lib/jquery/1.9.1/jquery.min.js"></script> 
-<script>
-	$(function(){
-	$(".parentMenu").click(function(){
-		$.post("/",{parentMenu_id:"2"},function(data){
-			
-		});
-	});
-});
-</script>

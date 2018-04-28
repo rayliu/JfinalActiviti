@@ -21,7 +21,7 @@ import java.util.Map;
 //shiro注释, 要求必须登录才能访问
 //@RequiresAuthentication
 //全局拦截器, 每次都将user做为基本属性放到request中, 方便Controller取用, 也方便在页面中显示user_name
-//@Before(SetAttrLoginUserInterceptor.class)
+@Before(SetAttrLoginUserInterceptor.class)
 public class CodeGenerateController extends Controller {
 	Subject currentUser = SecurityUtils.getSubject();
 	private String projectPath = System.getProperty("user.dir");

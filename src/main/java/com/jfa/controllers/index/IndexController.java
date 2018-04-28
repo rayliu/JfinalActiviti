@@ -3,6 +3,7 @@ package com.jfa.controllers.index;
 import com.jfa.interceptor.SetAttrLoginUserInterceptor;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
+import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.Sqls;
@@ -24,13 +25,13 @@ public class IndexController extends Controller {
 			redirect("/login");
 			return;
 		}
+		
 		Record order = new Record();
 		order.set("task_count", 1);
 		order.set("proccess_count", 2);
 		order.set("user_count", 3);
 		order.set("err_count", 4);
 		setAttr("order", order);
-
 		render("index.html");
 	}
 

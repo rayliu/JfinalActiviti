@@ -2,10 +2,10 @@
 	<div class="layui-side-scroll">
 		<!-- 左侧导航区域（可配合layui已有的垂直导航） -->
 		
-		<ul class="layui-nav layui-nav-tree"  lay-filter="test">
-			<li id="sidebar_home" class="layui-nav-item "><a href="/">首页</a></li>
+		<ul class="layui-nav layui-nav-tree" lay-shrink  lay-filter="test">
+			<li id="sidebar_home" class="layui-nav-item layui-nav-itemed" #(parentMenu_id??)><a href="/">首页</a></li>
 			#for(parentMenu:parentMenuList??)
-				#if(parentMenu.id??==1)
+				#if(parentMenu.id??==parentMenu_id??)
 					#for(menu:parentMenu.menuList??)
 					<li class="layui-nav-item">
 						<a href="javascript:;">#(menu.name??)</a>
@@ -21,3 +21,20 @@
 		</ul>
 	</div>
 </div>
+<script>
+$('.layui-nav-tree').on('click','a',function(){
+	var text = this.text;
+	sessionStorage.setItem("select_item",text);
+});
+
+var last_item = sessionStorage.getItem('select_item');
+if(last_item != null){
+	$('.layui-nav-child a').each(function(){
+		var text = this.text;
+		if(last_item == text){
+			$(this).parent().parent().parent().attr('class','layui-nav-item layui-nav-itemed');
+			$(this).parent().attr('class','layui-this');
+		}
+	});
+}
+</script>
