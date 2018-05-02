@@ -49,9 +49,6 @@ $(function(){
 				self.parent().children("ul").css("display","block");
 			}
 			
-			
-			
-			
 			var id = self.children("span").attr("id");
 			if(self.parent().children("ul").html()==""){
 				$.post("/organize_structure/groupinfo",{id:id},function(data){
@@ -90,6 +87,23 @@ $(function(){
 		});
 	});
 		
+	//删除部门
+	$("#deleteGroup").click(function(){
+		var group_id = $("#group_id").val();
+		layer.confirm('确定删除该部门吗？',{title:'提示'}, function(){
+			$.post("/organize_structure/deleteGroup",{id:group_id},function(data){
+				if(data.result){
+					layer.msg('删除成功',{icon:1});
+					window.location.href = "/organize_structure/edit";
+				}else{
+					layer.msg('删除失败',{icon:2});
+				}
+			}).fail(function(){
+	  			layer.msg('后台出错',{icon:2});
+	 		});;
+		});
+	});
+	
 	//新建子部门
 	$("#createGroup").click(function(){
 		var group_id = $("#group_id").val();
@@ -116,7 +130,7 @@ $(function(){
 			  	 + '		<div class="click">'
 				 + '			<i class="layui-icon">&#xe623;</i><i class="layui-icon">&#xe7a0;</i><span id="'+group_id+'">'+value+'</span>'
 				 + '		</div>'
-				 + '		<ul class="" style="margin-left:7%;"></ul>'
+				 + '		<ul class="" style="margin-left:7%;display:none;"></ul>'
 			     + '	</div>'
 				 + '</li>'
 		$("#"+$("#group_id").val()).parent().parent().children("ul").append(html);

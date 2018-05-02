@@ -34,7 +34,7 @@
 											<div class="click">
 												<i class="layui-icon">&#xe623;</i><i class="layui-icon">&#xe7a0;</i><span id="#(gl3.id??)">#(gl3.name??)</span>
 											</div>
-											<ul class="" style="margin-left:7%;"></ul>
+											<ul class="" style="margin-left:7%;display:none;"></ul>
 										</div>
 									</li>
 								#end
@@ -50,7 +50,7 @@
 			<input type="hidden" id="group_id" value="#(group1_list[0].id??)"/>
 			<div class="con_head">
 				<div class="con_head_title" >#(group1_list[0].name??)</div>
-				<p><span id="updateGroupName">修改名字</span> | <span id="createGroup">新建子部门</span> | <span id="createUser">添加成员</span></p>
+				<p><span id="updateGroupName">修改名字</span> | <span id="createGroup">新建子部门</span> | <span id="deleteGroup">删除部门</span> | <span id="createUser">添加成员</span></p>
 			</div>
 			<div class="con_body">
 				<table id="eeda_table" lay-filter="test"></table>

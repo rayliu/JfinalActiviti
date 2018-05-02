@@ -163,4 +163,24 @@ public class OrganizeStructure extends Controller {
 		renderJson("{\"result\":"+user_result+"}");
 	}
     
+    @Before(Tx.class)
+    public void deleteGroup(){
+    	String id = getPara("id");
+		
+		boolean group_result = false;
+		Db.delete("delete from t_rbac_ref_group_user where group_id = ?", id);
+		//删除部门前，先删除部门下的子部门
+		int deleteGroupNum = 0;//删除部门下，子部门的数量
+		List<Record> groupList = Db.find("select * from t_rbac_group where parent_id = ?",id);
+		for(Record group : groupList){
+			Db.delete("delete from t_rbac_ref_group_user where group_id = ?",group.get("id"));
+			Db.delete("t_rbac_group",group);
+			deleteGroupNum++;
+		}
+		logger.debug("删除子部门数量: "+deleteGroupNum);
+		Record group = Db.findById("t_rbac_group", id);
+		group_result = Db.delete("t_rbac_group",group);
+		renderJson("{\"result\":"+group_result+"}");
+    }
+    
 }
