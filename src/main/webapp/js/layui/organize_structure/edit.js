@@ -25,7 +25,7 @@ $(function(){
 	});
 	
 	//架构树单击事件
-	$(".click").click(function(){
+	$(".structManage").on("click",".click",function(){
 		var self = $(this);
 		var id = self.children("span").attr("id");
 		$(".click").css("background-color","");
@@ -35,15 +35,37 @@ $(function(){
 			//单击不同的部门，将单击的部门名称回填到右边
 			$(".con_head_title").text(self.children("span").text());
 			$("#group_id").val(id);
+			
 			//单击不同的部门，异步重载table
 			var table = layui.table;
 			table.reload('eeda_table', { url: '/organize_structure/userInfo',where: {id:$("#group_id").val()}});
 		}else{
 			//单击部门，如果部门id与右边的id相同，就隐藏
-			if("block"==self.parent().children("ul").css("display")){
+			if("block"==self.children("ul").css("display")){
+				self.parent().children("ul").css("display","none");
+			}else if("block"==self.next("ul").css("display")){
 				self.parent().children("ul").css("display","none");
 			}else{
 				self.parent().children("ul").css("display","block");
+			}
+			
+			
+			
+			
+			var id = self.children("span").attr("id");
+			if(self.parent().children("ul").html()==""){
+				$.post("/organize_structure/groupinfo",{id:id},function(data){
+					if(data){
+						for(var i=0;i<data.length;i++){
+							var group_id = data[i].id;
+							var value = data[i].name;
+							appendMethod(group_id,value);
+						}
+					}else{
+						layer.msg('后台出错',{icon:2});
+					}
+					
+				});
 			}
 		}
 	});
