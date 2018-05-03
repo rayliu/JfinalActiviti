@@ -1,0 +1,42 @@
+#@layout()
+#define main()
+<link rel="stylesheet" href="/theme/H-ui.admin.page3.1.1/lib/lightbox2/2.8.1/css/lightbox.css">
+
+
+<section style="padding: 15px;">
+	<span class="layui-breadcrumb">
+		<a href="">首页</a>
+		<a href="">报表生成</a>
+		<a><cite>报表列表</cite></a>
+	</span>
+	<br>
+	<br>
+	<input type="hidden" id="id" value="#(id??)">
+	<table class="layui-hide"  id="jfa_table"></table>
+</section>
+
+#end
+
+<script type="text/javascript" src="/theme/H-ui.admin.page3.1.1/lib/lightbox2/2.8.1/js/lightbox.min.js"></script>
+<script>
+		layui.use(['jquery','table'], function(){
+			var table = layui.table, $=layui.$;
+			var id = $("#id").val();
+			$('#sidebar_leave').addClass('layui-nav-itemed');
+
+			table.render({
+				elem: '#jfa_table'
+				,url:'/report/getInfoList?id='+id
+				//,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+				,cols: [[
+				#for(x:strFin)
+				        {field:'#(x)',title:'#(x)'}
+				    #if(!for.last)    
+					,
+					#end
+				#end
+				]]
+				,page: true
+			});
+		});
+</script>

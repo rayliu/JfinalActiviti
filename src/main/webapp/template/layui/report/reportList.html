@@ -1,0 +1,63 @@
+#@layout()
+#define main()
+<link rel="stylesheet" href="/theme/H-ui.admin.page3.1.1/lib/lightbox2/2.8.1/css/lightbox.css">
+
+
+<section style="padding: 15px;">
+	<span class="layui-breadcrumb">
+		<a href="">首页</a>
+		<a href="">报表生成</a>
+		<a><cite>报表列表</cite></a>
+	</span>
+	<br>
+	<br>
+	<a href="/report/add" class="layui-btn" >新增</a>
+	<table class="layui-hide" id="jfa_table"></table>
+</section>
+
+#end
+
+<script type="text/javascript" src="/theme/H-ui.admin.page3.1.1/lib/lightbox2/2.8.1/js/lightbox.min.js"></script>
+<script>
+		layui.use(['jquery','table'], function(){
+			var table = layui.table, $=layui.$;
+
+			$('#sidebar_leave').addClass('layui-nav-itemed');
+
+			table.render({
+				elem: '#jfa_table'
+				,url:'/report/getList'
+				//,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+				,cols: [[
+				        {field:'id', title: '序号'}
+				        ,{field:'sql',title: 'SQL语句'}
+				        ,{field:'report_name', title: '表名'}
+				        ,{field:'remark', title: '注释'}
+				        ,{field:'create_name', title: '创建人'}
+				        ,{field:'create_time', title: '创建时间'}
+						,{field:'',  title: '操作', templet: function(full){
+							return '<a class="layui-btn layui-btn-xs" href="/report/edit?id='+full.id+'">编辑</a>'+
+							'<button id="'+full.id+'" class="layui-btn layui-btn-danger layui-btn-xs delete">删除</button>';
+						}
+					}
+				]]
+				,page: true
+			});
+			
+			$("body").on("click",".delete",function(){
+				var  self = $(this);
+				var id = $(this).attr("id")
+	        	layer.confirm('确认要删除吗？',function(){
+	        	$.post("/report/delete",{id:id},function(data){
+	        		if(data.result){
+	        			self.parent().parent().parent().remove();
+	        			layer.msg('删除成功',{icon:1});
+	        		}else{
+	        			layer.msg('删除失败',{icon:2});
+	        		}
+	        	});
+	        });
+				
+			});
+		});
+</script>
