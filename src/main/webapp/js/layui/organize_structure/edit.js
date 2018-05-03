@@ -138,7 +138,7 @@ $(function(){
 	
 	//单击添加成员弹窗
 	$("#createUser").click(function(){
-		addUserPage("添加成员","","","","");
+		addUserPage("添加成员","","","","","");
 	});
 	
 	//table监听，table里的单击事件都在里面
@@ -148,7 +148,7 @@ $(function(){
 		table.on('tool(test)', function(obj){
 			var data = obj.data;
 			if(obj.event === 'edit'){
-				addUserPage("编辑成员",data.cn_name,data.name,data.password,data.mobile);
+				addUserPage("编辑成员",data.id,data.cn_name,data.name,data.password,data.mobile);
 			} else if(obj.event === 'delete'){
 				layer.confirm('确定删除该成员吗？',{title:'提示'}, function(){
 					$.post("/organize_structure/deleteUser",{id:data.id},function(data){
@@ -167,46 +167,26 @@ $(function(){
 	});
 
 	//添加和编辑成员弹窗的html
-	var addUserPage = function(title,cn_name,name,password,mobile){
-		var style = "type=\"text\"";
-		if("编辑成员"==title){
-			style = "type=\"password\" disabled style=\"background-color:#ccc;\"";
-		}
+	var addUserPage = function(title,user_id,cn_name,name,password,mobile){
 		//页面层
 		layer.open({
 		  type: 1,
-		  area: ['600px', '400px'], //宽高
+		  area: ['600px', '500px'], //宽高
 		  title:title,
-		  content: '<form id="order_form" class="layui-form" style="width:500px;margin:20px 0 0 18%;">'
-			  	  +'	<div class="layui-form-item layui-col-md8">'
-				  +'		<label class="layui-form-label"><span style="color:red;font-weight: bold;">*</span>用户名</label>'
-				  +'		<div class="layui-input-block">'
-				  +'			<input type="text" lay-verify="required" name="name" placeholder="请输入用户名" value="'+name+'" class="layui-input" />'
-				  +'		</div>'
-				  +'	</div>'
-				  +'	<div class="layui-form-item layui-col-md8">'
-				  +'		<label class="layui-form-label"><span style="color:red;font-weight: bold;">*</span>密码</label>'
-				  +'		<div class="layui-input-block">'
-				  +'			<input '+style+' lay-verify="required" name="password" placeholder="请输入密码" value="'+password+'" class="layui-input" />'
-				  +'		</div>'
-				  +'	</div>'
-				  +'	<div class="layui-form-item layui-col-md8">'
-				  +'		<label class="layui-form-label">中文名称</label>'
-				  +'		<div class="layui-input-block">'
-				  +'			<input type="text" name="cn_name" placeholder="请输入中文名称" value="'+cn_name+'" class="layui-input" />'
-				  +'		</div>'
-				  +'	</div>'
-				  +'	<div class="layui-form-item layui-col-md8">'
-				  +'		<label class="layui-form-label">手机号码</label>'
-				  +'		<div class="layui-input-block">'
-				  +'			<input type="text" name="mobile" placeholder="请输入手机号码" value="'+mobile+'" class="layui-input" />'
-				  +'		</div>'
-				  +'	</div>'
-				  +'	<div class="layui-form-item layui-col-md8" style="margin:15px 0 0 26%;">'
-				  +'		<input type="button" lay-submit value="确认" class="layui-btn layui-btn-norma" /><input type="button" id="cancelBtn" value="取消" class="layui-btn layui-btn-primary" />'
-				  +'	</div>'
-				  +'</form>'
+		  content: $("#editHtml").html()
 		});
+		var group_id = $("#group_id").val();
+		$(".layui-layer-page input[name='user_id']").val(user_id);
+		$(".layui-layer-page input[name='name']").val(name);
+		$(".layui-layer-page input[name='password']").val(password);
+		$(".layui-layer-page input[name='cn_name']").val(cn_name);
+		$(".layui-layer-page input[name='mobile']").val(mobile);
+		$(".layui-layer-page select[name='group_id']").val(group_id);
+		if("编辑成员"==title){
+			$(".layui-layer-page input[name='password']").attr("disabled",true);
+			$(".layui-layer-page input[name='password']").attr("type","password");
+			$(".layui-layer-page input[name='password']").css("background-color","#ccc");
+		}
 	}
 	
 	layui.use(['jquery', 'form', 'laydate', 'layedit'], function(){
@@ -220,8 +200,7 @@ $(function(){
 		  //监听提交
 		form.on('submit()',function(data){
 			var order = {};
-			order["group_id"] = $("#group_id").val();
-			$("#order_form input").each(function(){
+			$($(this).parent().parent()).find("input,select").each(function(){
 				order[$(this).attr("name")] = $(this).val();
 			});
 			
@@ -242,7 +221,8 @@ $(function(){
 	 	});
 	});
 
-	$("body").on("click","#cancelBtn",function(){
+	$("body").on("click",".cancelBtn",function(){
 		layer.closeAll();
 	});
+	
 });

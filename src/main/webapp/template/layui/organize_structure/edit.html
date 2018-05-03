@@ -1,6 +1,5 @@
 #@layout()
 #define main()
-
 <section style="padding: 15px;">
 	<span class="layui-breadcrumb">
 		<a href="">首页</a>
@@ -55,20 +54,53 @@
 			<div class="con_body">
 				<table id="eeda_table" lay-filter="test"></table>
 				
-				<!-- #if(group1_list[0].id??==99999)
-					
-				#else
-					<div style="width:450px;height:400px;margin:0 auto;">
-						<div style="padding:150px 0 0 120px;">
-							<div>当前部门下没有成员，你可以</div>
-							<div style="padding:10px 0 0 60px;"><button type="button" class="layui-btn layui-btn-sm createUser">添加成员</button></div>
-						</div>
-					</div>
-				#end -->
 			</div>
 		</div>
 	</div>
+	<div id="editHtml" style="display:none;">
+		<form class="" style="width:500px;margin:20px 0 0 18%;">
+			<input type="hidden" name="user_id" value />
+	  	  	<div class="layui-form-item layui-col-md8">
+		  		<label class="layui-form-label"><span style="color:red;font-weight: bold;">*</span>用户名</label>
+		  		<div class="layui-input-block">
+		  			<input type="text" lay-verify="required" name="name" placeholder="请输入用户名" value="'+name" class="layui-input" />
+		  		</div>
+		  	</div>
+		  	<div class="layui-form-item layui-col-md8">
+		  		<label class="layui-form-label"><span style="color:red;font-weight: bold;">*</span>密码</label>
+		  		<div class="layui-input-block">
+		  			<input lay-verify="required" name="password" placeholder="请输入密码" value="'+password" class="layui-input" />
+		  		</div>
+		  	</div>
+		  	<div class="layui-form-item layui-col-md8">
+		  		<label class="layui-form-label">中文名称</label>
+		  		<div class="layui-input-block">
+		  			<input type="text" name="cn_name" placeholder="请输入中文名称" value="'+cn_name" class="layui-input" />
+		  		</div>
+		  	</div>
+		  	<div class="layui-form-item layui-col-md8">
+		  		<label class="layui-form-label">手机号码</label>
+		  		<div class="layui-input-block">
+		  			<input type="text" name="mobile" placeholder="请输入手机号码" value="'+mobile" class="layui-input" />
+		  		</div>
+		  	</div>
+		  	<div class="layui-form-item layui-col-md8">
+		  		<label class="layui-form-label">所属用户组</label>
+		  		<div class="layui-input-block">
+		  			<select name="group_id" lay-search="" class="layui-input">
+		  			<option value="">请选择</option>
+		  			#for(g:select_group_list)
+		          		<option value="#(g.id)">#(g.name)</option>
+		          		#end
+		          	</select>
+		  		</div>
+		  	</div>
+		  	<div class="layui-form-item layui-col-md8" style="margin:15px 0 0 26%;">
+		  		<input type="button" lay-submit value="确认" class="layui-btn layui-btn-norma" /><input type="button" value="取消" class="layui-btn layui-btn-primary cancelBtn" />
+		  	</div>
+		  </form>
+		  
+	  </div>
 </section>
 #end
-<script src="/theme/layui-v2.2.6/layui/lay/modules/layer.js"></script>
 <script src="/js/layui/organize_structure/edit.js"></script>

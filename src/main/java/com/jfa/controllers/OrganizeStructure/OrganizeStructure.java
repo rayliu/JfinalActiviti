@@ -57,7 +57,9 @@ public class OrganizeStructure extends Controller {
             	}
             }
         }
+        List<Record> select_group_list = Db.find("select * from t_rbac_group");
         setAttr("group1_list", group1_list);
+        setAttr("select_group_list", select_group_list);
         render("edit.html");
     }
     
@@ -128,25 +130,42 @@ public class OrganizeStructure extends Controller {
     	String josnStr = getPara("params");
     	Gson gson = new Gson();
     	Map<String,Object> dto = gson.fromJson(josnStr,HashMap.class);
+    	String user_id = (String)dto.get("user_id");
     	String group_id = (String)dto.get("group_id");
     	String name = (String)dto.get("name");
     	String password =  MD5Util.encode("SHA1",(String)dto.get("password"));
     	String cn_name = (String)dto.get("cn_name");
     	String mobile = (String)dto.get("mobile");
     	
-    	Record user = new Record();
-    	user.set("name", name);
-    	user.set("password", password);
-    	user.set("cn_name", cn_name);
-    	user.set("mobile", mobile);
-    	boolean user_result = Db.save("t_rbac_user", user);
     	boolean result = false;
-    	if(user_result){
-    		Record re = new Record();
-    		re.set("group_id", group_id);
-    		re.set("user_id", user.get("id"));
-    		result = Db.save("t_rbac_ref_group_user", re);
+    	Record user = new Record();
+    	
+    	if(StrKit.notBlank(user_id)){
+    		user = Db.findById("t_rbac_user", user_id);
+    		user.set("name", name);
+        	user.set("cn_name", cn_name);
+        	user.set("mobile", mobile);
+        	boolean user_result = Db.update("t_rbac_user", user);
+        	if(user_result){
+        		int resultNumber = Db.update("update t_rbac_ref_group_user set group_id = ? where user_id = ?",group_id,user_id);
+        		if(resultNumber>0){
+        			result = true;
+        		}
+        	}
+    	}else{
+    		user.set("name", name);
+        	user.set("password", password);
+        	user.set("cn_name", cn_name);
+        	user.set("mobile", mobile);
+        	boolean user_result = Db.save("t_rbac_user", user);
+        	if(user_result){
+        		Record re = new Record();
+        		re.set("group_id", group_id);
+        		re.set("user_id", user.get("id"));
+        		result = Db.save("t_rbac_ref_group_user", re);
+        	}
     	}
+    
     	renderJson("{\"result\":"+result+"}");
     }
     
