@@ -113,7 +113,22 @@ public class ReportController extends Controller{
         	order.set("create_by",login_user.getLong("id"));
         	order.set("create_time", new Date());
         	Db.save("t_rbac_report_sql",order);
+        	
+        	
+        	 
         }
+        if(!StrKit.notBlank(order_id)){
+            Record user= Db.findFirst("select * from t_rbac_report_sql where remark='"+remark+"' and create_name = '"+login_user.get("name")+"'");
+        	String id=user.getStr("id");
+        	
+        	 Record menu= new Record();
+        	 menu.set("name", report_name);
+        	 menu.set("url","/report/searchReport?id="+id+"&&Y=true");
+        	 menu.set("parent_id","41");
+        	 menu.set("seq","3");
+        	 Db.save("t_rbac_menu", menu);
+        }
+    	 
         renderJson(order);
 	}
 	
@@ -130,38 +145,68 @@ public class ReportController extends Controller{
 	
 	public void searchReport(){
 		String jsonStr=getPara("params");
-		  int i=jsonStr.length();
-		  int count=0;
-		  List<Integer> subStr= new ArrayList<Integer>();
-		  
-		  for(int a=0;a<i;a++){
-			  char charStr =jsonStr.charAt(a);
-			  if(charStr=='"'){
-				  if(count==0){
-					  subStr.add(a+1);
-					  count++;
-				  }else{
-					  subStr.add(a);
-					  count=0;
+		String check=getPara("Y");
+		if(check==null){
+			 int i=jsonStr.length();
+			  int count=0;
+			  List<Integer> subStr= new ArrayList<Integer>();
+			  
+			  for(int a=0;a<i;a++){
+				  char charStr =jsonStr.charAt(a);
+				  if(charStr=='"'){
+					  if(count==0){
+						  subStr.add(a+1);
+						  count++;
+					  }else{
+						  subStr.add(a);
+						  count=0;
+					  }
+					  
 				  }
-				  
 			  }
-		  }
-		  List<String> strFin =new ArrayList<String>();
-		  for(int z=0;z<subStr.size();z++){
-			  int startInt = subStr.get(z);
-			  if(z!=subStr.size()-1){
-				  int endInt = subStr.get(z+1);
-				  String cur = jsonStr.substring(startInt,endInt);
-				  strFin.add(cur);
-				  z++;
+			  List<String> strFin =new ArrayList<String>();
+			  for(int z=0;z<subStr.size();z++){
+				  int startInt = subStr.get(z);
+				  if(z!=subStr.size()-1){
+					  int endInt = subStr.get(z+1);
+					  String cur = jsonStr.substring(startInt,endInt);
+					  strFin.add(cur);
+					  z++;
+				  }
 			  }
-		  }
-		  
-		  String id= getPara("id");
+			  
+			  String id= getPara("id");
+			
+			setAttr("id",id);
+			setAttr("strFin",strFin);
+		}else{
+			String id=getPara("id");
+			Record info =Db.findById("t_rbac_report_sql",id);
+			String sql=info.getStr("sql");
+			sql = sql.replace(" ", "");
+			String[] array =sql.split("as'");
+			int in=sql.indexOf("as'");
+			if(in==-1){
+				array= sql.split("as\"");
+			}
 		
-		setAttr("id",id);
-		setAttr("strFin",strFin);
+			List<String> strFin =new ArrayList<String>();
+			for(int i=1;i<array.length;i++){
+				String str =array[i];
+				if(in!=-1){
+					String title = str.substring(0,str.indexOf("'"));
+					strFin.add(title);
+				}else{
+					String title = str.substring(0,str.indexOf('"'));
+					strFin.add(title);
+				}
+				
+			}
+			
+			setAttr("id",id);
+			setAttr("strFin",strFin);
+			
+		}
 		 
 		render("reportInfo.html");
 	}

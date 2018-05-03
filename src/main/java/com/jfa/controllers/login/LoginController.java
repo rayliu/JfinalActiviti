@@ -46,7 +46,7 @@ public class LoginController extends Controller {
 		UsernamePasswordToken token = new UsernamePasswordToken(username, sha1Pwd );
 
 
-		String inputRandomCode = getPara("inputRandomCode");
+		/*String inputRandomCode = getPara("inputRandomCode");
 		boolean loginSuccess = CaptchaRender.validate(this, inputRandomCode);
 		if (!loginSuccess) {
 			String errMsg = "验证码不正确";
@@ -54,7 +54,7 @@ public class LoginController extends Controller {
 			logger.debug(errMsg);
 			redirect("/login");
 			return;
-		}
+		}*/
 
 		if (getPara("remember") != null && "Y".equals(getPara("remember")))
 			token.setRememberMe(true);
