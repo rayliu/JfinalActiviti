@@ -46,9 +46,16 @@
 			<label class="layui-form-label">SQL语句</label>
 			<div class="layui-input-inline">
 				<textarea id="sql" name="sql" placeholder="请输入内容" class="layui-textarea"  lay-verify="required" >#(order.get('sql')??)</textarea>
-			</div>
-			<div class="layui-form-mid layui-word-aux" ><span style="color: red;">别名必须以“as”别名格式书写</span></div>
+				<div>
+		<span class="layui-badge layui-bg-gray">SQL语句别名命名规则：</span><span class="layui-badge">&nbsp;as "别名" &nbsp;或者&nbsp;as '别名'&nbsp;</span>
 		</div>
+			</div>
+			
+			
+			<div class="layui-form-mid layui-word-aux" ></div>
+		</div>
+		
+		
 		
 		<div class="layui-form-item">
 			<label class="layui-form-label">注释</label>
@@ -61,7 +68,7 @@
 		
 		<div class="layui-form-item">
 			<div class="layui-input-block">
-				<button type="button" class="layui-btn layui-btn-primary">预览</button>
+				<button type="button" class="layui-btn layui-btn-primary" id="PreViewBtn">预览</button>
 				<button type="button" class="layui-btn" id="SaveBtn">保存</button>
 			</div>
 		</div>
@@ -128,6 +135,22 @@ layui.use(['jquery', 'form', 'laydate', 'layedit'], function(){
 		});
 		
 	});
+	
+	
+	//预览按钮
+	$("#PreViewBtn").click(function(){
+		
+		var sql = $("#sql").val();
+		
+		layer.open({
+			title: 'SQL预览'
+			,type:2
+			,resize:false
+			,area:['900px','800px']
+			,content:['/report/preview?sql='+sql,'no']
+		});
+	});
+	
 	
 });
 </script>

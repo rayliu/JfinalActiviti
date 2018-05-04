@@ -124,6 +124,7 @@ public class ReportController extends Controller{
         	Db.save("t_rbac_report_sql",order);
         	
         	
+        	//根据保存的信息查询到刚刚保存的报表的id，需改进
         	Record user= Db.findFirst("select * from t_rbac_report_sql where remark='"+remark+"' and create_name = '"+login_user.get("name")+"'");
           	String id=user.getStr("id");
           	
@@ -155,9 +156,12 @@ public class ReportController extends Controller{
 	public void searchReport(){
 		String jsonStr=getPara("params");
 		String check=getPara("Y");
+		
+		//判断是否是报表管理页面进入
 		if(check==null){
 			 int i=jsonStr.length();
 			  int count=0;
+			 //存储需要分裂的位置
 			  List<Integer> subStr= new ArrayList<Integer>();
 			  
 			  for(int a=0;a<i;a++){
@@ -174,6 +178,7 @@ public class ReportController extends Controller{
 				  }
 			  }
 			  List<String> strFin =new ArrayList<String>();
+			  //开始截取
 			  for(int z=0;z<subStr.size();z++){
 				  int startInt = subStr.get(z);
 				  if(z!=subStr.size()-1){
@@ -189,6 +194,8 @@ public class ReportController extends Controller{
 			setAttr("id",id);
 			setAttr("strFin",strFin);
 		}else{
+			
+			//报表管理页面进入则根据id查到相应sql，再重新进行分裂
 			String id=getPara("id");
 			Record info =Db.findById("t_rbac_report_sql",id);
 			String sql=info.getStr("sql");
@@ -252,6 +259,33 @@ public class ReportController extends Controller{
         }
 
 		renderJson(map);
+	}
+	
+	public void preview(){
+		String sql=getPara("sql");
+		
+		sql = sql.replace(" ", "");
+		String[] array =sql.split("as'");
+		int in=sql.indexOf("as'");
+		if(in==-1){
+			array= sql.split("as\"");
+		}
+	
+		List<String> strFin =new ArrayList<String>();
+		for(int i=1;i<array.length;i++){
+			String str =array[i];
+			if(in!=-1){
+				String title = str.substring(0,str.indexOf("'"));
+				strFin.add(title);
+			}else{
+				String title = str.substring(0,str.indexOf('"'));
+				strFin.add(title);
+			}
+			
+		}
+		setAttr("strFin",strFin);
+		
+		render("preview.html");
 	}
 	
 }

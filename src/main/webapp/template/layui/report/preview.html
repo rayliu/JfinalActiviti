@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>JFinalActiviti</title>
+  <link rel="stylesheet" type="text/css" href="/theme/layui-v2.2.6/layui/css/layui.css" />
+<link rel="stylesheet" href="/theme/H-ui.admin.page3.1.1/lib/lightbox2/2.8.1/css/lightbox.css">
+</head>
+<body >
+<section style="padding: 15px;">
+	<table class="layui-hide"  id="jfa_table"></table>
+</section>
+</body>
+</html>
+<script type="text/javascript" src="/theme/H-ui.admin.page3.1.1/lib/lightbox2/2.8.1/js/lightbox.min.js"></script>
+<script src="/theme/layui-v2.2.6/layui/layui.js"></script>
+<script>
+		layui.use(['jquery','table'], function(){
+			var table = layui.table, $=layui.$;
+			$('#sidebar_leave').addClass('layui-nav-itemed');
+
+			table.render({
+				elem: '#jfa_table'
+				//,url:'/report/getInfoList'
+				//,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+				,cols: [[
+				        {field:'预览',title:'预览'},
+				        {field:'预览',title:'预览'},
+				        {field:'预览',title:'预览'}
+				]]
+				,page: true
+			});
+		});
+</script>
