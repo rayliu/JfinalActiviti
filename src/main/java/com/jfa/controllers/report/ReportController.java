@@ -231,12 +231,13 @@ public class ReportController extends Controller{
 	public void getInfoList(){
 		String sLimit = "";
 		String condition = " ";
-		 String pageIndex = getPara("draw");
 		 
 		String id=getPara("id");
-		 if (getPara("start") != null && getPara("length") != null) {
-	            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
-	        }
+		if (getPara("limit") != null && getPara("page") != null) {
+            int limit = getParaToInt("limit");
+            int page=getParaToInt("page")-1;
+            sLimit = " limit " + limit*page + ", " + limit;
+        }
 		
 		 Record re=Db.findById("t_rbac_report_sql", id);
 		  String sql=re.getStr("sql");
@@ -248,11 +249,11 @@ public class ReportController extends Controller{
 
 		String templateFolder = PropKit.get("ui_folder");
         if("/template/layui".equals(templateFolder)){
-            map.put("code", 0);
-            map.put("count", orderList.size());
-            map.put("data", orderList);
+        	 map.put("code", 0);
+             map.put("count", rec.get("total"));
+             map.put("data", orderList);
         }else {
-            map.put("draw", pageIndex);
+            map.put("draw", 0);
             map.put("recordsTotal", rec.getLong("total"));
             map.put("recordsFiltered", rec.getLong("total"));
             map.put("data", orderList);
@@ -275,11 +276,11 @@ public class ReportController extends Controller{
 		String sql=getPara("sql");
 		String sLimit = "";
 		String condition = " ";
-		 String pageIndex = getPara("draw");
-		 
-		 if (getPara("start") != null && getPara("length") != null) {
-	            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
-	        }
+		if (getPara("limit") != null && getPara("page") != null) {
+            int limit = getParaToInt("limit");
+            int page=getParaToInt("page")-1;
+            sLimit = " limit " + limit*page + ", " + limit;
+        }
 		 
 		 List<Record> orderList = Db.find(sql+sLimit);
 		 
@@ -289,11 +290,11 @@ public class ReportController extends Controller{
 
 			String templateFolder = PropKit.get("ui_folder");
 	        if("/template/layui".equals(templateFolder)){
-	            map.put("code", 0);
-	            map.put("count", orderList.size());
-	            map.put("data", orderList);
+	        	 map.put("code", 0);
+	             map.put("count", rec.get("total"));
+	             map.put("data", orderList);
 	        }else {
-	            map.put("draw", pageIndex);
+	            map.put("draw", 0);
 	            map.put("recordsTotal", rec.getLong("total"));
 	            map.put("recordsFiltered", rec.getLong("total"));
 	            map.put("data", orderList);
