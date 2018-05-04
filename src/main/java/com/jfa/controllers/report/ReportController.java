@@ -15,6 +15,7 @@ import com.google.gson.Gson;
 import com.jfa.interceptor.SetAttrLoginUserInterceptor;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
+import com.jfinal.kit.PropKit;
 import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
@@ -105,6 +106,14 @@ public class ReportController extends Controller{
         	order.set("sql", sql);
         	order.set("remark", remark);
         	Db.update("t_rbac_report_sql",order);
+        	
+        	//更新报表管理url的信息
+        	String findUrl="/report/searchReport?id="+order_id+"&&Y=true";
+        	 Record info= new Record();
+        	 info=Db.findFirst("select * from t_rbac_menu where url='"+findUrl+"'");
+        	 info.set("name", report_name);
+        	 Db.update("t_rbac_menu",info);
+        	 
         }else{
         	order.set("report_name",report_name);
         	order.set("sql", sql);
@@ -115,20 +124,19 @@ public class ReportController extends Controller{
         	Db.save("t_rbac_report_sql",order);
         	
         	
+        	Record user= Db.findFirst("select * from t_rbac_report_sql where remark='"+remark+"' and create_name = '"+login_user.get("name")+"'");
+          	String id=user.getStr("id");
+          	
+          	//新增报表的同时在menu表新增当前报表的url信息
+          	 Record menu= new Record();
+          	 menu.set("name", report_name);
+          	 menu.set("url","/report/searchReport?id="+id+"&&Y=true");
+          	 menu.set("parent_id","41");
+          	 menu.set("seq","3");
+          	 Db.save("t_rbac_menu", menu);
         	 
         }
-        if(!StrKit.notBlank(order_id)){
-            Record user= Db.findFirst("select * from t_rbac_report_sql where remark='"+remark+"' and create_name = '"+login_user.get("name")+"'");
-        	String id=user.getStr("id");
-        	
-        	 Record menu= new Record();
-        	 menu.set("name", report_name);
-        	 menu.set("url","/report/searchReport?id="+id+"&&Y=true");
-        	 menu.set("parent_id","41");
-        	 menu.set("seq","3");
-        	 Db.save("t_rbac_menu", menu);
-        }
-    	 
+  
         renderJson(order);
 	}
 	
@@ -142,6 +150,7 @@ public class ReportController extends Controller{
 		}
 		renderJson("{\"result\":"+result+"}");
 	}
+	
 	
 	public void searchReport(){
 		String jsonStr=getPara("params");
@@ -215,12 +224,12 @@ public class ReportController extends Controller{
 	public void getInfoList(){
 		String sLimit = "";
 		String condition = " ";
+		 String pageIndex = getPara("draw");
+		 
 		String id=getPara("id");
-		if (getPara("limit") != null && getPara("page") != null) {
-			int limit = getParaToInt("limit");
-			int page=getParaToInt("page")-1;
-			sLimit = " limit " + limit*page + ", " + limit;
-		}
+		 if (getPara("start") != null && getPara("length") != null) {
+	            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
+	        }
 		
 		 Record re=Db.findById("t_rbac_report_sql", id);
 		  String sql=re.getStr("sql");
@@ -230,9 +239,17 @@ public class ReportController extends Controller{
 		Record rec = Db.findFirst(sqlTotal);
 		Map<String,Object> map = new HashMap<String,Object>();
 
-		map.put("code", 0);
-		map.put("count", rec.get("total"));
-		map.put("data", orderList);
+		String templateFolder = PropKit.get("ui_folder");
+        if("/template/layui".equals(templateFolder)){
+            map.put("code", 0);
+            map.put("count", orderList.size());
+            map.put("data", orderList);
+        }else {
+            map.put("draw", pageIndex);
+            map.put("recordsTotal", rec.getLong("total"));
+            map.put("recordsFiltered", rec.getLong("total"));
+            map.put("data", orderList);
+        }
 
 		renderJson(map);
 	}
