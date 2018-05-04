@@ -141,13 +141,33 @@ layui.use(['jquery', 'form', 'laydate', 'layedit'], function(){
 	$("#PreViewBtn").click(function(){
 		
 		var sql = $("#sql").val();
+		sessionStorage.setItem("sql",sql);
+		
+		//解析SQL
+		sql = sql.replace(/ /g,'');
+		
+		var array =sql.split("as'");
+		var check=sql.indexOf("as'")
+		if(check==-1){
+			var array =sql.split('as"');
+		}
+		var info=[];
+		for(var i=1;i<array.length;i++){
+			var str =array[i];
+			if(check!=-1){
+				var titles = str.substr(0,str.indexOf("'"));
+			}else{
+				var titles = str.substr(0,str.indexOf('"'));
+			}
+			info[i-1]=titles;
+		}
 		
 		layer.open({
 			title: 'SQL预览'
 			,type:2
 			,resize:false
 			,area:['900px','800px']
-			,content:['/report/preview?sql='+sql,'no']
+			,content:'/report/preview?params='+info
 		});
 	});
 	

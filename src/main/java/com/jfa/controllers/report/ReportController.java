@@ -240,7 +240,7 @@ public class ReportController extends Controller{
 		
 		 Record re=Db.findById("t_rbac_report_sql", id);
 		  String sql=re.getStr("sql");
-		  List<Record> orderList = Db.find(sql);
+		  List<Record> orderList = Db.find(sql+sLimit);
 		
 		String sqlTotal = "select count(1) total from (" + sql + ") B";
 		Record rec = Db.findFirst(sqlTotal);
@@ -262,30 +262,44 @@ public class ReportController extends Controller{
 	}
 	
 	public void preview(){
-		String sql=getPara("sql");
+		String jsonStr=getPara("params");
 		
-		sql = sql.replace(" ", "");
-		String[] array =sql.split("as'");
-		int in=sql.indexOf("as'");
-		if(in==-1){
-			array= sql.split("as\"");
-		}
-	
-		List<String> strFin =new ArrayList<String>();
-		for(int i=1;i<array.length;i++){
-			String str =array[i];
-			if(in!=-1){
-				String title = str.substring(0,str.indexOf("'"));
-				strFin.add(title);
-			}else{
-				String title = str.substring(0,str.indexOf('"'));
-				strFin.add(title);
-			}
-			
-		}
-		setAttr("strFin",strFin);
-		
+		String[] subStr = jsonStr.split(",");
+		 
+		  
+		setAttr("strFin",subStr);
 		render("preview.html");
+	}
+	
+	public void getPreViewList(){
+		String sql=getPara("sql");
+		String sLimit = "";
+		String condition = " ";
+		 String pageIndex = getPara("draw");
+		 
+		 if (getPara("start") != null && getPara("length") != null) {
+	            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
+	        }
+		 
+		 List<Record> orderList = Db.find(sql+sLimit);
+		 
+		 String sqlTotal = "select count(1) total from (" + sql + ") B";
+			Record rec = Db.findFirst(sqlTotal);
+			Map<String,Object> map = new HashMap<String,Object>();
+
+			String templateFolder = PropKit.get("ui_folder");
+	        if("/template/layui".equals(templateFolder)){
+	            map.put("code", 0);
+	            map.put("count", orderList.size());
+	            map.put("data", orderList);
+	        }else {
+	            map.put("draw", pageIndex);
+	            map.put("recordsTotal", rec.getLong("total"));
+	            map.put("recordsFiltered", rec.getLong("total"));
+	            map.put("data", orderList);
+	        }
+
+			renderJson(map);
 	}
 	
 }
