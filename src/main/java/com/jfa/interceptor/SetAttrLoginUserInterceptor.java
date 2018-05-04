@@ -1,5 +1,6 @@
 package com.jfa.interceptor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -41,21 +42,28 @@ public class SetAttrLoginUserInterceptor implements Interceptor{
 				session.setAttribute("parentMenu_id", parentMenu_id_int);
 			}
 			
-			//菜单权限list
-			String parentMenuConditions = " and trm.seq='1'";
-			List<Record> parentMenuList = Db.find(SharedUtil.menuSql(user.getStr("id"),parentMenuConditions));
-			for(int i = 0;i<parentMenuList.size();i++){
-				String menuConditions = " and trm.seq='2' and trm.parent_id = "+parentMenuList.get(i).get("id");
-				
-				List<Record> menuList = Db.find(SharedUtil.menuSql(user.getStr("id"),menuConditions));
-				for(int j = 0;j<menuList.size();j++){
-					String menuItemConditions = " and trm.seq='3' and trm.parent_id = "+menuList.get(j).get("id");
+			List<Record> parentMenuList = new ArrayList<Record>();
+			if(session.getAttribute("parentMenuList")!=null){
+				parentMenuList = (List<Record>) session.getAttribute("parentMenuList");
+			}else{
+				//菜单权限list
+				String parentMenuConditions = " and trm.seq='1'";
+				parentMenuList = Db.find(SharedUtil.menuSql(user.getStr("id"),parentMenuConditions));
+				for(int i = 0;i<parentMenuList.size();i++){
+					String menuConditions = " and trm.seq='2' and trm.parent_id = "+parentMenuList.get(i).get("id");
 					
-					List<Record> menuItemList = Db.find(SharedUtil.menuSql(user.getStr("id"),menuItemConditions));
-					menuList.get(j).set("menuItemList", menuItemList);
+					List<Record> menuList = Db.find(SharedUtil.menuSql(user.getStr("id"),menuConditions));
+					for(int j = 0;j<menuList.size();j++){
+						String menuItemConditions = " and trm.seq='3' and trm.parent_id = "+menuList.get(j).get("id");
+						
+						List<Record> menuItemList = Db.find(SharedUtil.menuSql(user.getStr("id"),menuItemConditions));
+						menuList.get(j).set("menuItemList", menuItemList);
+					}
+					parentMenuList.get(i).set("menuList", menuList);
 				}
-				parentMenuList.get(i).set("menuList", menuList);
+				session.setAttribute("parentMenuList", parentMenuList);
 			}
+			
 			
 			String element_sql = "";
 			//页面元素权限list
