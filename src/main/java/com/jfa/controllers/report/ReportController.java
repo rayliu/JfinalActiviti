@@ -63,13 +63,19 @@ public class ReportController extends Controller{
 		String sqlTotal = "select count(1) total from (" + sql + ") B";
 		Record rec = Db.findFirst(sqlTotal);
 		Map<String,Object> map = new HashMap<String,Object>();
-
-		map.put("code", 0);
-		map.put("count", rec.get("total"));
-		map.put("data", orderList);
-
-		renderJson(map);
 		
+		String templateFolder = PropKit.get("ui_folder");
+        if("/template/layui".equals(templateFolder)){
+        	 map.put("code", 0);
+             map.put("count", rec.get("total"));
+             map.put("data", orderList);
+        }else {
+            map.put("draw", 0);
+            map.put("recordsTotal", rec.getLong("total"));
+            map.put("recordsFiltered", rec.getLong("total"));
+            map.put("data", orderList);
+        }
+		renderJson(map);
 	}
 	
 	public void add(){
@@ -97,7 +103,9 @@ public class ReportController extends Controller{
         String remark=(String)dto.get("remark");
        
         //效验填写的sql是否有语法错误
-        List<Record> check=Db.find(sql);
+			List<Record> check=Db.find(sql);
+
+        
         
         Record order= new Record();
         if(StrKit.notBlank(order_id)){
@@ -124,12 +132,12 @@ public class ReportController extends Controller{
         	Db.save("t_rbac_report_sql",order);
         	
         	
-        	//根据保存的信息查询到刚刚保存的报表的id，需改进
-        	Record user= Db.findFirst("select * from t_rbac_report_sql where remark='"+remark+"' and create_name = '"+login_user.get("name")+"'");
-          	String id=user.getStr("id");
+        	//根据查询数据库最大id找到刚刚保存的报表的id
+        	Record info = Db.findFirst("select * from t_rbac_report_sql where id=(select MAX(id) from t_rbac_report_sql)");
+          	String id=info.getStr("id");
           	
           	//新增报表的同时在menu表新增当前报表的url信息
-          	 Record menu= new Record();
+          	 Record menu= new Record();	
           	 menu.set("name", report_name);
           	 menu.set("url","/report/searchReport?id="+id+"&&Y=true");
           	 menu.set("parent_id","41");
@@ -137,7 +145,6 @@ public class ReportController extends Controller{
           	 Db.save("t_rbac_menu", menu);
         	 
         }
-  
         renderJson(order);
 	}
 	
@@ -262,11 +269,10 @@ public class ReportController extends Controller{
 		renderJson(map);
 	}
 	
+	//预览
 	public void preview(){
-		String jsonStr=getPara("params");
-		
-		String[] subStr = jsonStr.split(",");
-		 
+		String sql=getPara("params");
+		String[] subStr = sql.split(",");
 		  
 		setAttr("strFin",subStr);
 		render("preview.html");
@@ -299,8 +305,16 @@ public class ReportController extends Controller{
 	            map.put("recordsFiltered", rec.getLong("total"));
 	            map.put("data", orderList);
 	        }
-
 			renderJson(map);
 	}
+	
+	//检查传入的sql是否能正常运行
+	public void check(){
+		String sql =getPara("sql");
+		List<Record> check=Db.find(sql);
+		renderJson(check);
+	}
+	
+	
 	
 }

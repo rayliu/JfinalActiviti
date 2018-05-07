@@ -68,8 +68,9 @@
 		
 		<div class="layui-form-item">
 			<div class="layui-input-block">
-				<button type="button" class="layui-btn layui-btn-primary" id="PreViewBtn">预览</button>
 				<button type="button" class="layui-btn" id="SaveBtn">保存</button>
+				<button type="button" class="layui-btn layui-btn-primary" id="PreViewBtn">预览</button>
+				<a href="/report" class="layui-btn layui-btn-primary" >返回列表</a>
 			</div>
 		</div>
 	</form>
@@ -95,37 +96,41 @@ layui.use(['jquery', 'form', 'laydate', 'layedit'], function(){
 				var name = $(this).attr("name");
 				order[name] = $(this).val();
 			});
-			$.post("/report/save",{params:JSON.stringify(order)},function(data){
-				if(data.id>0){
-					layer.msg('保存成功', {icon: 1});
-					var stateObj = { foo : "create"};
-					history.pushState(stateObj,"edit","edit?id="+data.id);
+			
+			var sql = $("#sql").val();
+			$.post("/report/check",{sql:sql},function(data){
+				if(data!=null){
 					
-					//解析SQL
-					var sql=$("#sql").val();
-					sql = sql.replace(/ /g,'');
-					
-					var array =sql.split("as'");
-					var check=sql.indexOf("as'")
-					if(check==-1){
-						var array =sql.split('as"');
-					}
-					var info=[];
-					for(var i=1;i<array.length;i++){
-						var str =array[i];
-						if(check!=-1){
-							var title = str.substr(0,str.indexOf("'"));
+					$.post("/report/save",{params:JSON.stringify(order)},function(data){
+						if(data.id>0){
+							layer.msg('保存成功', {icon: 1});
+							//解析SQL
+							var sql=$("#sql").val();
+							sql = sql.replace(/ /g,'');
+							
+							var array =sql.split("as'");
+							var check=sql.indexOf("as'")
+							if(check==-1){
+								var array =sql.split('as"');
+							}
+							var info=[];
+							for(var i=1;i<array.length;i++){
+								var str =array[i];
+								if(check!=-1){
+									var title = str.substr(0,str.indexOf("'"));
+								}else{
+									var title = str.substr(0,str.indexOf('"'));
+								}
+								info[i-1]=title;
+							}
+							
+							var stateObj = {foo:"report/edit?id="+data.id};
+							history.pushState(stateObj,null,location.href="/report/searchReport?params="+JSON.stringify(info)+"&id="+data.id);
 						}else{
-							var title = str.substr(0,str.indexOf('"'));
+							layer.msg('保存失败!',{icon:2});
 						}
-						info[i-1]=title;
-					}
-					var stateObj = {foo:"searchReport"};
-					history.pushState(stateObj,"search","search?id="+data.id);
+					});
 					
-					location.href="/report/searchReport?params="+JSON.stringify(info)+"&&id="+data.id;
-				}else{
-					layer.msg('保存失败!',{icon:2});
 				}
 			}).fail(function(){
 				layer.msg('请检查您的SQL语句是否正确？',{icon:2});
@@ -139,36 +144,44 @@ layui.use(['jquery', 'form', 'laydate', 'layedit'], function(){
 	
 	//预览按钮
 	$("#PreViewBtn").click(function(){
-		
 		var sql = $("#sql").val();
-		sessionStorage.setItem("sql",sql);
-		
-		//解析SQL
-		sql = sql.replace(/ /g,'');
-		
-		var array =sql.split("as'");
-		var check=sql.indexOf("as'")
-		if(check==-1){
-			var array =sql.split('as"');
-		}
-		var info=[];
-		for(var i=1;i<array.length;i++){
-			var str =array[i];
-			if(check!=-1){
-				var titles = str.substr(0,str.indexOf("'"));
-			}else{
-				var titles = str.substr(0,str.indexOf('"'));
+		$.post("/report/check",{sql:sql},function(data){
+			if(data!=null){
+				sessionStorage.setItem("sql",sql);
+				
+				//解析SQL
+				sql = sql.replace(/ /g,'');
+				
+				var array =sql.split("as'");
+				var check=sql.indexOf("as'")
+				if(check==-1){
+					var array =sql.split('as"');
+				}
+				var info=[];
+				for(var i=1;i<array.length;i++){
+					var str =array[i];
+					if(check!=-1){
+						var titles = str.substr(0,str.indexOf("'"));
+					}else{
+						var titles = str.substr(0,str.indexOf('"'));
+					}
+					info[i-1]=titles;
+				}
+				
+				layer.open({
+					title: '报表预览'
+					,type:2
+					,resize:false
+					,area:['900px','600px']
+					,content:['/report/preview?params='+info,'no']
+				});
 			}
-			info[i-1]=titles;
-		}
-		
-		layer.open({
-			title: 'SQL预览'
-			,type:2
-			,resize:false
-			,area:['900px','600px']
-			,content:['/report/preview?params='+info,'no']
+		}).fail(function(){
+			layer.msg('请检查您的SQL语句是否正确？',{icon:2});
+			$("#sql").focus();
+			return false;
 		});
+	
 	});
 	
 	
