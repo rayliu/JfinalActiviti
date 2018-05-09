@@ -1174,6 +1174,7 @@ CREATE TABLE `t_rbac_menu` (
   `parent_id` bigint(20) DEFAULT NULL,
   `seq` int(11) DEFAULT NULL,
   `is_delete` int(11) DEFAULT 0,
+   `sort_no` bigint(33) DEFAULT NULL COMMENT '排序',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -1184,42 +1185,48 @@ CREATE TABLE `t_rbac_menu` (
 
 LOCK TABLES `t_rbac_menu` WRITE;
 /*!40000 ALTER TABLE `t_rbac_menu` DISABLE KEYS */;
-INSERT INTO `jfinal_activiti`.`t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`) VALUES ('1', 'OA办公', '/oa', NULL, '1');
-INSERT INTO `jfinal_activiti`.`t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`) VALUES ('2', '系统设置', '/sys', NULL, '1');
-INSERT INTO `jfinal_activiti`.`t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`) VALUES ('3', '在线开发', '/generate', NULL, '1');
-INSERT INTO `jfinal_activiti`.`t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`) VALUES ('4', '测试', '/test', NULL, '1');
-INSERT INTO `jfinal_activiti`.`t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`) VALUES ('6', '请假管理', '', '1', '2');
-INSERT INTO `jfinal_activiti`.`t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`) VALUES ('7', '工作流管理', '', '1', '2');
-INSERT INTO `jfinal_activiti`.`t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`) VALUES ('8', '用户管理', '', '1', '2');
-INSERT INTO `jfinal_activiti`.`t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`) VALUES ('9', '代码生成', '', '1', '2');
-INSERT INTO `jfinal_activiti`.`t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`) VALUES ('10', '超级管理员', '', '1', '2');
-INSERT INTO `jfinal_activiti`.`t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`) VALUES ('11', '待办任务', '/leave/task', '6', '3');
-INSERT INTO `jfinal_activiti`.`t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`) VALUES ('12', '请假单', '/leave/list', '6', '3');
-INSERT INTO `jfinal_activiti`.`t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`) VALUES ('13', '流程列表', '/workflow/processList', '7', '3');
-INSERT INTO `jfinal_activiti`.`t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`) VALUES ('14', '用户管理', '/user/list', '8', '3');
-INSERT INTO `jfinal_activiti`.`t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`) VALUES ('15', '角色管理', '/role/list', '8', '3');
-INSERT INTO `jfinal_activiti`.`t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`) VALUES ('16', '用户组管理', '/group/list', '8', '3');
-INSERT INTO `jfinal_activiti`.`t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`) VALUES ('17', '用户-组 关联', '/user_group_relation/list', '8', '3');
-INSERT INTO `jfinal_activiti`.`t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`) VALUES ('18', '角色-组 关联', '/role_group_relation/list', '8', '3');
-INSERT INTO `jfinal_activiti`.`t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`) VALUES ('19', '角色-用户 关联', '/user_role_relation/list', '8', '3');
-INSERT INTO `jfinal_activiti`.`t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`) VALUES ('20', '数据表管理', '/generate/tableList', '9', '3');
-INSERT INTO `jfinal_activiti`.`t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`) VALUES ('21', '请假管理2', '', '2', '2');
-INSERT INTO `jfinal_activiti`.`t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`) VALUES ('22', '工作流管理2', '', '2', '2');
-INSERT INTO `jfinal_activiti`.`t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`) VALUES ('23', '用户管理2', '', '2', '2');
-INSERT INTO `jfinal_activiti`.`t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`) VALUES ('24', '代码生成2', '', '2', '2');
-INSERT INTO `jfinal_activiti`.`t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`) VALUES ('25', '超级管理员2', '', '2', '2');
-INSERT INTO `jfinal_activiti`.`t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`) VALUES ('26', '待办任务2', '/leave/task', '21', '3');
-INSERT INTO `jfinal_activiti`.`t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`) VALUES ('27', '请假单2', '/leave/list', '21', '3');
-INSERT INTO `jfinal_activiti`.`t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`) VALUES ('28', '流程列表2', '/workflow/processList', '22', '3');
-INSERT INTO `jfinal_activiti`.`t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`) VALUES ('29', '用户管理2', '/user/list', '23', '3');
-INSERT INTO `jfinal_activiti`.`t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`) VALUES ('30', '角色管理2', '/role/list', '23', '3');
-INSERT INTO `jfinal_activiti`.`t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`) VALUES ('31', '用户组管理2', '/group/list', '3', '3');
-INSERT INTO `jfinal_activiti`.`t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`) VALUES ('32', '用户-组 关联2', '/user_group_relation/list', '23', '3');
-INSERT INTO `jfinal_activiti`.`t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`) VALUES ('33', '角色-组 关联2', '/role_group_relation/list', '23', '3');
-INSERT INTO `jfinal_activiti`.`t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`) VALUES ('34', '角色-用户 关联2', '/user_role_relation/list', '23', '3');
-INSERT INTO `jfinal_activiti`.`t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`) VALUES ('35', '数据表管理2', '/generate/tableList', '24', '3');
-INSERT INTO `jfinal_activiti`.`t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`) VALUES ('36', '菜单', '/menu/list', '8', '3');
-INSERT INTO `jfinal_activiti`.`t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`) VALUES ('37', '组织架构', '/organize_structure/edit', '8', '3');
+insert into `t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`, `is_delete`, `sort_no`) values('1','OA办公','/oa',NULL,'1','0','1');
+insert into `t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`, `is_delete`, `sort_no`) values('2','系统设置','/sys',NULL,'1','0','2');
+insert into `t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`, `is_delete`, `sort_no`) values('3','在线开发','/generate',NULL,'1','0','3');
+insert into `t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`, `is_delete`, `sort_no`) values('4','测试','/test',NULL,'1','0','4');
+insert into `t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`, `is_delete`, `sort_no`) values('6','请假管理','','1','2','0','5');
+insert into `t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`, `is_delete`, `sort_no`) values('7','工作流管理','','1','2','0','6');
+insert into `t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`, `is_delete`, `sort_no`) values('8','用户管理','','1','2','0','7');
+insert into `t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`, `is_delete`, `sort_no`) values('9','代码生成','','1','2','0','8');
+insert into `t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`, `is_delete`, `sort_no`) values('10','超级管理员','','1','2','0','9');
+insert into `t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`, `is_delete`, `sort_no`) values('11','待办任务','/leave/task','6','3','0','10');
+insert into `t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`, `is_delete`, `sort_no`) values('12','请假单','/leave/list','6','3','0','11');
+insert into `t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`, `is_delete`, `sort_no`) values('13','流程列表','/workflow/processList','7','3','0','12');
+insert into `t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`, `is_delete`, `sort_no`) values('14','用户管理','/user/list','8','3','0','13');
+insert into `t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`, `is_delete`, `sort_no`) values('15','角色管理','/role/list','8','3','0','14');
+insert into `t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`, `is_delete`, `sort_no`) values('16','用户组管理','/group/list','8','3','0','15');
+insert into `t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`, `is_delete`, `sort_no`) values('17','用户-组 关联','/user_group_relation/list','8','3','0','16');
+insert into `t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`, `is_delete`, `sort_no`) values('18','角色-组 关联','/role_group_relation/list','8','3','0','17');
+insert into `t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`, `is_delete`, `sort_no`) values('19','角色-用户 关联','/user_role_relation/list','8','3','0','18');
+insert into `t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`, `is_delete`, `sort_no`) values('20','数据表管理','/generate/tableList','9','3','0','19');
+insert into `t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`, `is_delete`, `sort_no`) values('21','请假管理2','','2','2','0','20');
+insert into `t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`, `is_delete`, `sort_no`) values('22','工作流管理2','','2','2','0','21');
+insert into `t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`, `is_delete`, `sort_no`) values('23','用户管理2','','2','2','0','22');
+insert into `t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`, `is_delete`, `sort_no`) values('24','代码生成2','','2','2','0','23');
+insert into `t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`, `is_delete`, `sort_no`) values('25','超级管理员2','','2','2','0','24');
+insert into `t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`, `is_delete`, `sort_no`) values('26','待办任务2','/leave/task','21','3','0','25');
+insert into `t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`, `is_delete`, `sort_no`) values('27','请假单2','/leave/list','21','3','0','26');
+insert into `t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`, `is_delete`, `sort_no`) values('28','流程列表2','/workflow/processList','22','3','0','27');
+insert into `t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`, `is_delete`, `sort_no`) values('29','用户管理2','/user/list','23','3','0','28');
+insert into `t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`, `is_delete`, `sort_no`) values('30','角色管理2','/role/list','23','3','0','29');
+insert into `t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`, `is_delete`, `sort_no`) values('31','用户组管理2','/group/list','3','3','0','30');
+insert into `t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`, `is_delete`, `sort_no`) values('32','用户-组 关联2','/user_group_relation/list','23','3','0','31');
+insert into `t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`, `is_delete`, `sort_no`) values('33','角色-组 关联2','/role_group_relation/list','23','3','0','32');
+insert into `t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`, `is_delete`, `sort_no`) values('34','角色-用户 关联2','/user_role_relation/list','23','3','0','33');
+insert into `t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`, `is_delete`, `sort_no`) values('35','数据表管理2','/generate/tableList','24','3','0','34');
+insert into `t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`, `is_delete`, `sort_no`) values('36','菜单','/menu/list','8','3','0','35');
+insert into `t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`, `is_delete`, `sort_no`) values('37','组织架构','/organize_structure/edit','8','3','0','36');
+insert into `t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`, `is_delete`, `sort_no`) values('38','报表生成','','1','2','0','37');
+insert into `t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`, `is_delete`, `sort_no`) values('40','报表列表','/report/list','38','3','0','38');
+insert into `t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`, `is_delete`, `sort_no`) values('41','报表管理',NULL,'1','2','0','39');
+insert into `t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`, `is_delete`, `sort_no`) values('42','用户报表','/report/searchReport?id=1&&Y=true','41','3','0','40');
+insert into `t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`, `is_delete`, `sort_no`) values('43','菜单报表','/report/searchReport?id=2&&Y=true','41','3','0','41');
+insert into `t_rbac_menu` (`id`, `name`, `url`, `parent_id`, `seq`, `is_delete`, `sort_no`) values('44','日志报表','/report/searchReport?id=3&&Y=true','41','3','0','42');
 
 /*!40000 ALTER TABLE `t_rbac_menu` ENABLE KEYS */;
 UNLOCK TABLES;

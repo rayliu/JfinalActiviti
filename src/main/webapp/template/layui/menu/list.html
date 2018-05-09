@@ -25,11 +25,11 @@
 				,url:'/menu/getList'
 				//,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
 				,cols: [[
-				            {field:'id', title: '菜单ID'}
+				            {field:'sort_no', title: '序号',edit:'text'}
 				            ,{field:'name', title: '菜单名'}
 				            ,{field:'url', title: 'url'}
 				            ,{field:'parent_id', title: '父级ID'}
-				            ,{field:'seq', title: '排序序号'}
+				            ,{field:'seq', title: '层级'}
 					,{field:'', width:137, title: '操作', templet: function(full){
 							return '<a class="layui-btn layui-btn-xs" href="edit?id='+full.id+'">编辑</a>' +
                             	'<a class="layui-btn layui-btn-xs layui-btn-danger delete" id="'+full.id+'">删除</a>'  ;
@@ -38,6 +38,19 @@
 				]]
 				,page: true
 			});
+			
+			
+			$("body").on("change",".layui-table-edit",function(){
+				var self = $(this);
+				var  sort_no=self.val();
+				var id=self.parent().next().next().next().next().next().children().children().next().attr("id");
+					$.post("/menu/updateSort_no",{sort_no:sort_no,id:id},function(data){
+						if(data.result){
+							table.reload('jfa_table',{url:'/menu/getList'});
+						}
+					});
+			});
+			
 		});
 		$("body").on("click",".delete",function(){
 			var self = $(this);

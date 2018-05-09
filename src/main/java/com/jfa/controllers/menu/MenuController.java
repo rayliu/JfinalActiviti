@@ -55,7 +55,7 @@ public class MenuController extends Controller {
         }
         Record login_user = getAttr("user");
         String sql=" select * from t_rbac_menu where is_delete = '0'";
-        List<Record> orderList = Db.find(sql+condition+" order by id desc "+sLimit);
+        List<Record> orderList = Db.find(sql+condition+" order by sort_no  "+sLimit);
 
         String sqlTotal = "select count(1) total from (" + sql + ") B";
         Record rec = Db.findFirst(sqlTotal);
@@ -155,5 +155,19 @@ public class MenuController extends Controller {
     	}
     	renderJson("{\"result\":"+result+"}");
     }
+    
+    public  void updateSort_no(){
+    	String id=getPara("id");
+    	String sort_no=getPara("sort_no");
+    	Record re=Db.findById("t_rbac_menu", id);
+		Boolean result = false;
+		if(re!=null){
+			re.set("sort_no",sort_no);
+			result = Db.update("t_rbac_menu",re);
+		}
+		renderJson("{\"result\":"+result+"}");
+    	
+    }
+    
 
 }
