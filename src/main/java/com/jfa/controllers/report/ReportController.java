@@ -132,9 +132,7 @@ public class ReportController extends Controller{
         	Db.save("t_rbac_report_sql",order);
         	
         	
-        	//根据查询数据库最大id找到刚刚保存的报表的id
-        	Record info = Db.findFirst("select * from t_rbac_report_sql where id=(select MAX(id) from t_rbac_report_sql)");
-          	String id=info.getStr("id");
+          	String id=order.getStr("id");
           	
           	//新增报表的同时在menu表新增当前报表的url信息
           	 Record menu= new Record();	

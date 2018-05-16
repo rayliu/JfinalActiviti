@@ -45,7 +45,7 @@
 		<div class="layui-form-item">
 			<label class="layui-form-label">SQL语句</label>
 			<div class="layui-input-inline">
-				<textarea id="sql" name="sql" placeholder="请输入内容" class="layui-textarea"  lay-verify="required" >#(order.get('sql')??)</textarea>
+				<textarea id="sql" name="sql" placeholder="SELECT 字段 AS '别名' FROM 表名" class="layui-textarea"  lay-verify="required" >#(order.get('sql')??)</textarea>
 				<div>
 		<span class="layui-badge layui-bg-gray">SQL语句别名命名规则：</span><span class="layui-badge">&nbsp;as "别名" &nbsp;或者&nbsp;as '别名'&nbsp;</span>
 		</div>
