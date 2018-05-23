@@ -8,37 +8,40 @@
 	</span>	
 	<br>
 	<br>
+	
 	<form id="orderForm" class="layui-form layui-row"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+	
 		<input type="hidden" id="order_id" name="order_id" value="#(order.get('id')??)">
 		<div class="layui-form-item layui-col-md3">
 			<label class="layui-form-label">用户组名称</label>
 			<div class="layui-input-block">
-				<input type="text" id="name" name="name" class="layui-input"  autocomplete="off"  value="#(order.get('name')??)"  lay-verify="required" lay-verType="tips">
+				<input type="text"  id="name"  name="name"  class="layui-input"  autocomplete="off"   value="#(order.get('name')??)"  lay-verify="required"  lay-verType="tips">
 			</div>
 		</div>
+		
 		<div class="layui-form-item layui-col-md3">
    		 		<label class="layui-form-label">父级用户组名称</label>
    		 		<div class="layui-input-inline">
-        			<select  id="desc" name="desc" lay-search=""  lay-filter="level">
+        			<select  id="desc"  name="desc"  lay-search=""  lay-filter="level">
         					<option value="">直接选择或搜索选择</option>
         					#for(g:group)
           					<option #if(g.id== order.get('id')??) selected="selected"  #end value="#(g.name)">#(g.name)</option>
           					#end
-       		 </select>
-      				
-    			</div>
-    			
+       		 		</select>
+    		    </div>
   		</div>
+  		
 		<div class="layui-form-item">
 			<div class="layui-input-block">
-			<button type="button"  id="saveBtn" class="layui-btn" lay-submit="">保存</button>
-			<button type="reset" class="layui-btn layui-btn-primary">重置</button>
-			<a type="button" class="layui-btn layui-btn-primary" href="/group">返回列表</a>
+				<button type="button"  id="saveBtn"  class="layui-btn"  lay-submit="">保存</button>
+				<button type="reset"  class="layui-btn layui-btn-primary">重置</button>
+				<a type="button"  class="layui-btn layui-btn-primary"  href="/group">返回列表</a>
 			</div>
 		</div>
 		<!-- 更多表单结构排版请移步文档左侧【页面元素-表单】一项阅览 -->
 		</form>
 </section>
+
 #end
 
 <script type="text/javascript" src="/js/layui/group/edit.js"> </script>

@@ -41,8 +41,8 @@ public class UserController extends Controller{
 	
 	//返回list页面所需的json
 	public void getList(){
-		String sLimit="";
-		String condition="";
+		String sLimit = "";
+		String condition = "";
 		String pageIndex = getPara("draw");
 		if (getPara("start") != null && getPara("length") != null) {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
@@ -72,7 +72,7 @@ public class UserController extends Controller{
 	            map.put("data", orderList);
 	        }
 	        renderJson(map);
-	    }
+	 }
 	
 	//返回create页面
 	public void create(){
@@ -90,9 +90,9 @@ public class UserController extends Controller{
 	
 	@Before(Tx.class)
 	public void save(){
-		String jsonStr =getPara("params");
+		String jsonStr = getPara("params");
 		Gson gson = new Gson();
-		Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class); 
+		Map<String, ?> dto = gson.fromJson(jsonStr, HashMap.class); 
 		Record login_user = getAttr("user");
 		  
 		  String order_id = (String)dto.get("order_id");
@@ -126,34 +126,31 @@ public class UserController extends Controller{
 	
 	public void check(){
 		String order_id = getPara("order_id");
-		String name=getPara("name");
+		String name = getPara("name");
 		String password;
-		if(order_id!=null&&order_id!=""){
+		if(order_id != null&&order_id != ""){
 			 password = getPara("password");
 		}else{
-			password=MD5Util.encode("SHA1",getPara("password"));
+			password = MD5Util.encode("SHA1",getPara("password"));
 		}
 		
-		Record order= new 	Record();
-		order=null;
-		if(name!=null && name!=""&&password!=null&&password!=""){
-			order=Db.findFirst("select * from t_rbac_user where `name`=? and `password`=?",name,password);
+		Record order = new 	Record();
+		order = null;
+		if(name !=null && name != ""&& password !=null && password != ""){
+			order = Db.findFirst("select * from t_rbac_user where `name`=? and `password`=?",name,password);
 		}
 		renderJson(order); 	
 	}
 	
-	
 	public void delete(){
-		String id= getPara("id");
-		Record re=Db.findById("t_rbac_user", id);
+		String id = getPara("id");
+		Record re = Db.findById("t_rbac_user", id);
 		Boolean result = false;
-		if(re!=null){
+		if(re != null){
 			re.set("is_delete", 1);
 			result = Db.update("t_rbac_user",re);
 		}
 		renderJson("{\"result\":"+result+"}");
 	}
-	
-	
 	
 }

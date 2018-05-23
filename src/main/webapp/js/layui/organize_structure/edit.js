@@ -1,27 +1,27 @@
 $(function(){
 	layui.use(['jquery','table'], function(){
-		var table = layui.table, $=layui.$;
+		var table = layui.table, $ = layui.$;
 		$('#sidebar_leave').addClass('layui-nav-itemed');
 		table.render({
-			elem: '#eeda_table'
-			,url:'/organize_structure/userInfo?id='+$("#group_id").val()
-			,width: 800
-			,text :{
+			elem : '#eeda_table'
+			,url : '/organize_structure/userInfo?id='+$("#group_id").val()
+			,width : 800
+			,text : {
 				none:'暂无相关数据'
 			}
 			//,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
 			,cols: [[
-					{field:'cn_name', title: '姓名'},
-					{field:'name', title: '账号'},
-					{field:'group_name', title: '部门'},
-					{ title: '操作',width:120,
-						templet:function(full){
-							return '<input type="button" class="layui-btn layui-btn-xs" lay-event="edit" value="编辑"/>'
-							+'<input type="button" class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete" value="删除"/>';
-						}
-					}
-			]]
-		});
+							{field : 'cn_name', title : '姓名'},
+							{field : 'name', title : '账号'},
+							{field : 'group_name', title : '部门'},
+							{ title : '操作',width : 120,
+								templet : function(full){
+									return '<input type="button" class="layui-btn layui-btn-xs" lay-event="edit" value="编辑"/>'
+											+'<input type="button" class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete" value="删除"/>';
+								}
+							 }
+			         ]]
+			});
 	});
 	
 	//架构树单击事件
@@ -31,7 +31,7 @@ $(function(){
 		$(".click").css("background-color","");
 		self.css("background-color","#d9e3ec");
 		
-		if(id!=$("#group_id").val()){
+		if(id != $("#group_id").val()){
 			//单击不同的部门，将单击的部门名称回填到右边
 			$(".con_head_title").text(self.children("span").text());
 			$("#group_id").val(id);
@@ -41,16 +41,16 @@ $(function(){
 			table.reload('eeda_table', { url: '/organize_structure/userInfo',where: {id:$("#group_id").val()}});
 		}else{
 			//单击部门，如果部门id与右边的id相同，就隐藏
-			if("block"==self.children("ul").css("display")){
+			if("block" == self.children("ul").css("display")){
 				self.parent().children("ul").css("display","none");
-			}else if("block"==self.next("ul").css("display")){
+			}else if("block" == self.next("ul").css("display")){
 				self.parent().children("ul").css("display","none");
 			}else{
 				self.parent().children("ul").css("display","block");
 			}
 			
 			var id = self.children("span").attr("id");
-			if(self.parent().children("ul").html()==""){
+			if(self.parent().children("ul").html() == ""){
 				$.post("/organize_structure/groupinfo",{id:id},function(data){
 					if(data){
 						for(var i=0;i<data.length;i++){
@@ -61,7 +61,6 @@ $(function(){
 					}else{
 						layer.msg('后台出错',{icon:2});
 					}
-					
 				});
 			}
 		}
@@ -190,7 +189,7 @@ $(function(){
 	}
 	
 	layui.use(['jquery', 'form', 'laydate', 'layedit'], function(){
-		var form = layui.form, $=layui.$, laydate=layui.laydate,layedit = layui.layedit;
+		var form = layui.form, $ = layui.$, laydate = layui.laydate,layedit = layui.layedit;
 		
 		$('#sidebar_leave').addClass('layui-nav-itemed');
 	

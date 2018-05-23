@@ -10,54 +10,55 @@
    	<br>
    	<br>
 
-	<form class="form" id="orderForm" novalidate="novalidate">
-	    <div class="layui-form-item">
-	        <label class="layui-form-label">菜单名</label>
-	        <div class="layui-input-inline">
-	            <input type="text" name="name"  lay-verify="required" value="#(order.get( "name" )??)"
-	            placeholder="" autocomplete="off" class="layui-input">
-	        </div>
-	        <div class="layui-form-mid layui-word-aux"></div>
-	    </div>
-	    <div class="layui-form-item">
-	        <label class="layui-form-label">url</label>
-	        <div class="layui-input-inline">
-	            <input type="text" name="url"  lay-verify="required" value="#(order.get( "url" )??)"
-	            placeholder="" autocomplete="off" class="layui-input">
-	        </div>
-	        <div class="layui-form-mid layui-word-aux"></div>
-	    </div>
-	    <div class="layui-form-item">
-	        <label class="layui-form-label">父级ID</label>
-	        <div class="layui-input-inline">
-	            <input type="text" name="parent_id"  lay-verify="required" value="#(order.get( "parent_id" )??)"
-	            placeholder="" autocomplete="off" class="layui-input">
-	        </div>
-	        <div class="layui-form-mid layui-word-aux"></div>
-	    </div>
-	    <div class="layui-form-item">
-	        <label class="layui-form-label">排序序号</label>
-	        <div class="layui-input-inline">
-	            <input type="text" name="seq"  lay-verify="required" value="#(order.get( "seq" )??)"
-	            placeholder="" autocomplete="off" class="layui-input">
-	        </div>
-	        <div class="layui-form-mid layui-word-aux"></div>
-	    </div>
+	<form class="layui-form" id="orderForm" novalidate="novalidate">
+	
+	    	<div class="layui-form-item">
+	        		<label class="layui-form-label">菜单名</label>
+	        		<div class="layui-input-inline">
+	            			<input type="text"  name="name"  lay-verify="required"  value="#(order.get( "name" )??)"  placeholder=""  autocomplete="off"  class="layui-input">
+	        		</div>
+	        		<div class="layui-form-mid layui-word-aux"></div>
+	    	</div>
+	    	
+	    	<div class="layui-form-item">
+	        		<label class="layui-form-label">url</label>
+	        		<div class="layui-input-inline">
+	            			<input type="text"  name="url"  lay-verify="required"  value="#(order.get( "url" )??)" placeholder=""  autocomplete="off"  class="layui-input">
+	        		</div>
+	        		<div class="layui-form-mid layui-word-aux"></div>
+	    	</div>
+	    	
+	    	<div class="layui-form-item">
+	        		<label class="layui-form-label">父级ID</label>
+	        		<div class="layui-input-inline">
+	            			<input type="text"  name="parent_id"  lay-verify="required"  value="#(order.get( "parent_id" )??)" placeholder=""  autocomplete="off"  class="layui-input">
+	        		</div>
+	        		<div class="layui-form-mid layui-word-aux"></div>
+	    	</div>
+	    	
+	    	<div class="layui-form-item">
+	        		<label class="layui-form-label">排序序号</label>
+	        		<div class="layui-input-inline">
+	            			<input type="text"  name="seq"  lay-verify="required"  value="#(order.get( "seq" )??)"  placeholder=""  autocomplete="off"  class="layui-input">
+	        		</div>
+	       			<div class="layui-form-mid layui-word-aux"></div>
+	    	</div>
 
-		<div class="layui-form-item">
-            <div class="layui-input-block">
-                <button class="layui-btn" id="saveBtn" lay-submit lay-filter="*">保存</button>
-                <a class="layui-btn layui-btn-primary" href="javascript:history.back()">返回</a>
-            </div>
-		</div>
+			<div class="layui-form-item">
+            		<div class="layui-input-block">
+                			<button class="layui-btn" id="saveBtn" lay-submit  lay-filter="*">保存</button>
+                			<a class="layui-btn layui-btn-primary" href="javascript:history.back()">返回</a>
+            		</div>
+			</div>
+			
 	</form>
-
 </section>
+
 #end
 
 <script type="text/javascript">
     layui.use(['jquery', 'form', 'laydate'], function(){
-        var form = layui.form, $=layui.$, laydate=layui.laydate;
+        var form = layui.form, $ = layui.$, laydate = layui.laydate;
 
         //监听提交
         form.on('submit(*)', function(data){

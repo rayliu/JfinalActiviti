@@ -54,7 +54,7 @@ public class MenuController extends Controller {
             sLimit = " limit " + limit*page + ", " + limit;
         }
         Record login_user = getAttr("user");
-        String sql=" select * from t_rbac_menu where is_delete = '0'";
+        String sql = " select * from t_rbac_menu where is_delete = '0'";
         List<Record> orderList = Db.find(sql+condition+" order by sort_no  "+sLimit);
 
         String sqlTotal = "select count(1) total from (" + sql + ") B";
@@ -84,7 +84,7 @@ public class MenuController extends Controller {
         Record login_user = getAttr("user");
         String id = getPara("id");
         Record order = Db.findFirst("select * from t_rbac_menu  where id=?", id);
-
+        
         setAttr("order", order);
         render("edit.html");
     }
@@ -96,11 +96,11 @@ public class MenuController extends Controller {
         Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);
         Record login_user = getAttr("user");
 
-            String id = (String)dto.get("id");
-            String name = (String)dto.get("name");
-            String url = (String)dto.get("url");
-            String parent_id = (String)dto.get("parent_id");
-            String seq = (String)dto.get("seq");
+        String id = (String)dto.get("id");
+        String name = (String)dto.get("name");
+        String url = (String)dto.get("url");
+        String parent_id = (String)dto.get("parent_id");
+        String seq = (String)dto.get("seq");
 
         Record order = new Record();
         if(StrKit.notBlank(id)){
@@ -141,7 +141,6 @@ public class MenuController extends Controller {
 
             Db.save("t_rbac_menu",order);
         }
-
         renderJson(order);
     }
     
@@ -157,17 +156,15 @@ public class MenuController extends Controller {
     }
     
     public  void updateSort_no(){
-    	String id=getPara("id");
-    	String sort_no=getPara("sort_no");
-    	Record re=Db.findById("t_rbac_menu", id);
+    	String id = getPara("id");
+    	String sort_no = getPara("sort_no");
+    	Record re = Db.findById("t_rbac_menu", id);
 		Boolean result = false;
-		if(re!=null){
+		if(re != null){
 			re.set("sort_no",sort_no);
 			result = Db.update("t_rbac_menu",re);
 		}
 		renderJson("{\"result\":"+result+"}");
-    	
     }
-    
 
 }

@@ -44,18 +44,25 @@ public class OrganizeStructure extends Controller {
     public void edit() {
         Record login_user = getAttr("user");
         //String id = getPara("id");
+        
         List<Record> group1_list = Db.find("select * from t_rbac_group where parent_id is null");
         for(int i = 0;i<group1_list.size();i++){
+        	
         	List<Record> group2_list = Db.find("select * from t_rbac_group where parent_id = ?",group1_list.get(i).get("id"));
         	group1_list.get(i).set("group2_list", group2_list);
+        	
             for(int j = 0;j<group2_list.size();j++){
+            	
             	List<Record> group3_list = Db.find("select * from t_rbac_group where parent_id = ?",group2_list.get(j).get("id"));
             	group2_list.get(j).set("group3_list", group3_list);
+            	
             	for(int k=0;k<group3_list.size();k++){
             		List<Record> group4_list = Db.find("select * from t_rbac_group where parent_id=?",group3_list.get(k).get("id"));
             		group3_list.get(k).set("group4_list", group4_list);
             	}
+            	
             }
+            
         }
         List<Record> select_group_list = Db.find("select * from t_rbac_group");
         setAttr("group1_list", group1_list);
@@ -65,7 +72,7 @@ public class OrganizeStructure extends Controller {
     
     public void groupinfo(){
     		String id=getPara("id");
-    		List<Record> groupinfo=Db.find("select * from t_rbac_group where parent_id=?",id);
+    		List<Record> groupinfo = Db.find("select * from t_rbac_group where parent_id=?",id);
     		renderJson(groupinfo);
     }
 

@@ -40,8 +40,8 @@ public class RoleController extends Controller{
 	
 	//返回list页面所需要的json
 	public void getList(){
-		String sLimit="";
-		String condition="";
+		String sLimit = "";
+		String condition = "";
 		String pageIndex = getPara("draw");
 		if (getPara("start") != null && getPara("length") != null) {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
@@ -71,7 +71,6 @@ public class RoleController extends Controller{
 	            map.put("data", orderList);
 	        }
 	        renderJson(map);
-		 
 	}
 	
 	//返回create页面
@@ -87,12 +86,11 @@ public class RoleController extends Controller{
         render("roleForm.html");
 	}
 	
-	
 	@Before(Tx.class)
 	public void save(){
-		String jsonStr =getPara("params");
+		String jsonStr = getPara("params");
 		Gson gson = new Gson();
-		Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class); 
+		Map<String, ?> dto = gson.fromJson(jsonStr, HashMap.class); 
 		Record login_user = getAttr("user");
 		  
 		  String order_id = (String)dto.get("order_id");
@@ -120,27 +118,26 @@ public class RoleController extends Controller{
 	
 	public void check(){
 		String order_id = getPara("order_id");
-		String code= getPara("code");
-		String name=getPara("name");
+		String code = getPara("code");
+		String name = getPara("name");
 		
-		Record order= new 	Record();
-		order=null;
-		if(name!=null && name!=""&&code!=null&&code!=""){
+		Record order = new 	Record();
+		order = null;
+		if(StrKit.notBlank(name) && StrKit.notBlank(code)){
 			order=Db.findFirst("select * from t_rbac_role where `name`=? and `code`=?",name,code);
 		}
 		renderJson(order); 	
 	}
 	
 	public void delete(){
-		String id= getPara("id");
-		Record re=Db.findById("t_rbac_role", id);
+		String id = getPara("id");
+		Record re = Db.findById("t_rbac_role", id);
 		Boolean result = false;
-		if(re!=null){
+		if(re != null){
 			re.set("is_delete", 1);
 			result = Db.update("t_rbac_role",re);
 		}
 		renderJson("{\"result\":"+result+"}");
 	}
-	
 	
 }
