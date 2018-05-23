@@ -1,18 +1,27 @@
 package com.jfa.controllers.workflow;
 
+import java.io.File;
 import java.io.InputStream;
+import java.io.StringWriter;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import cn.hutool.core.io.FileUtil;
 import com.jfa.controllers.workflow.util.ActivitiKit;
 import com.jfa.controllers.workflow.util.BpmsActivityTypeEnum;
 import com.jfa.controllers.workflow.util.UtilMisc;
 import com.jfa.interceptor.SetAttrLoginUserInterceptor;
 import com.jfa.util.ImgRender;
+import com.jfa.util.JfaRenderUtil;
 import com.jfinal.kit.PropKit;
+import com.jfinal.render.RenderManager;
+import com.jfinal.template.Engine;
+import com.jfinal.template.Template;
+import com.jfinal.template.source.ClassPathSourceFactory;
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.FlowNode;
 import org.activiti.bpmn.model.SequenceFlow;
@@ -32,7 +41,6 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 
 
-
 @Before(SetAttrLoginUserInterceptor.class)
 public class WorkflowController extends Controller {
     private Log logger = Log.getLog(WorkflowController.class);
@@ -46,7 +54,15 @@ public class WorkflowController extends Controller {
     }
     
     public void processList() {
-       render("processList.html");
+        URL url = WorkflowController.class.getResource("");
+        String protocol = url.getProtocol();
+        if("jar".equals(protocol)){
+            // jar 中
+            JfaRenderUtil.render("template/layui/workflow/processList.html", this);
+        }else if("file".equals(protocol)){
+            // 非jar 中 （文件class 中）
+            render("processList.html");
+        }
     }
     
     public void processListQuery() {

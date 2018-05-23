@@ -4,13 +4,49 @@
   <artifactId>JfinalActiviti</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <name>JfinalActiviti</name>
-  
+
+    <!-- mvn compile war:war -->
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
         <activiti.version>6.0.0</activiti.version>
     </properties>
-    
+
+    <profiles>
+        <profile>
+            <!-- 正式环境 -->
+            <id>prod</id>
+            <properties>
+                <!--db-url>jdbc:oracle:thin:@172.21.129.51:1521:orcl</db-url>
+                <db-username>***</db-username>
+                <db-password>***</db-password-->
+                <jar.scope>compile</jar.scope>
+            </properties>
+            <!-- 默认激活本环境 -->
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <!-- 作为lib 提供给其它项目用 -->
+            <id>lib</id>
+            <properties>
+                <!--db-url>jdbc:oracle:thin:@localhost:1521:XE</db-url>
+                <db-username>***</db-username>
+                <db-password>***</db-password-->
+                <jar.scope>provided</jar.scope>
+            </properties>
+            <build>
+                <resources>
+                    <resource>
+                        <directory>src/main/webapp</directory>
+                    </resource>
+                </resources>
+            </build>
+
+        </profile>
+    </profiles>
+
     <!-- 使用阿里 maven 库 -->
     <repositories>
         <repository>
@@ -92,7 +128,7 @@
     <dependency>
         <groupId>com.alibaba</groupId>
         <artifactId>druid</artifactId>
-        <version>1.0.29</version>
+        <version>1.1.9</version>
     </dependency>
     <dependency>
         <groupId>com.jfinal</groupId>
@@ -136,10 +172,17 @@
           <artifactId>freemarker</artifactId>
           <version>2.3.20</version>
       </dependency>
+      <dependency>
+          <groupId>org.projectlombok</groupId>
+          <artifactId>lombok</artifactId>
+          <version>1.16.18</version>
+          <scope>provided</scope>
+          <!-- scope=provided，说明它只在编译阶段生效，不需要打入包中-->
+      </dependency>
   </dependencies>
   
   <build>
-    <finalName>JfinalActiviti</finalName>
+    <finalName>JfinalActiviti_${version}</finalName>
     <plugins>
       <plugin>
           <groupId>org.mortbay.jetty</groupId>
@@ -160,36 +203,47 @@
               </connectors>
           </configuration>
         </plugin>
-      <!-- Maven Assembly Plugin -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-assembly-plugin</artifactId>
-        <version>2.4.1</version>
-        
-        <configuration>
-          <!-- get all project dependencies -->
-          <descriptorRefs>
-            <descriptorRef>jar-with-dependencies</descriptorRef>
-          </descriptorRefs>
-          <!-- MainClass in mainfest make a executable jar -->
-          <archive>
-            <manifest>
-              <mainClass>com.example.OnboardingRequest</mainClass>
-            </manifest>
-          </archive>
-        </configuration>
-        
-        <executions>
-          <execution>
-            <id>make-assembly</id>
-            <!-- bind to the packaging phase -->
-            <phase>package</phase>
-            <goals>
-              <goal>single</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
+
+        <!--不让maven打包时生成描述文件-->
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jar-plugin</artifactId>
+            <configuration>
+                <archive>
+                    <addMavenDescriptor>false</addMavenDescriptor>
+                </archive>
+            </configuration>
+        </plugin>
+
+        <!-- 打包的时候把resources目录下的文件拷贝到指定的目录下>
+        <plugin>
+            <artifactId>maven-resources-plugin</artifactId>
+            <executions>
+                <execution>
+                    <id>copy-resources</id>
+                    <phase>validate</phase>
+                    <goals>
+                        <goal>copy-resources</goal>
+                    </goals>
+                    <configuration>
+                        <outputDirectory>${project.build.directory}/JfinalActiviti/META-INF/resouces</outputDirectory>
+                        <resources>
+                            <resource>
+                                <directory>src/main/webapp</directory>
+                                <targetPath>META-INF/resources</targetPath>
+                                <filtering>true</filtering>
+                            </resource>
+                        </resources>
+                    </configuration>
+
+                </execution>
+            </executions>
+        </plugin -->
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-war-plugin</artifactId>
+            <version>2.6</version>
+        </plugin>
         <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
@@ -199,5 +253,12 @@
             </configuration>
         </plugin>
     </plugins>
+    <resources>
+      <resource>
+          <directory>src/main/webapp</directory>
+          <targetPath>META-INF/resources</targetPath>
+          <filtering>true</filtering>
+      </resource>
+    </resources>
   </build>
 </project>

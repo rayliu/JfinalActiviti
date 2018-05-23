@@ -1,5 +1,6 @@
 package com.jfa.config;
 
+import com.alibaba.druid.filter.stat.StatFilter;
 import com.github.jieblog.plugin.shiro.core.ShiroInterceptor;
 import com.github.jieblog.plugin.shiro.core.ShiroPlugin;
 import com.jfa.controllers.codeGen.CodeGenerateController;
@@ -40,7 +41,7 @@ import com.shuyan.wxl.routes.AutoBindRoutes;
  * 
  * API引导式配置
  */
-public class JfinalActivitiConfig extends JFinalConfig {
+public class JfaConfig extends JFinalConfig {
     /**
      * 供Shiro插件使用 。
      */
@@ -147,6 +148,13 @@ public class JfinalActivitiConfig extends JFinalConfig {
 
         // 配置 druid 数据库连接池插件
         DruidPlugin druidPlugin = new DruidPlugin(PropKit.get("jdbcUrl"), PropKit.get("user"), PropKit.get("password").trim());
+        // 1.统计信息插件
+        StatFilter statFilter = new StatFilter();
+        statFilter.setMergeSql(true);
+        statFilter.setLogSlowSql(true);
+        // 慢查询目前设置为1s,随着优化一步步进行慢慢更改
+        statFilter.setSlowSqlMillis(1000);
+        druidPlugin.addFilter(statFilter);
         me.add(druidPlugin);
         
         // 配置ActiveRecord插件
